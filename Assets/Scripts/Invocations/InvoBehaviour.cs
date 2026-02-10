@@ -28,6 +28,11 @@ public class InvoBehaviour : MonoBehaviour
         }
     }
 
+    void Protection()
+    {
+        
+    }
+    
     Vector3 getDirection()
     {
         return target.position - transform.position;

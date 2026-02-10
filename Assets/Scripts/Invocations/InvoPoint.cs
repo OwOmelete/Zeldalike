@@ -9,8 +9,8 @@ public class InvoPoint : MonoBehaviour
     private void FixedUpdate()
     {
         transform.position += new Vector3(
-            0,
             Mathf.Cos(Time.time * loopTime)*distance,
-            0) ;
+            0,
+            Mathf.Sin(Time.time * loopTime)*distance) ;
     }
 }
