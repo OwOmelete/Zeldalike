@@ -18,10 +18,14 @@ public class Controller : MonoBehaviour
         InputDirection = new Vector3(InputDirection.x, 0, InputDirection.y);
     }
 
+    private void OnAttack(InputValue value)
+    {
+        rb.AddForce(rb.linearVelocity.normalized * 100);
+    }
+
     private void FixedUpdate()
     {
         Movement();
-        Debug.Log(rb.linearVelocity.magnitude);
     }
 
     void Movement()
@@ -35,7 +39,7 @@ public class Controller : MonoBehaviour
         pm.dynamicFriction = 0;
         if (rb.linearVelocity.magnitude > maxSpeed)
         {
-            Vector3 force = moveCalculation(
+            Vector3 force = Maths.OrthogonalProjection(
                 InputDirection.normalized * acceleration,
                 rb.linearVelocity.normalized * maxSpeed);
             rb.AddForce(force);
@@ -44,25 +48,5 @@ public class Controller : MonoBehaviour
         {
             rb.AddForce(InputDirection.normalized * acceleration);
         }
-    }
-
-    
-    
-    Vector3 moveCalculation(Vector3 v, Vector3 u)
-    {
-        float dot = Vector3.Dot(v, u);
-        Vector3 proj = (dot / Vector3.Dot(u, u)) * u;
-        
-        if (dot > 0)
-        {
-            return v - proj;
-        }
-
-        else
-        {
-            return v + proj;
-        }
-        
-        return v;
     }
 }
