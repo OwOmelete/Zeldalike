@@ -10,7 +10,7 @@ public class InvoPoint : MonoBehaviour
     {
         transform.position += new Vector3(
             Mathf.Cos(Time.time * loopTime)*distance,
-            0,
-            Mathf.Sin(Time.time * loopTime)*distance) ;
+            Mathf.Sin(Time.time * loopTime*0.5f)*distance*0.5f,
+            Mathf.Sin(Time.time * loopTime)*distance);
     }
 }

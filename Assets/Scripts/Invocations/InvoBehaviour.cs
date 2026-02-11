@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class InvoBehaviour : MonoBehaviour
 {
-    [SerializeField] private Transform target;
+    public Transform target;
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private float acceleration;
+    public float acceleration;
     [SerializeField] private float maxSpeed;
+    [SerializeField] private float maxDistance;
 
     private void FixedUpdate()
     {
@@ -15,6 +16,13 @@ public class InvoBehaviour : MonoBehaviour
     
     void Movement()
     {
+        /*if ((transform.position - target.position).magnitude > maxDistance)
+        {
+            rb.AddForce(getDirection().normalized * acceleration);
+            return;
+        }*/
+        
+        //^^
         if (rb.linearVelocity.magnitude > maxSpeed)
         {
             Vector3 force = Maths.OrthogonalProjection(
@@ -22,6 +30,7 @@ public class InvoBehaviour : MonoBehaviour
                 rb.linearVelocity.normalized * maxSpeed);
             rb.AddForce(force);
         }
+        
         else
         {
             rb.AddForce(getDirection().normalized * acceleration);
