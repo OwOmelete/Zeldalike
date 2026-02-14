@@ -36,6 +36,8 @@ public class Controller : MonoBehaviour
             return;
         }
 
+        transform.rotation = Quaternion.LookRotation(InputDirection.normalized);
+        
         pm.dynamicFriction = 0;
         if (rb.linearVelocity.magnitude > maxSpeed)
         {
