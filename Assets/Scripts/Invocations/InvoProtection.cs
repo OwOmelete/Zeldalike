@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InvoProtection : MonoBehaviour
@@ -54,6 +55,30 @@ public class InvoProtection : MonoBehaviour
 
 
 
+    }
+
+    void NewTarget()
+    {
+
+        float n = 0;
+        
+        Vector3 dir = Vector3.zero;
+        
+        List<float> circList = new List<float>();
+        
+        
+        for (int i = 0; i < 3; i++)
+        {
+            circList.Add(Maths.circleCircumferenceInSphereRadius(30*i));
+            n += Maths.circleCircumferenceInSphereRadius(30 * i);
+        }
+
+        for (int i = 0; i < _invoBehaviours.Length; i++)
+        {
+            
+        }
+        
+        
     }
     
 }

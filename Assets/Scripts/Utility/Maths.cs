@@ -14,4 +14,24 @@ public class Maths : MonoBehaviour
         }
         return v + proj;
     }
+
+    public static float xCircleInSphere(float angle, float t)
+    {
+        return Mathf.Sin(angle) * Mathf.Cos(t);
+    }
+    
+    public static float yCircleInSphere(float angle, float t)
+    {
+        return Mathf.Sin(angle) * Mathf.Sin(t);
+    }
+    
+    public static float zCircleInSphere(float angle, float t)
+    {
+        return Mathf.Cos(angle);
+    }
+
+    public static float circleCircumferenceInSphereRadius(float angle)
+    {
+        return Mathf.Sin(angle);
+    }
 }
