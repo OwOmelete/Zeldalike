@@ -17,21 +17,27 @@ public class Maths : MonoBehaviour
 
     public static float xCircleInSphere(float angle, float t)
     {
-        return Mathf.Sin(angle) * Mathf.Cos(t);
+        return Mathf.Sin(angle * Mathf.Deg2Rad) * Mathf.Cos(t%360 * Mathf.Deg2Rad);
     }
     
     public static float yCircleInSphere(float angle, float t)
     {
-        return Mathf.Sin(angle) * Mathf.Sin(t);
+        return Mathf.Sin(angle * Mathf.Deg2Rad) * Mathf.Sin(t%360* Mathf.Deg2Rad);
     }
     
     public static float zCircleInSphere(float angle, float t)
     {
-        return Mathf.Cos(angle);
+        return Mathf.Cos(angle * Mathf.Deg2Rad);
     }
 
+    public static Vector3 coordsCircleInSphere(float angle, float t)
+    {
+        return new Vector3(xCircleInSphere(angle, t), zCircleInSphere(angle, t), yCircleInSphere(angle, t));
+    }
+    
     public static float circleCircumferenceInSphereRadius(float angle)
     {
-        return Mathf.Sin(angle);
+        //Debug.Log(Mathf.Abs(Mathf.Sin(angle * Mathf.Deg2Rad)));
+        return Mathf.Abs(Mathf.Sin(angle * Mathf.Deg2Rad ));
     }
 }
