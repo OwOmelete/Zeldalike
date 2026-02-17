@@ -3188,8 +3188,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24b5a61ed07feb408eb177743495e61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::test
-  magnetReference: {fileID: 0}
-  toggle: 0
+  magnetReference: {fileID: 1175898245}
+  toggle: 1
 --- !u!4 &607645518
 Transform:
   m_ObjectHideFlags: 0
@@ -5735,9 +5735,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f13b661ccde4df243bbde5303ae30a8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Magnet2
-  force: 1
-  stopDistance: 2
-  toggleMagnet: 1
+  force: 30
+  stopDistance: 3
+  maxDistance: 8
+  toggleMagnet: 0
 --- !u!1 &1208942345
 GameObject:
   m_ObjectHideFlags: 0
@@ -7847,8 +7848,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1457722104}
-  - component: {fileID: 1457722106}
   - component: {fileID: 1457722105}
+  - component: {fileID: 1457722106}
   m_Layer: 0
   m_Name: Magnet
   m_TagString: Untagged
@@ -7901,12 +7902,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1457722103}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8eaf92e0dd5dffa4e8ef1945084f131e, type: 3}
+  m_Script: {fileID: 11500000, guid: f13b661ccde4df243bbde5303ae30a8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Magnet
-  force: 0.3
-  stopDistance: 0
-  toggleMagnet: 0
+  force: 1
+  stopDistance: 2
+  maxDistance: 0
+  toggleMagnet: 1
 --- !u!1 &1474779529
 GameObject:
   m_ObjectHideFlags: 0
