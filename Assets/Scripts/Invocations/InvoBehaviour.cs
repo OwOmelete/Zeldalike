@@ -3,14 +3,30 @@ using UnityEngine;
 
 public class InvoBehaviour : MonoBehaviour
 {
-    public Transform baseTarget;
-    
+    public Transform player;
 
+    public Vector3 offset;
+    
     public Transform target;
     [SerializeField] private Rigidbody rb;
+    public Vector3 baseOffset;
     public float acceleration;
     public float maxSpeed;
     [SerializeField] private float maxDistance;
+
+    public State currentState;
+    
+    public enum State
+    {
+        idle,
+        protection
+    }
+
+    private void Start()
+    {
+        currentState = State.idle;
+        offset = baseOffset;
+    }
 
     private void FixedUpdate()
     {
@@ -47,6 +63,10 @@ public class InvoBehaviour : MonoBehaviour
     
     Vector3 getDirection()
     {
-        return target.position - transform.position;
+        if (currentState == State.idle)
+        {
+            return player.position + offset + Maths.idleOffset(3, 0.03f) - transform.position;
+        }
+        return player.position + offset - transform.position;
     }
 }

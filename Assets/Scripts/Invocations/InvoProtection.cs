@@ -18,7 +18,7 @@ public class InvoProtection : MonoBehaviour
             {
                 foreach (var invo in _invoBehaviours)
                 {
-                    invo.target = invo.baseTarget;
+                    invo.offset = invo.baseOffset;
                     invo.acceleration = 10;
                 }
 
@@ -54,8 +54,6 @@ public class InvoProtection : MonoBehaviour
         
         for (int i = 0; i < _invoBehaviours.Length; i++)
         {
-            GameObject go = new GameObject();
-            
             /*Debug.Log(n * _invoBehaviours.Length / circList[currentIndex]);
             Debug.Log(n);
             Debug.Log( _invoBehaviours.Length);
@@ -66,17 +64,15 @@ public class InvoProtection : MonoBehaviour
               //  360 / circList[currentIndex] * i - lastIndex, 0) * Vector3.forward;
             
             
-            go.transform.parent = reference.transform; 
-            
-            go.transform.localPosition = Vector3.zero;
+
             
             Debug.Log(360 /  _invoBehaviours.Length * circList[currentIndex] / n * (i - lastIndex));
 
-            go.transform.localPosition = Maths.coordsCircleInSphere(-angle * circList.Count / circList.Count * currentIndex,
+            Vector3 offset = Maths.coordsCircleInSphere(-angle * circList.Count / circList.Count * currentIndex,
                 360 /  (_invoBehaviours.Length * circList[currentIndex] / n) * (i - lastIndex));
             
             _invoBehaviours[i].acceleration = 60;
-            _invoBehaviours[i].target = go.transform;
+            _invoBehaviours[i].offset = offset;
             
             if (i - lastIndex > _invoBehaviours.Length * circList[currentIndex] / n)
             {

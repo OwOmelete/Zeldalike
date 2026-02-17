@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Controller : MonoBehaviour
 {
+    [SerializeField] private Transform cam;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private PhysicsMaterial pm;
     [SerializeField] private float friction;
@@ -16,6 +17,7 @@ public class Controller : MonoBehaviour
     {
         InputDirection = value.Get<Vector2>();
         InputDirection = new Vector3(InputDirection.x, 0, InputDirection.y);
+        InputDirection = cam.rotation * InputDirection;
     }
 
     private void OnAttack(InputValue value)
@@ -36,7 +38,7 @@ public class Controller : MonoBehaviour
             return;
         }
 
-        transform.rotation = Quaternion.LookRotation(InputDirection.normalized);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(InputDirection.normalized), 0.1f)  ;
         
         pm.dynamicFriction = 0;
         if (rb.linearVelocity.magnitude > maxSpeed)
