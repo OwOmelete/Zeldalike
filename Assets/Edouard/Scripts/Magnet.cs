@@ -20,20 +20,19 @@ public class Magnet : MonoBehaviour
         if (rb == null) return;
         
         float distance = Vector3.Distance(rb.position, transform.position);
-        Vector3 toMagnet = (transform.position - rb.position).normalized;
-        Vector3 fromMagnet = -toMagnet;
-
-
-        if (other.gameObject.tag == "Automates" && toggleMagnet)
+        
+        if (other.gameObject.tag == "ActiveAutomate" && toggleMagnet)
         {
 
-            if (distance > stopDistance)
+            if (distance >= stopDistance)
             {
                 float normalizedDistance = Mathf.Clamp01(distance / maxDistance);
                 float pull = force * normalizedDistance * normalizedDistance;
+                
                 Vector3 direction = (transform.position - rb.position).normalized;
 
-                rb.linearVelocity += direction * pull * Time.fixedDeltaTime;
+                rb.AddForce(direction * pull, ForceMode.Acceleration);
+
             }
         }
     }
