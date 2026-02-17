@@ -7,58 +7,32 @@ public class InvoProtection : MonoBehaviour
     [SerializeField] private InvoBehaviour[] _invoBehaviours;
     [SerializeField] private GameObject reference;
 
+    private bool isProtecting = false;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            NewTarget(25);
-        }
-    }
-
-
-    void AssignNewTarget()
-    {
-        Vector3 dir = Vector3.zero;
-
-        for (int i = 0; i < _invoBehaviours.Length; i++)
-        {
-            GameObject go = new GameObject();
-            
-
-            if (i == 0)
-            {
-                dir = Vector3.up;
-            }
-            
-            else if (i < _invoBehaviours.Length / 2)
-            {
-                dir = Quaternion.Euler(-35,
-                    360 / _invoBehaviours.Length * 2 * i, 0) * Vector3.forward;
-            }
+            if(!isProtecting) NewTarget(25);
             else
             {
-                dir = Quaternion.Euler(0,
-                    360 / _invoBehaviours.Length * 2 *i -  _invoBehaviours.Length / 2 , 0) * Vector3.forward;
+                foreach (var invo in _invoBehaviours)
+                {
+                    invo.target = invo.baseTarget;
+                    invo.acceleration = 10;
+                }
+
+                isProtecting = false;
             }
             
-            go.transform.parent = reference.transform; 
             
-            go.transform.localPosition = Vector3.zero;
-            
-            go.transform.localPosition = dir;
-
-            _invoBehaviours[i].acceleration = 60;
-            _invoBehaviours[i].target = go.transform;
         }
-
-
-
-
     }
 
     void NewTarget(float angle)
     {
+
+        isProtecting = true;
 
         float n = 0;
         
@@ -106,7 +80,6 @@ public class InvoProtection : MonoBehaviour
             
             if (i - lastIndex > _invoBehaviours.Length * circList[currentIndex] / n)
             {
-                Debug.Log("hihi");
                 currentIndex++;
                 lastIndex = i;
             }

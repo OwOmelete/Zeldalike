@@ -3,10 +3,13 @@ using UnityEngine;
 
 public class InvoBehaviour : MonoBehaviour
 {
+    public Transform baseTarget;
+    
+
     public Transform target;
     [SerializeField] private Rigidbody rb;
     public float acceleration;
-    [SerializeField] private float maxSpeed;
+    public float maxSpeed;
     [SerializeField] private float maxDistance;
 
     private void FixedUpdate()
