@@ -18,8 +18,10 @@ public class InvoProtection : MonoBehaviour
             {
                 foreach (var invo in _invoBehaviours)
                 {
-                    invo.offset = invo.baseOffset;
-                    invo.acceleration = 10;
+                    invo._InvoInstance.offset = invo._Invo.offset;
+                    invo._InvoInstance.acceleration = 15;
+                    invo._InvoInstance.rb.useGravity = true;
+                    invo._InvoInstance.currentState = InvoData.State.idle;
                 }
 
                 isProtecting = false;
@@ -69,10 +71,12 @@ public class InvoProtection : MonoBehaviour
             Debug.Log(360 /  _invoBehaviours.Length * circList[currentIndex] / n * (i - lastIndex));
 
             Vector3 offset = Maths.coordsCircleInSphere(-angle * circList.Count / circList.Count * currentIndex,
-                360 /  (_invoBehaviours.Length * circList[currentIndex] / n) * (i - lastIndex));
+                360 /  (_invoBehaviours.Length * circList[currentIndex] / n) * (i - lastIndex)) * 3;
             
-            _invoBehaviours[i].acceleration = 60;
-            _invoBehaviours[i].offset = offset;
+            _invoBehaviours[i]._InvoInstance.acceleration = 60;
+            _invoBehaviours[i]._InvoInstance.offset = offset;
+            _invoBehaviours[i]._InvoInstance.rb.useGravity = false;
+            _invoBehaviours[i]._InvoInstance.currentState = InvoData.State.protection;
             
             if (i - lastIndex > _invoBehaviours.Length * circList[currentIndex] / n)
             {

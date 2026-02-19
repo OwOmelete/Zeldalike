@@ -3,29 +3,17 @@ using UnityEngine;
 
 public class InvoBehaviour : MonoBehaviour
 {
+    public InvoData _Invo;
+    public InvoDataInstance _InvoInstance;
     public Transform player;
-
-    public Vector3 offset;
-    
-    public Transform target;
     [SerializeField] private Rigidbody rb;
-    public Vector3 baseOffset;
-    public float acceleration;
-    public float maxSpeed;
-    [SerializeField] private float maxDistance;
-
-    public State currentState;
-    
-    public enum State
-    {
-        idle,
-        protection
-    }
 
     private void Start()
     {
-        currentState = State.idle;
-        offset = baseOffset;
+        _InvoInstance = _Invo.Instance();
+        _InvoInstance.rb = rb;
+
+        _InvoInstance.currentState = InvoData.State.idle;
     }
 
     private void FixedUpdate()
@@ -42,17 +30,17 @@ public class InvoBehaviour : MonoBehaviour
         }*/
         
         //^^
-        if (rb.linearVelocity.magnitude > maxSpeed)
+        if (_InvoInstance.rb.linearVelocity.magnitude > _InvoInstance.maxSpeed)
         {
             Vector3 force = Maths.OrthogonalProjection(
-                getDirection().normalized * acceleration,
-                rb.linearVelocity.normalized * maxSpeed);
-            rb.AddForce(force);
+                getDirection().normalized * _InvoInstance.acceleration,
+                _InvoInstance.rb.linearVelocity.normalized * _InvoInstance.maxSpeed);
+            _InvoInstance.rb.AddForce(force);
         }
         
         else
         {
-            rb.AddForce(getDirection().normalized * acceleration);
+            _InvoInstance.rb.AddForce(getDirection().normalized * _InvoInstance.acceleration);
         }
     }
 
@@ -63,10 +51,12 @@ public class InvoBehaviour : MonoBehaviour
     
     Vector3 getDirection()
     {
-        if (currentState == State.idle)
+        if (_InvoInstance.currentState == InvoData.State.idle)
         {
-            return player.position + offset + Maths.idleOffset(3, 0.03f) - transform.position;
+            //Maths.idleOffset(3, 3f)
+            Vector3 dir = player.position + _InvoInstance.offset  - transform.position;
+            return new Vector3(dir.x, 0, dir.z);
         }
-        return player.position + offset - transform.position;
+        return player.position + _InvoInstance.offset - transform.position;
     }
 }
