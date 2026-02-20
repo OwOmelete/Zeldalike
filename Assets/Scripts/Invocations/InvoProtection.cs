@@ -65,10 +65,6 @@ public class InvoProtection : MonoBehaviour
             //dir = Quaternion.Euler(-90 / circList.Count * currentIndex,
               //  360 / circList[currentIndex] * i - lastIndex, 0) * Vector3.forward;
             
-            
-
-            
-            Debug.Log(360 /  _invoBehaviours.Length * circList[currentIndex] / n * (i - lastIndex));
 
             Vector3 offset = Maths.coordsCircleInSphere(-angle * circList.Count / circList.Count * currentIndex,
                 360 /  (_invoBehaviours.Length * circList[currentIndex] / n) * (i - lastIndex)) * 3;

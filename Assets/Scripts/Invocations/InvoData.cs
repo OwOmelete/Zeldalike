@@ -11,7 +11,8 @@ public class InvoData : ScriptableObject
     public enum State
     {
         idle,
-        protection
+        protection,
+        attack
     }
 
     public InvoDataInstance Instance()

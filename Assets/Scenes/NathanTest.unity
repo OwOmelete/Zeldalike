@@ -1533,6 +1533,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0393b24a89c065d419799be96cb3885b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InvoManager
+  InvoAttack: {fileID: 1132138426}
+--- !u!114 &1132138426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132138413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 946a94d36f35d3f4ab21ffc208d2a078, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InvoAttack
+  player: {fileID: 1132138413}
 --- !u!1001 &1166410772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2463,7 +2477,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 92066354075938315, guid: 531ead8d6706e1c4c8a81f2d06f02631, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 2.14
       objectReference: {fileID: 0}
     - target: {fileID: 92066354075938315, guid: 531ead8d6706e1c4c8a81f2d06f02631, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2471,7 +2485,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 92066354075938315, guid: 531ead8d6706e1c4c8a81f2d06f02631, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.17
+      value: 5.13
       objectReference: {fileID: 0}
     - target: {fileID: 92066354075938315, guid: 531ead8d6706e1c4c8a81f2d06f02631, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3428,6 +3442,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 296223003020906809, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1132138425}
+    - targetCorrespondingSourceObject: {fileID: 296223003020906809, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1132138426}
   m_SourcePrefab: {fileID: 100100000, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
 --- !u!1001 &7628618664815759646
 PrefabInstance:

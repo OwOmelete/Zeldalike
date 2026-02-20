@@ -5,6 +5,9 @@ using UnityEngine;
 public class InvoManager : MonoBehaviour
 {
     public List<InvoDataInstance> InvoList = new List<InvoDataInstance>();
+    public InvoAttack InvoAttack;
+    
+    public static event Action<InvoDataInstance> OnAttack;
 
 
     private void OnEnable()
@@ -21,5 +24,12 @@ public class InvoManager : MonoBehaviour
     {
         InvoList.Add(instance);
     }
-    
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            OnAttack?.Invoke(InvoList[0]);
+        }
+    }
 }

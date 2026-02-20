@@ -8,7 +8,7 @@ public class InvoBehaviour : MonoBehaviour
     public Transform player;
     [SerializeField] private Rigidbody rb;
 
-    public static event Action<InvoDataInstance> OnInvoSpawn; 
+    public static event Action<InvoDataInstance> OnInvoSpawn;
     
     private void Start()
     {
@@ -62,6 +62,6 @@ public class InvoBehaviour : MonoBehaviour
             Vector3 dir = player.position + _InvoInstance.offset  - transform.position;
             return new Vector3(dir.x, 0, dir.z);
         }
-        return player.position + _InvoInstance.offset - transform.position;
+        return _InvoInstance.target.position + _InvoInstance.offset - transform.position;
     }
 }
