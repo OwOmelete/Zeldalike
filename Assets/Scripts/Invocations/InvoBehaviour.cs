@@ -8,9 +8,14 @@ public class InvoBehaviour : MonoBehaviour
     public Transform player;
     [SerializeField] private Rigidbody rb;
 
+    public static event Action<InvoDataInstance> OnInvoSpawn; 
+    
     private void Start()
     {
         _InvoInstance = _Invo.Instance();
+        
+        OnInvoSpawn?.Invoke(_InvoInstance);
+        
         _InvoInstance.rb = rb;
 
         _InvoInstance.currentState = InvoData.State.idle;
