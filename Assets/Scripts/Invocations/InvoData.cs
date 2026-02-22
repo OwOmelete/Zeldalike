@@ -8,12 +8,6 @@ public class InvoData : ScriptableObject
     public float maxSpeed;
     public float maxDistance;
     
-    public enum State
-    {
-        idle,
-        protection,
-        attack
-    }
 
     public InvoDataInstance Instance()
     {
@@ -29,7 +23,7 @@ public class InvoDataInstance
     public float acceleration;
     public float maxSpeed;
     public float maxDistance;
-    public InvoData.State currentState;
+    public IState currentState;
     
     public InvoDataInstance(InvoData data)
     {

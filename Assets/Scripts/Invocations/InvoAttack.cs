@@ -5,7 +5,6 @@ using UnityEngine;
 public class InvoAttack : MonoBehaviour
 {
     [SerializeField] private GameObject player;
-    public InvoDataInstance invo;
 
 
     private void OnEnable()
@@ -13,36 +12,47 @@ public class InvoAttack : MonoBehaviour
         InvoManager.OnAttack += ATK;
     }
 
-    private void ATK(InvoDataInstance invoInstance)
+    private void ATK(InvoBehaviour[] invoList)
     {
-        invo = invoInstance;
-        StartCoroutine(attack());
+
+        StartCoroutine(attacksDelay(invoList));
     }
 
-    IEnumerator attack()
+    IEnumerator attacksDelay(InvoBehaviour[] invos)
     {
-        Vector3 targetAtk = player.transform.forward.normalized * 10;
+        for (int i = 0; i < invos.Length; i++)
+        {
+            yield return new WaitForSeconds(0.2f);
+            StartCoroutine(attack(invos[i]._InvoInstance));
+        }
+    }
+    
+    IEnumerator attack(InvoDataInstance invoInstance)
+    {
+        Vector3 targetAtk = player.transform.forward.normalized * 1;
 
-        invo.currentState = InvoData.State.attack;
-        invo.rb.useGravity = false;
-        invo.acceleration = 15;
-        invo.target = player.transform;
-        invo.offset = player.transform.forward.normalized * 2;
+        Vector3 baseOffset = invoInstance.offset;
+        //invoInstance.currentState = InvoData.State.attack;
+        invoInstance.rb.useGravity = false;
+        invoInstance.acceleration = 15;
+        invoInstance.target = player.transform;
+        invoInstance.offset = player.transform.forward.normalized * 2;
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
 
         
-        invo.acceleration = 40;
-        invo.maxSpeed = 100;
-        invo.offset = targetAtk;
+        invoInstance.acceleration = 40;
+        invoInstance.maxSpeed = 100;
+        invoInstance.offset = targetAtk;
         
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
         
-        invo.currentState = InvoData.State.idle;
-        invo.rb.useGravity = true;
-        invo.target = player.transform;
-        invo.acceleration = 15;
-        invo.maxSpeed = 5;
+        //invoInstance.currentState = InvoData.State.idle;
+        invoInstance.rb.useGravity = true;
+        invoInstance.offset = baseOffset;
+        invoInstance.target = player.transform;
+        invoInstance.acceleration = 15;
+        invoInstance.maxSpeed = 5;
     }
     
     
