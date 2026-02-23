@@ -2,17 +2,25 @@ using UnityEngine;
 
 public class StateAttack : IState
 {
-    public void Enter()
+    
+    private InvoBehaviour owner;
+    
+    public StateAttack(InvoBehaviour owner)
+    {
+        this.owner = owner;
+    }
+
+    public override void Enter()
     {
         throw new System.NotImplementedException();
     }
 
-    public void Execute()
+    public override void Execute()
     {
         throw new System.NotImplementedException();
     }
 
-    public void Exit()
+    public override void Exit()
     {
         throw new System.NotImplementedException();
     }

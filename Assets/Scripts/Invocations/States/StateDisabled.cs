@@ -3,18 +3,25 @@ using UnityEngine;
 public class StateDisabled : IState
 {
 
+    private InvoBehaviour owner;
 
-    public void Enter()
+    
+    public StateDisabled(InvoBehaviour owner)
+    {
+        this.owner = owner;
+    }
+    
+    public override void Enter()
     {
         throw new System.NotImplementedException();
     }
 
-    public void Execute()
+    public override void Execute()
     {
         throw new System.NotImplementedException();
     }
 
-    public void Exit()
+    public override void Exit()
     {
         throw new System.NotImplementedException();
     }

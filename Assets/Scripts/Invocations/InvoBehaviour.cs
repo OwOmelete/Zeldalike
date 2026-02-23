@@ -12,6 +12,8 @@ public class InvoBehaviour : MonoBehaviour
 
     public StateIdle stateIdle;
     public StateProtection stateProtection;
+    public StateAttack stateAttack;
+    public StateDisabled stateDisabled;
 
     public static event Action<InvoBehaviour> OnInvoSpawn;
     
@@ -25,6 +27,8 @@ public class InvoBehaviour : MonoBehaviour
 
         stateIdle = new StateIdle(this);
         stateProtection = new StateProtection(this);
+        stateAttack = new StateAttack(this);
+        stateDisabled = new StateDisabled(this);
         
         Debug.Log(stateIdle);
         
