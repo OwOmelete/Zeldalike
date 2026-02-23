@@ -24,6 +24,7 @@ public class InvoDataInstance
     public float maxSpeed;
     public float maxDistance;
     public IState currentState;
+    public bool isMoving = true;
     
     public InvoDataInstance(InvoData data)
     {

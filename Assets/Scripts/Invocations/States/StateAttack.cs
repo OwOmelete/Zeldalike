@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class StateAttack : IState
@@ -12,16 +13,20 @@ public class StateAttack : IState
 
     public override void Enter()
     {
-        throw new System.NotImplementedException();
+        owner._InvoInstance.rb.useGravity = false;
+        owner._InvoInstance.acceleration = 60;
+        owner.startAttackDelay();
+
     }
 
     public override void Execute()
     {
-        throw new System.NotImplementedException();
+        movement(owner,owner._InvoInstance.target.position + owner._InvoInstance.offset - owner.transform.position);
     }
 
     public override void Exit()
     {
-        throw new System.NotImplementedException();
+        owner._InvoInstance.rb.useGravity = true;
+        owner._InvoInstance.isMoving = true;
     }
 }

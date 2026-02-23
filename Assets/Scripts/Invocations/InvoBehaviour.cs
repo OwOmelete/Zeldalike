@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -30,8 +31,6 @@ public class InvoBehaviour : MonoBehaviour
         stateAttack = new StateAttack(this);
         stateDisabled = new StateDisabled(this);
         
-        Debug.Log(stateIdle);
-        
         ChangeState(stateIdle);
     }
 
@@ -47,6 +46,21 @@ public class InvoBehaviour : MonoBehaviour
 
         _InvoInstance.currentState = newState;
         _InvoInstance.currentState.Enter();
+    }
+
+    public void startAttackDelay()
+    {
+        StartCoroutine(attackDelay());
+    }
+    
+    IEnumerator attackDelay()
+    {
+        yield return new WaitForSeconds(2);
+        _InvoInstance.isMoving = false;
+        _InvoInstance.rb.useGravity = true;
+        _InvoInstance.rb.AddForce(player.transform.forward * 50, ForceMode.Impulse);
+        yield return new WaitForSeconds(2);
+        ChangeState(stateIdle);
     }
     
     

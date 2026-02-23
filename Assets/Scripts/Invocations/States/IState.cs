@@ -11,6 +11,8 @@ public abstract class IState
     
     public void movement(InvoBehaviour owner, Vector3 dir)
     {
+        if (!owner._InvoInstance.isMoving) return;
+        
         if (owner._InvoInstance.rb.linearVelocity.magnitude > owner._InvoInstance.maxSpeed)
         {
             Vector3 force = Maths.OrthogonalProjection(
