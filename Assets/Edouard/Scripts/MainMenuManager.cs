@@ -4,25 +4,29 @@ using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
-    Button startButton;
-    Button settingsButton;
-    Button exitButton;
+    [SerializeField] private Button startButton;
+    [SerializeField] private Button settingsButton;
+    [SerializeField] private Button exitButton;
 
     private void Awake()
     {
         startButton.onClick.AddListener(() =>
         {
+            Debug.Log("Start Button Pressed");
             GlobalEvents.ButtonPressed();
             StartGame();
         });
         settingsButton.onClick.AddListener(() =>
         {
+            Debug.Log("Settings Button Pressed");
             GlobalEvents.ButtonPressed();
             GlobalEvents.SettingsButtonPressed();
         });
         exitButton.onClick.AddListener(() =>
         {
+            Debug.Log("Exit Button Pressed");
             GlobalEvents.ButtonPressed();
+            ExitGame();
         });
     }
     

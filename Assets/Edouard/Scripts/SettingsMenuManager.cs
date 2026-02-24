@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class SettingsMenuManager : MonoBehaviour
 {
+    [SerializeField] private GameObject settingsMenuCanvas;
+    
     #region Singleton
     public static SettingsMenuManager Instance;
     private void Awake()
@@ -21,28 +23,14 @@ public class SettingsMenuManager : MonoBehaviour
     }
     #endregion
     
-    private SettingsMenuState _settingsMenuState;
-
-    enum SettingsMenuState
-    {
-        active,
-        inactive,
-    }
     
     private void OnEnable()
     {
-        GlobalEvents.OnSettingsButtonPressed += OpenSettings;
+        GlobalEvents.OnSettingsButtonPressed += ToggleSettings;
     }
 
-    public void OpenSettings()
+    public void ToggleSettings()
     {
-        Debug.Log("Open Settings");
-        gameObject.SetActive(true);
-    }
-
-    public void CloseSettings()
-    {
-        Debug.Log("Close Settings");
-        gameObject.SetActive(false);
+        settingsMenuCanvas.SetActive(!settingsMenuCanvas.activeSelf);
     }
 }
