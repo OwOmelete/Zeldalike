@@ -2,91 +2,107 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
-using UnityEngine;
-using Random = Unity.Mathematics.Random;
 
 [BurstCompile]
-public struct UnitAvoidanceCalculationJob : IJobParallelFor
-{
-    public float DeltaTime;
-    public float AvoidanceForce;
-    [ReadOnly] public Random random;
-
-    [ReadOnly] public NativeParallelMultiHashMap<int, UnitBoidData> HashedUnits;
-    public NativeArray<UnitBoidData> boids;
-    [ReadOnly] public GridData data;
-    
-    [BurstCompile]
-    public void Execute(int index)
+    public struct UnitBoidAvoidanceCalculationJob : IJobParallelFor
     {
-        UnitBoidData currentBoid = boids[index];
-        float3 boidAvoidanceDirection = float3.zero;
-        float avgNeighboursGoingToSamePlaceSpeedFactor = currentBoid.predictedSpeedFactor;
-        float myDistanceToTarget = math.distance(currentBoid.target, currentBoid.position);
+        public float DeltaTime;
+        [ReadOnly] public NativeParallelMultiHashMap<int, UnitBoidData> HashedEntities;
+        public NativeArray<UnitBoidData> boids;
+        [ReadOnly] public GridData data;
 
-        float3 zeroObst = random.NextFloat3Direction();
-        zeroObst.y = 0f;
+        public float AvoidanceForce;
 
-        var center = GridManager.GetGridPos(currentBoid.position, data);
-
-        for (int x = -1; x <= 1; x++)
+        [ReadOnly] public Unity.Mathematics.Random random;
+        [BurstCompile]
+        public void Execute(int index)
         {
-            for (int y = -1; y <= 1; y++)
+            UnitBoidData currentBoid = boids[index];
+
+            float3 boidAvoidanceDirection = float3.zero;
+            float averageNeighbourGoingToSamePlaceSpeedFactor = currentBoid.predictedSpeedFactor;
+            float myDistanceToTarget = math.distance(currentBoid.target, currentBoid.position);
+
+            float3 zeroObst = random.NextFloat3Direction();
+            zeroObst.y = 0;
+            var center = GridManager.GetGridPos(currentBoid.position, data);
+            for (int x = -1; x <= 1; x++)
             {
-                var neighbour = center + new int2(x, y);
-                int neighbourIndex = GridManager.FlattenGridIndex(neighbour.x, neighbour.y, data);
-
-                if (HashedUnits.TryGetFirstValue(neighbourIndex, out UnitBoidData neighbourBoid, out var iterator))
+                for (int y = -1; y <= 1; y++)
                 {
-                    do
+                    var neighbour = center + new int2(x, y);
+                    int neighboutIndex = GridManager.FlattenGridIndex(neighbour.x, neighbour.y, data);
+
+                    if (HashedEntities.TryGetFirstValue(neighboutIndex, out UnitBoidData neighbourBoid, out var iterator))
                     {
-                        int entity = neighbourBoid.id;
-
-                        if (entity != currentBoid.id)
+                        do
                         {
-                            float3 translation = neighbourBoid.position;
-                            float3 obstacleOffset = translation - currentBoid.position;
-
-                            float distanceToObstacle = math.length(obstacleOffset);
-                            float otherBoidRadius = neighbourBoid.boidSize;
-
-                            if (distanceToObstacle < otherBoidRadius + currentBoid.boidSize)
+                            int entity = neighbourBoid.id;
+                            if (entity != currentBoid.id)
                             {
-                                obstacleOffset.y = 0f;
-                                float avoidancePerc = math.clamp(otherBoidRadius - distanceToObstacle, 0f, 1f);
+                                // Get the translation component
+                                float3 translation = neighbourBoid.position;
+                                float3 obstacleOffset = translation - currentBoid.position;
+                                
 
-                                float3 avoidance = math.normalizesafe(obstacleOffset);
+                                float distanceToObstacle = math.length(obstacleOffset);
+                                float otherBoidRadius = neighbourBoid.boidSize;
 
-                                if (math.length(obstacleOffset) == 0)
+                                // check if my radius is within the other boid's radius
+                                //&& otherBoidRadius >= boidData.BoidSize
+                                if (distanceToObstacle < otherBoidRadius + currentBoid.boidSize )
                                 {
-                                    boidAvoidanceDirection -= zeroObst + avoidancePerc;
-                                }
-                                else
-                                {
-                                    float sizeFactor = math.clamp(currentBoid.boidSize / otherBoidRadius,
-                                        0.04f, 10f);
+                                    obstacleOffset.y = 0f;
+                                    float avoidancePerc = Unity.Mathematics.math.clamp(
+                                        otherBoidRadius - distanceToObstacle,
+                                        0f, 1f);
+                                    float3 avoidance = math.normalizesafe(obstacleOffset);
 
-                                    boidAvoidanceDirection -= avoidance * avoidancePerc * sizeFactor;
+                                    if (math.length(obstacleOffset) == 0)
+                                    {
+                                        boidAvoidanceDirection -= zeroObst * avoidancePerc;
+                                 
+                                    }
+                                    else
+                                    {
+                                        boidAvoidanceDirection -= avoidance * avoidancePerc * math.clamp(currentBoid.boidSize/otherBoidRadius, 0.04f, 10f);
+                                    }
+                                    
+                                    if (currentBoid.hasTarget && avoidancePerc < 0.7f && currentBoid.isActive)
+                                    {
+                                        float boidDistanceToTarget =
+                                            math.distance(neighbourBoid.target, neighbourBoid.position);
+                                    
+                                        if (math.distance(currentBoid.target, neighbourBoid.target) < 0.1f &&
+                                            boidDistanceToTarget < myDistanceToTarget)
+                                        {
+                                            // Always have them slowly clump in together if they are going to the same place
+                                            averageNeighbourGoingToSamePlaceSpeedFactor =
+                                                math.max(neighbourBoid.speedFactor, 0.2f);
+                                            // WAS 0.2
+                                        }
+                                    }
                                 }
+                                // otherwise prioritise avoidance if < 0.7 (very close!)
+                               
+                            
                             }
-                        }
-                    } while (HashedUnits.TryGetNextValue(out neighbourBoid, ref iterator));
+                        } while (HashedEntities.TryGetNextValue(out neighbourBoid, ref iterator));
+                    }
                 }
-
-
             }
+
+
+            currentBoid.avoidanceHeading = boidAvoidanceDirection * AvoidanceForce;
+
+            if (currentBoid.hasTarget && currentBoid.isActive)
+            {
+                float speedFactor = math.lerp(currentBoid.speedFactor, averageNeighbourGoingToSamePlaceSpeedFactor,
+                    DeltaTime * 15f);
+
+                currentBoid.speedFactor = speedFactor;
+            }
+
+            boids[index] = currentBoid;
         }
-        boidAvoidanceDirection.y = 0f;
-
-        currentBoid.avoidanceHeading = boidAvoidanceDirection * AvoidanceForce;
-
-        if (currentBoid.hasTarget)
-        {
-            float speedFactor = math.lerp(currentBoid.speedFactor, avgNeighboursGoingToSamePlaceSpeedFactor,
-                DeltaTime * 15f);
-
-            currentBoid.speedFactor = speedFactor;
-        }
-        boids[index] = currentBoid;
     }
-}

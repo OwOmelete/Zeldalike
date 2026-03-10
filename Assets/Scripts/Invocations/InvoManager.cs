@@ -10,7 +10,7 @@ public class InvoManager : MonoBehaviour
     
     
     public static event Action<InvoBehaviour[]> OnAttack;
-
+    
 
     private void OnEnable()
     {
@@ -76,7 +76,6 @@ public class InvoManager : MonoBehaviour
                 }
             }
         }
-
         return result;
     }
     

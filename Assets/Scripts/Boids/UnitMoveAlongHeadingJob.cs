@@ -5,72 +5,76 @@ using Unity.Mathematics;
 using UnityEngine;
 
 [BurstCompile]
-public struct UnitMoveAlongHeadingJob : IJobParallelFor
+public struct UnitMoveAlongHeading : IJobParallelFor
 {
     public float DeltaTime;
     public NativeArray<UnitBoidData> Boids;
     public bool ClumpNearTarget;
-    
-    
+
     [BurstCompile]
-    public void Execute(int index)
+    public void Execute(int i)
     {
-        UnitBoidData movementData = Boids[index];
-
-        if (movementData.hasTarget)
+        UnitBoidData movementData = Boids[i];
+        if (movementData.hasTarget && movementData.isActive)
         {
+            // Handle Steering Behaviour Generation
             float3 offset = movementData.target - movementData.position;
-            offset.y = 0f;
-
+            offset.y = 0; // Assuming movement on the XZ plane
             float distanceToTarget = math.length(offset);
 
-            float predictedSpeedFactor = 1f;
+            //float predSpeedFactor = 1f;
+            
+            float predSpeedFactor = 1f;
 
             if (ClumpNearTarget)
             {
                 if (distanceToTarget < 2f)
                 {
-                    predictedSpeedFactor = distanceToTarget / 2f;
-                    if (distanceToTarget < 0.1f) predictedSpeedFactor = 0f;
+                    predSpeedFactor = distanceToTarget / 2f;
+                    if (distanceToTarget < 0.1f) predSpeedFactor = 0f;
                 }
             }
 
-            movementData.predictedSpeedFactor = math.lerp(
-                movementData.predictedSpeedFactor,
-                predictedSpeedFactor,
-                DeltaTime * 10f);
-            
-            Debug.DrawRay(movementData.position, Vector3.up * 1f,
+            movementData.predictedSpeedFactor = math.lerp(movementData.predictedSpeedFactor,
+                predSpeedFactor, DeltaTime * 10f);
+
+            Debug.DrawRay(movementData.position, Vector3.up * 2f,
                 Color.Lerp(Color.green, Color.red, movementData.speedFactor));
 
             float speedFactor = movementData.speedFactor;
-            float3 composedHeading = math.normalizesafe(offset + movementData.avoidanceHeading);
 
-            quaternion targetRotation = quaternion.LookRotationSafe(
-                composedHeading,
-                math.up());
+            float3 composedHeading = Unity.Mathematics.math.normalizesafe(offset + movementData.avoidanceHeading);
 
+            quaternion targetRotation = quaternion.LookRotationSafe(composedHeading, math.up());
             movementData.rotation = math.slerp(movementData.rotation, targetRotation,
                 DeltaTime * speedFactor * movementData.rotationalSpeed);
 
             float3 acceleration = math.forward(movementData.rotation);
 
-            if (distanceToTarget < movementData.boidSize) acceleration = math.clamp(offset, -1f, 1f);
+            if (distanceToTarget < movementData.boidSize)
+            {
+                acceleration = math.clamp(offset, -1f, 1f);
+            }
 
-            float3 dir = acceleration * movementData.speedFactor * DeltaTime * movementData.movementSpeed +
+
+            float3 dir = acceleration * movementData.speedFactor *
+                         DeltaTime * movementData.movementSpeed +
                          movementData.avoidanceHeading * DeltaTime;
-            
-            dir = math.clamp(dir, -movementData.movementSpeed * DeltaTime, movementData.movementSpeed * DeltaTime);
 
-            movementData.nextPosition = movementData.position + dir;
+            // clamp dir to max speed
+            dir = math.clamp(dir, -movementData.movementSpeed * DeltaTime, movementData.movementSpeed * DeltaTime);
+            
+            movementData.nextPosition =
+                movementData.position + dir;
         }
         else
         {
-            float3 dir = movementData.avoidanceHeading * DeltaTime;
+            float3 dir = movementData.avoidanceHeading *
+                         DeltaTime;
             dir = math.clamp(dir, -movementData.movementSpeed * DeltaTime, movementData.movementSpeed * DeltaTime);
             movementData.nextPosition = movementData.position + dir;
         }
 
-        Boids[index] = movementData;
+        Boids[i] = movementData;
     }
 }

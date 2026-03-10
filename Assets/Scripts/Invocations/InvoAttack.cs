@@ -29,8 +29,7 @@ public class InvoAttack : MonoBehaviour
                 invos[i].player.forward * 5 + Vector3.up * 2 +
                 invos[i].player.right * (currentColIndex - (rowIndex + 1) / 2) - invos[i].player.forward * rowIndex;
             invos[i].ChangeState(invos[i].stateAttack);
-            Debug.Log(rowIndex);
-            Debug.Log(currentColIndex);
+            invos[i]._InvoInstance.direction = invos[i].player.forward;
             if (currentColIndex >= rowIndex)
             {
                 rowIndex++;
@@ -44,7 +43,7 @@ public class InvoAttack : MonoBehaviour
     }
     
 
-    IEnumerator attacksDelay(InvoBehaviour[] invos)
+    /*IEnumerator attacksDelay(InvoBehaviour[] invos)
     {
         
         for (int i = 0; i < invos.Length; i++)
@@ -80,7 +79,7 @@ public class InvoAttack : MonoBehaviour
         invoInstance.target = player.transform;
         invoInstance.acceleration = 15;
         invoInstance.maxSpeed = 5;
-    }
+    }*/
     
     
 }

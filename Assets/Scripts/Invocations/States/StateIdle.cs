@@ -16,6 +16,7 @@ public class StateIdle : IState
         owner._InvoInstance.acceleration = owner._Invo.acceleration;
         owner._InvoInstance.rb.useGravity = true;
         owner._InvoInstance.target = owner.player;
+        owner._InvoInstance.rb.isKinematic = false;
     }
 
     public override void Execute()

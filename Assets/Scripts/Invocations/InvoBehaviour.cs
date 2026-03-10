@@ -8,6 +8,7 @@ public class InvoBehaviour : MonoBehaviour
     public InvoData _Invo;
     public InvoDataInstance _InvoInstance;
     public Transform player;
+    public string st;
     
     [SerializeField] private Rigidbody rb;
 
@@ -18,7 +19,7 @@ public class InvoBehaviour : MonoBehaviour
 
     public static event Action<InvoBehaviour> OnInvoSpawn;
     
-    private void Awake()
+    private void Start()
     {
         _InvoInstance = _Invo.Instance();
         
@@ -41,28 +42,41 @@ public class InvoBehaviour : MonoBehaviour
 
     public void ChangeState(IState newState)
     {
+        StopAllCoroutines();
         if (_InvoInstance.currentState != null)
             _InvoInstance.currentState.Exit();
 
         _InvoInstance.currentState = newState;
         _InvoInstance.currentState.Enter();
+        st = _InvoInstance.currentState.ToString();
     }
 
     public void startAttackDelay()
     {
+        StopCoroutine(attackDelay());
         StartCoroutine(attackDelay());
     }
     
     IEnumerator attackDelay()
     {
         yield return new WaitForSeconds(2);
-        _InvoInstance.isMoving = false;
-        _InvoInstance.rb.useGravity = true;
-        _InvoInstance.rb.AddForce(player.transform.forward * 50, ForceMode.Impulse);
-        yield return new WaitForSeconds(2);
+        _InvoInstance.rb.isKinematic = true;
+        _InvoInstance.isMovingDirection = true;
+        
+        yield return new WaitForSeconds(1);
         ChangeState(stateIdle);
     }
-    
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Wall"))
+        {
+            if (_InvoInstance.currentState == stateAttack)
+            {
+                ChangeState(stateIdle);
+                StopCoroutine(attackDelay());
+            }
+        }
+    }
 
 }
