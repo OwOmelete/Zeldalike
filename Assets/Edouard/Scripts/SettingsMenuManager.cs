@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class SettingsMenuManager : MonoBehaviour
 {
     [SerializeField] private GameObject settingsMenuCanvas;
+    [SerializeField] private Button backFromSettingsButton;
     
-    #region Singleton
     public static SettingsMenuManager Instance;
     private void Awake()
     {
@@ -20,17 +20,20 @@ public class SettingsMenuManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
+        backFromSettingsButton.onClick.AddListener(ToggleSettings);
     }
-    #endregion
     
     
     private void OnEnable()
     {
         GlobalEvents.OnSettingsButtonPressed += ToggleSettings;
     }
+    
 
     public void ToggleSettings()
     {
+        Debug.Log($"Settings toggled {settingsMenuCanvas.activeSelf}");
         settingsMenuCanvas.SetActive(!settingsMenuCanvas.activeSelf);
     }
 }
