@@ -29,7 +29,7 @@ public class StateAttack : IState
         }
         else
         {
-            movement(owner,owner._InvoInstance.target.position + owner._InvoInstance.offset - owner.transform.position);
+            movement(owner,owner._InvoInstance.target.position + (owner._InvoInstance.target.rotation * owner._InvoInstance.offset) - owner.transform.position);
         }
 
         

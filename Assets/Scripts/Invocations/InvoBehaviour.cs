@@ -63,7 +63,7 @@ public class InvoBehaviour : MonoBehaviour
         _InvoInstance.rb.isKinematic = true;
         _InvoInstance.isMovingDirection = true;
         
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(10);
         ChangeState(stateIdle);
     }
 

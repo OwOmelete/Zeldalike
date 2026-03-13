@@ -21,7 +21,7 @@ public class StateIdle : IState
 
     public override void Execute()
     {
-        Vector3 dir = owner._InvoInstance.target.position + owner._InvoInstance.offset  - owner.transform.position;
+        Vector3 dir = owner._InvoInstance.target.position + (owner._InvoInstance.target.rotation * owner._InvoInstance.offset)  - owner.transform.position;
         dir = new Vector3(dir.x, 0, dir.z);
         
         movement(owner, dir);
