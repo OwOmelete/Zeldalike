@@ -1,11 +1,13 @@
-using System;
 using UnityEngine;
 
 public class Magnet : MonoBehaviour
 {
     [SerializeField] private float force;
+    [SerializeField] private float stopDistance;
+    [SerializeField] private float maxDistance;
     [SerializeField] private bool toggleMagnet;
 
+    
     public bool OutsideMagnetToggle
     {
         get => toggleMagnet;
@@ -14,9 +16,24 @@ public class Magnet : MonoBehaviour
     
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Automates" && toggleMagnet)
+        Rigidbody rb = other.attachedRigidbody;
+        if (rb == null) return;
+        
+        float distance = Vector3.Distance(rb.position, transform.position);
+        
+        if (other.gameObject.tag == "ActiveAutomate" && toggleMagnet)
         {
-            other.transform.position = Vector3.Lerp(other.transform.position, gameObject.transform.position, force);
+
+            if (distance >= stopDistance)
+            {
+                float normalizedDistance = Mathf.Clamp01(distance / maxDistance);
+                float pull = force * normalizedDistance * normalizedDistance;
+                
+                Vector3 direction = (transform.position - rb.position).normalized;
+
+                rb.AddForce(direction * pull, ForceMode.Acceleration);
+
+            }
         }
     }
 }
