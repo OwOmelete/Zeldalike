@@ -14,12 +14,38 @@ public class InvoAttack : MonoBehaviour
 
     private void ATK(InvoBehaviour[] invoList)
     {
-
-        StartCoroutine(attacksDelay(invoList));
+        setAttack(invoList);
+        //StartCoroutine(attacksDelay(invoList));
     }
 
-    IEnumerator attacksDelay(InvoBehaviour[] invos)
+
+    private void setAttack(InvoBehaviour[] invos)
     {
+        float rowIndex = 0;
+        float currentColIndex = 0;
+        for (int i = 0; i < invos.Length; i++)
+        {
+            invos[i]._InvoInstance.offset =
+                invos[i].player.forward * 5 + Vector3.up * 2 +
+                invos[i].player.right * (currentColIndex - (rowIndex + 1) / 2) - invos[i].player.forward * rowIndex;
+            invos[i].ChangeState(invos[i].stateAttack);
+            invos[i]._InvoInstance.direction = invos[i].player.forward;
+            if (currentColIndex >= rowIndex)
+            {
+                rowIndex++;
+                currentColIndex = 0;
+            }
+            else
+            {
+                currentColIndex++;
+            }
+        }
+    }
+    
+
+    /*IEnumerator attacksDelay(InvoBehaviour[] invos)
+    {
+        
         for (int i = 0; i < invos.Length; i++)
         {
             yield return new WaitForSeconds(0.2f);
@@ -53,7 +79,7 @@ public class InvoAttack : MonoBehaviour
         invoInstance.target = player.transform;
         invoInstance.acceleration = 15;
         invoInstance.maxSpeed = 5;
-    }
+    }*/
     
     
 }

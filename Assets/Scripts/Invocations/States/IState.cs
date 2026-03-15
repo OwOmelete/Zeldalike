@@ -1,34 +1,17 @@
 using UnityEngine;
 
-public class StateProtection : IState
+public abstract class IState
 {
     
-    private InvoBehaviour owner;
+    public abstract void Enter();
 
-    public StateProtection(InvoBehaviour owner)
-    {
-        this.owner = owner;
-    }
+    public abstract void Execute();
 
-    public void Enter()
+    public abstract void Exit();
+    
+    public void movement(InvoBehaviour owner, Vector3 dir)
     {
-        owner._InvoInstance.rb.useGravity = false;
-        owner._InvoInstance.acceleration = 60;
-    }
-
-    public void Execute()
-    {
-        movement();
-    }
-
-    public void Exit()
-    {
-        
-    }
-
-    void movement()
-    {
-        Vector3 dir = owner._InvoInstance.target.position + owner._InvoInstance.offset - owner.transform.position;
+        if (!owner._InvoInstance.isMoving) return;
         
         if (owner._InvoInstance.rb.linearVelocity.magnitude > owner._InvoInstance.maxSpeed)
         {
@@ -44,3 +27,5 @@ public class StateProtection : IState
         }
     }
 }
+
+
