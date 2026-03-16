@@ -9,6 +9,8 @@ public class InvoManager : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
     private int currentAttackID = 0;
     private int currentDeactivated = 0;
+
+    private Enemy lastEnemyLocked;
     
     
     
@@ -80,11 +82,20 @@ public class InvoManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Transform t = CharacterTargeting.FindClosestEnemy(transform.position, 10, layerMask);
+            Enemy enemy = CharacterTargeting.FindClosestEnemy(transform.position, 10, layerMask);
 
-            if (t != null)
+            if (enemy == lastEnemyLocked)
             {
-                OnLock?.Invoke(t);
+                enemy.cible.enabled = false;
+                lastEnemyLocked = null;
+            }
+            else if (enemy != null)
+            {
+                if(lastEnemyLocked != null) lastEnemyLocked.cible.enabled = false;
+                
+                enemy.cible.enabled = true;
+                lastEnemyLocked = enemy;
+                OnLock?.Invoke(enemy.transform);
             }
         }
     }
