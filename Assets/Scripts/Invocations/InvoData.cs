@@ -19,6 +19,7 @@ public class InvoDataInstance
 {
     public Vector3 offset;
     public Transform target;
+    public Transform ennemyTarget;
     public Vector3 direction;
     public Rigidbody rb;
     public float acceleration;
@@ -27,6 +28,7 @@ public class InvoDataInstance
     public IState currentState;
     public bool isMoving = true;
     public bool isMovingDirection = false;
+    public float damage;
     
     public InvoDataInstance(InvoData data)
     {

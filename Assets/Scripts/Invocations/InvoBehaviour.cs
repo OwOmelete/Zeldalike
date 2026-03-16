@@ -9,6 +9,7 @@ public class InvoBehaviour : MonoBehaviour
     public InvoDataInstance _InvoInstance;
     public Transform player;
     public string st;
+    private int attackID;
     
     [SerializeField] private Rigidbody rb;
 
@@ -18,6 +19,17 @@ public class InvoBehaviour : MonoBehaviour
     public StateDisabled stateDisabled;
 
     public static event Action<InvoBehaviour> OnInvoSpawn;
+
+    private void OnEnable()
+    {
+        InvoManager.OnLock += HandleLock;
+    }
+
+    private void OnDisable()
+    {
+        InvoManager.OnLock -= HandleLock;
+    }
+    
     
     private void Start()
     {
@@ -59,12 +71,28 @@ public class InvoBehaviour : MonoBehaviour
     
     IEnumerator attackDelay()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         _InvoInstance.rb.isKinematic = true;
         _InvoInstance.isMovingDirection = true;
+        _InvoInstance.direction = (_InvoInstance.ennemyTarget.position - transform.position).normalized;
         
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(3);
         ChangeState(stateIdle);
+    }
+    
+    public void SetAttackID(int id)
+    {
+        attackID = id;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Enemy enemy = collision.collider.GetComponent<Enemy>();
+
+        if (enemy != null)
+        {
+            enemy.TakeDamage(_InvoInstance.damage, attackID);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -77,6 +105,12 @@ public class InvoBehaviour : MonoBehaviour
                 StopCoroutine(attackDelay());
             }
         }
+    }
+    
+    private void HandleLock(Transform transform)
+    {
+        _InvoInstance.ennemyTarget = transform;
+        Debug.Log("ennemylocked");
     }
 
 }

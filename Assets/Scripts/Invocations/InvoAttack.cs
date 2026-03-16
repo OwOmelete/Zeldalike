@@ -26,10 +26,10 @@ public class InvoAttack : MonoBehaviour
         for (int i = 0; i < invos.Length; i++)
         {
             invos[i]._InvoInstance.offset =
-                invos[i].player.forward * 5 + Vector3.up * 2 +
-                invos[i].player.right * (currentColIndex - (rowIndex + 1) / 2) - invos[i].player.forward * rowIndex;
+                Vector3.forward * 5 + Vector3.up * 2 +
+                Vector3.right * (0.7f * (currentColIndex - (rowIndex) / 2)) - Vector3.forward * rowIndex - Vector3.forward * (0.5f * Mathf.Abs(rowIndex/2 - currentColIndex));
+            invos[i]._InvoInstance.damage = invos.Length;
             invos[i].ChangeState(invos[i].stateAttack);
-            invos[i]._InvoInstance.direction = invos[i].player.forward;
             if (currentColIndex >= rowIndex)
             {
                 rowIndex++;

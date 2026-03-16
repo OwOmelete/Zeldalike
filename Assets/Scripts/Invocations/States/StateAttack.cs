@@ -17,6 +17,9 @@ public class StateAttack : IState
         owner.startAttackDelay();
         owner._InvoInstance.direction = Vector3.zero;
         owner._InvoInstance.isMovingDirection = false;
+        owner.transform.position = owner._InvoInstance.target.position +
+            ((Quaternion.FromToRotation(Vector3.forward, owner._InvoInstance.ennemyTarget.position - owner._InvoInstance.target.position)
+              * owner._InvoInstance.offset));
 
     }
 
@@ -29,10 +32,10 @@ public class StateAttack : IState
         }
         else
         {
-            movement(owner,owner._InvoInstance.target.position + (owner._InvoInstance.target.rotation * owner._InvoInstance.offset) - owner.transform.position);
+            movement(owner,owner._InvoInstance.target.position + 
+                (Quaternion.FromToRotation(Vector3.forward, owner._InvoInstance.ennemyTarget.position - owner._InvoInstance.target.position)
+                 * owner._InvoInstance.offset) - owner.transform.position);
         }
-
-        
     }
 
     public override void Exit()
