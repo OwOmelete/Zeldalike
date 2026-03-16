@@ -1,37 +1,32 @@
-using System;
 using UnityEngine;
 
-public class RailMover : MonoBehaviour
-{
+public class RailMover : MonoBehaviour {
+
     public Rail rail;
     public Transform lookAt;
-    public bool smoothMove = true;
-    public float moveSpeed = 5.0f;
+    public bool smothMove = true;
+    public float moveSpeed;
 
     private Transform thisTransform;
     private Vector3 lastPosition;
+    void Start () {
 
-    private void Start()
-    {
         thisTransform = transform;
-        lastPosition = thisTransform.position;
     }
-
-
-    private void Update()
+ 
+ 
+    void Update ()
     {
-        if (smoothMove)
+        if (smothMove)
         {
-            lastPosition = Vector3.Lerp(lastPosition, rail.PositionOnRail(lookAt.position),moveSpeed * Time.deltaTime);
+            lastPosition = Vector3.Lerp(lastPosition, rail.ProjectPositionOnRail(lookAt.position), Time.deltaTime * moveSpeed);
             thisTransform.position = lastPosition;
         }
         else
         {
-            thisTransform.position = rail.PositionOnRail(lookAt.position);
+            thisTransform.position = rail.ProjectPositionOnRail(lookAt.position);
         }
-        
-        thisTransform.position = rail.PositionOnRail(lookAt.position);
-        
+        //thisTransform.position = rail.ProjectOnSegment(Vector3.zero, Vector3.forward * 20, lookAt.position);
         thisTransform.LookAt(lookAt.position);
     }
 }

@@ -28,7 +28,7 @@ public class Rail : MonoBehaviour
         }
     }
 
-    public Vector3 PositionOnRail(Vector3 pos)
+    public Vector3 ProjectPositionOnRail(Vector3 pos)
     {
         int closestNodeIndex = GetClosestNode(pos);
 
