@@ -16,11 +16,12 @@ public class StateIdle : IState
         owner._InvoInstance.acceleration = owner._Invo.acceleration;
         owner._InvoInstance.rb.useGravity = true;
         owner._InvoInstance.target = owner.player;
+        owner._InvoInstance.rb.isKinematic = false;
     }
 
     public override void Execute()
     {
-        Vector3 dir = owner._InvoInstance.target.position + owner._InvoInstance.offset  - owner.transform.position;
+        Vector3 dir = owner._InvoInstance.target.position + (owner._InvoInstance.target.rotation * owner._InvoInstance.offset)  - owner.transform.position;
         dir = new Vector3(dir.x, 0, dir.z);
         
         movement(owner, dir);

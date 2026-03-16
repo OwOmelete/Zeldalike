@@ -1,30 +1,13 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-
-[System.Serializable]
-public struct UnitBoidData
-{
-    public int id;
-    public float3 position;
-    public float speedFactor;
-    public float predictedSpeedFactor;
-    public float3 avoidanceHeading;
-    public float3 target;
-    public bool hasTarget;
-    public float3 nextPosition;
-    public float movementSpeed;
-    public float rotationalSpeed;
-    public float boidSize;
-    public quaternion rotation;
-}
-
 public class Unit : MonoBehaviour
 {
+    public UnitBoidData boidData = new UnitBoidData();
     public static int IDCounter = 0;
-
-    public UnitBoidData boidData;
-
     private void Awake()
     {
         boidData.id = IDCounter++;
@@ -35,26 +18,28 @@ public class Unit : MonoBehaviour
         boidData.position = transform.position;
         boidData.rotation = transform.rotation;
     }
-
-    public void ApplyBoidData(UnitBoidData newData)
+    
+    public void ApplyBoidData (UnitBoidData data)
     {
-        transform.position = newData.nextPosition;
-        transform.rotation = newData.rotation;
-        boidData.speedFactor = newData.speedFactor;
-        boidData.avoidanceHeading = newData.avoidanceHeading;
-        boidData.predictedSpeedFactor = newData.predictedSpeedFactor;
+        transform.position = data.nextPosition;
+        transform.rotation = data.rotation;
+        boidData.speedFactor = data.speedFactor;
+        boidData.avoidanceHeading = data.avoidanceHeading;
+        boidData.predictedSpeedFactor = data.predictedSpeedFactor;
         boidData.position = transform.position;
         boidData.rotation = transform.rotation;
+        
     }
-
+    
     public void MoveTo(float x, float y)
     {
         boidData.target = new float3(x, 0f, y);
         boidData.hasTarget = true;
     }
-
+    
     public void Stop()
     {
         boidData.hasTarget = false;
     }
+    
 }

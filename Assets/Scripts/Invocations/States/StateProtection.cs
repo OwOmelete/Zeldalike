@@ -14,6 +14,8 @@ public class StateProtection : IState
     {
         owner._InvoInstance.rb.useGravity = false;
         owner._InvoInstance.acceleration = 60;
+        owner.transform.position =
+            owner._InvoInstance.target.position + owner._InvoInstance.offset;
     }
 
     public override void Execute()
@@ -23,7 +25,7 @@ public class StateProtection : IState
 
     public override void Exit()
     {
-        
+        owner._InvoInstance.acceleration = 15;
     }
 
     
