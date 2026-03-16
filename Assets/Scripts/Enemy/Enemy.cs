@@ -11,8 +11,7 @@ public class Enemy : MonoBehaviour
             return;
 
         receivedAttacks.Add(attackID);
-
-        // appliquer les dégâts
+        
         Debug.Log("Enemy took damage: " + damage);
     }
 }

@@ -19,6 +19,7 @@ public class InvoBehaviour : MonoBehaviour
     public StateDisabled stateDisabled;
 
     public static event Action<InvoBehaviour> OnInvoSpawn;
+    public static event Action<bool> OnInvoActivate;
 
     private void OnEnable()
     {
@@ -29,7 +30,18 @@ public class InvoBehaviour : MonoBehaviour
     {
         InvoManager.OnLock -= HandleLock;
     }
-    
+
+    public void InvoActivate()
+    {
+        _InvoInstance.isActivated = true;
+        OnInvoActivate?.Invoke(true);
+    }
+
+    public void InvoDeactivate()
+    {
+        _InvoInstance.isActivated = false;
+        OnInvoActivate?.Invoke(false);
+    }
     
     private void Start()
     {
@@ -69,48 +81,70 @@ public class InvoBehaviour : MonoBehaviour
         StartCoroutine(attackDelay());
     }
     
-    IEnumerator attackDelay()
-    {
-        yield return new WaitForSeconds(5);
-        _InvoInstance.rb.isKinematic = true;
-        _InvoInstance.isMovingDirection = true;
-        _InvoInstance.direction = (_InvoInstance.ennemyTarget.position - transform.position).normalized;
-        
-        yield return new WaitForSeconds(3);
-        ChangeState(stateIdle);
-    }
     
     public void SetAttackID(int id)
     {
         attackID = id;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Enemy enemy = collision.collider.GetComponent<Enemy>();
-
-        if (enemy != null)
-        {
-            enemy.TakeDamage(_InvoInstance.damage, attackID);
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            Enemy enemy = other.GetComponent<Enemy>();
+
+            if (enemy != null)
+            {
+                enemy.TakeDamage(_InvoInstance.damage, attackID);
+                ChangeState(stateDisabled);
+            }
+        }
         if (other.gameObject.CompareTag("Wall"))
         {
             if (_InvoInstance.currentState == stateAttack)
             {
-                ChangeState(stateIdle);
+                ChangeState(stateDisabled);
                 StopCoroutine(attackDelay());
             }
         }
+        if (other.gameObject.CompareTag("Player"))
+        {
+            if (_InvoInstance.currentState == stateDisabled)
+            {
+                ChangeState(stateIdle);
+            }
+        }
+
     }
     
     private void HandleLock(Transform transform)
     {
         _InvoInstance.ennemyTarget = transform;
-        Debug.Log("ennemylocked");
+    }
+    
+    #region coroutines
+    IEnumerator attackDelay()
+    {
+        yield return new WaitForSeconds(2);
+        _InvoInstance.rb.isKinematic = true;
+        _InvoInstance.isMovingDirection = true;
+        _InvoInstance.direction = (_InvoInstance.ennemyTarget.position - transform.position).normalized;
+        
+        yield return new WaitForSeconds(3);
+        ChangeState(stateDisabled);
     }
 
+    public void startReactivationDelay()
+    {
+        StartCoroutine(reactivationDelay());
+    }
+    
+    IEnumerator reactivationDelay()
+    {
+        yield return new WaitForSeconds(2);
+        ChangeState(stateIdle);
+    }
+
+    #endregion
+    
 }

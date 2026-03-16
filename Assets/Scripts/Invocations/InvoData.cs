@@ -29,6 +29,7 @@ public class InvoDataInstance
     public bool isMoving = true;
     public bool isMovingDirection = false;
     public float damage;
+    public bool isActivated = true;
     
     public InvoDataInstance(InvoData data)
     {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InvoAttack : MonoBehaviour
@@ -12,23 +13,23 @@ public class InvoAttack : MonoBehaviour
         InvoManager.OnAttack += ATK;
     }
 
-    private void ATK(InvoBehaviour[] invoList)
+    private void ATK(List<InvoBehaviour> invoList)
     {
         setAttack(invoList);
         //StartCoroutine(attacksDelay(invoList));
     }
 
 
-    private void setAttack(InvoBehaviour[] invos)
+    private void setAttack(List<InvoBehaviour> invos)
     {
         float rowIndex = 0;
         float currentColIndex = 0;
-        for (int i = 0; i < invos.Length; i++)
+        for (int i = 0; i < invos.Count; i++)
         {
             invos[i]._InvoInstance.offset =
                 Vector3.forward * 5 + Vector3.up * 2 +
                 Vector3.right * (0.7f * (currentColIndex - (rowIndex) / 2)) - Vector3.forward * rowIndex - Vector3.forward * (0.5f * Mathf.Abs(rowIndex/2 - currentColIndex));
-            invos[i]._InvoInstance.damage = invos.Length;
+            invos[i]._InvoInstance.damage = invos.Count;
             invos[i].ChangeState(invos[i].stateAttack);
             if (currentColIndex >= rowIndex)
             {

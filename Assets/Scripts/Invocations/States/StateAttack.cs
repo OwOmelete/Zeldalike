@@ -40,6 +40,7 @@ public class StateAttack : IState
 
     public override void Exit()
     {
+        owner._InvoInstance.rb.MovePosition(owner.transform.position);
         owner._InvoInstance.direction = Vector3.zero;
         owner._InvoInstance.isMovingDirection = false;
         owner._InvoInstance.rb.isKinematic = false;

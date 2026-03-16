@@ -8,10 +8,11 @@ public class InvoManager : MonoBehaviour
     public InvoAttack InvoAttack;
     [SerializeField] private LayerMask layerMask;
     private int currentAttackID = 0;
+    private int currentDeactivated = 0;
     
     
     
-    public static event Action<InvoBehaviour[]> OnAttack;
+    public static event Action<List<InvoBehaviour>> OnAttack;
     
     public static event Action<Transform> OnLock;
     
@@ -20,11 +21,13 @@ public class InvoManager : MonoBehaviour
     private void OnEnable()
     {
         InvoBehaviour.OnInvoSpawn += AddInvocation;
+        InvoBehaviour.OnInvoActivate += removeInvo;
     }
 
     private void OnDisable()
     {
         InvoBehaviour.OnInvoSpawn -= AddInvocation;
+        InvoBehaviour.OnInvoActivate -= removeInvo;
     }
 
     private void AddInvocation(InvoBehaviour instance)
@@ -32,11 +35,24 @@ public class InvoManager : MonoBehaviour
         InvoList.Add(instance);
     }
 
+    private void removeInvo(bool b)
+    {
+        if (!b)
+        {
+            currentDeactivated++;
+        }
+        else
+        {
+            currentDeactivated--;
+        }
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            InvoBehaviour[] invos = GetClosest(10);
+            Debug.Log(currentDeactivated);
+            List<InvoBehaviour> invos = GetClosest((int)((InvoList.Count-currentDeactivated)/2));
 
             int attackID = GetNewAttackID();
 
@@ -52,11 +68,9 @@ public class InvoManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             Transform t = CharacterTargeting.FindClosestEnemy(transform.position, 10, layerMask);
-            Debug.Log("helo");
 
             if (t != null)
             {
-                Debug.Log("helo");
                 OnLock?.Invoke(t);
             }
         }
@@ -72,32 +86,29 @@ public class InvoManager : MonoBehaviour
     
     
 
-    private InvoBehaviour[] GetClosest(int n)
+    private List<InvoBehaviour> GetClosest(int n)
     {
-        InvoBehaviour[] result = new InvoBehaviour[n];
-        
-        int found = 0;
-        
-        float[] distances = new float[n];
+        List<InvoBehaviour> result = new();
+        List<float> distances = new();
 
         for (int i = 0; i < InvoList.Count; i++)
         {
-            GameObject invo = InvoList[i].gameObject;
+            if (!InvoList[i]._InvoInstance.isActivated)
+                continue;
 
-            float dist = (invo.transform.position - transform.position).sqrMagnitude;
+            float dist = (InvoList[i].transform.position - transform.position).sqrMagnitude;
 
-            if (found < n)
+            if (result.Count < n)
             {
-                result[found] = InvoList[i];
-                distances[found] = dist;
-                found++;
+                result.Add(InvoList[i]);
+                distances.Add(dist);
             }
             else
             {
                 int maxIndex = 0;
                 float maxDist = distances[0];
 
-                for (int j = 1; j < found; j++)
+                for (int j = 1; j < distances.Count; j++)
                 {
                     if (distances[j] > maxDist)
                     {
@@ -113,6 +124,7 @@ public class InvoManager : MonoBehaviour
                 }
             }
         }
+
         return result;
     }
     
