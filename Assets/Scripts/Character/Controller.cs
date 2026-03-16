@@ -18,6 +18,7 @@ public class Controller : MonoBehaviour
         InputDirection = value.Get<Vector2>();
         InputDirection = new Vector3(InputDirection.x, 0, InputDirection.y);
         InputDirection = cam.rotation * InputDirection;
+        InputDirection = new Vector3(InputDirection.x, 0, InputDirection.z);
     }
 
     private void OnAttack(InputValue value)
@@ -46,11 +47,20 @@ public class Controller : MonoBehaviour
             Vector3 force = Maths.OrthogonalProjection(
                 InputDirection.normalized * acceleration,
                 rb.linearVelocity.normalized * maxSpeed);
-            rb.AddForce(force);
+            float m = force.magnitude;
+            Vector3 finalForce = new Vector3(force.x, 0, force.z).normalized;
+            
+            rb.AddForce(finalForce*m);
         }
         else
         {
-            rb.AddForce(InputDirection.normalized * acceleration);
+            Vector3 force = InputDirection.normalized * acceleration;
+            
+            float m = force.magnitude;
+            Vector3 finalForce = new Vector3(force.x, 0, force.z).normalized;
+
+            
+            rb.AddForce(finalForce*m);
         }
     }
 }

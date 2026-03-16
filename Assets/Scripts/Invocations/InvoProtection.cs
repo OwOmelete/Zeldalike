@@ -4,31 +4,36 @@ using UnityEngine;
 
 public class InvoProtection : MonoBehaviour
 {
-    [SerializeField] private InvoBehaviour[] _invoBehaviours;
     [SerializeField] private GameObject reference;
 
     private bool isProtecting = false;
 
-    private void Update()
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if(!isProtecting) NewTarget(25);
-            else
-            {
-                foreach (var invo in _invoBehaviours)
-                {
-                    invo.ChangeState(invo.stateIdle);
-                }
+        InvoManager.OnProtection += protect;
+    }
 
-                isProtecting = false;
+    
+    private void OnDisable()
+    {
+        InvoManager.OnProtection -= protect;
+    }
+
+    void protect(List<InvoBehaviour> invos)
+    {
+        if(!isProtecting) NewTarget(25, invos);
+        else
+        {
+            foreach (var invo in invos)
+            {
+                invo.ChangeState(invo.stateIdle);
             }
-            
-            
+
+            isProtecting = false;
         }
     }
 
-    void NewTarget(float angle)
+    void NewTarget(float angle, List<InvoBehaviour> invos)
     {
 
         isProtecting = true;
@@ -51,7 +56,7 @@ public class InvoProtection : MonoBehaviour
         int currentIndex = 0;
         int lastIndex = 0;
         
-        for (int i = 0; i < _invoBehaviours.Length; i++)
+        for (int i = 0; i < invos.Count; i++)
         {
             /*Debug.Log(n * _invoBehaviours.Length / circList[currentIndex]);
             Debug.Log(n);
@@ -64,13 +69,13 @@ public class InvoProtection : MonoBehaviour
             
 
             Vector3 offset = Maths.coordsCircleInSphere(-angle * circList.Count / circList.Count * currentIndex,
-                360 /  (_invoBehaviours.Length * circList[currentIndex] / n) * (i - lastIndex)) * 3;
+                360 /  (invos.Count * circList[currentIndex] / n) * (i - lastIndex)) * 3;
             
-            _invoBehaviours[i].ChangeState(_invoBehaviours[i].stateProtection);
-            _invoBehaviours[i]._InvoInstance.offset = offset;
+            invos[i].ChangeState(invos[i].stateProtection);
+            invos[i]._InvoInstance.offset = offset;
             
             
-            if (i - lastIndex > _invoBehaviours.Length * circList[currentIndex] / n)
+            if (i - lastIndex > invos.Count * circList[currentIndex] / n)
             {
                 currentIndex++;
                 lastIndex = i;

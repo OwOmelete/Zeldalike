@@ -13,6 +13,11 @@ public class InvoAttack : MonoBehaviour
         InvoManager.OnAttack += ATK;
     }
 
+    private void OnDisable()
+    {
+        InvoManager.OnAttack -= ATK;
+    }
+
     private void ATK(List<InvoBehaviour> invoList)
     {
         setAttack(invoList);

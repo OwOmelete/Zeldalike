@@ -13,6 +13,7 @@ public class InvoManager : MonoBehaviour
     
     
     public static event Action<List<InvoBehaviour>> OnAttack;
+    public static event Action<List<InvoBehaviour>> OnProtection;
     
     public static event Action<Transform> OnLock;
     
@@ -63,6 +64,18 @@ public class InvoManager : MonoBehaviour
             }
 
             OnAttack?.Invoke(invos);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            List<InvoBehaviour> l = new();
+            foreach (var invo in InvoList)
+            {
+                if (invo._InvoInstance.isActivated)
+                {
+                    l.Add(invo);
+                }
+            }
+            OnProtection?.Invoke(l);
         }
 
         if (Input.GetKeyDown(KeyCode.E))
