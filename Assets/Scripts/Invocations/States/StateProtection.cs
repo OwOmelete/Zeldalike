@@ -25,6 +25,7 @@ public class StateProtection : IState
 
     public override void Exit()
     {
+        owner._InvoInstance.rb.useGravity = true;
         owner._InvoInstance.acceleration = 15;
     }
 
