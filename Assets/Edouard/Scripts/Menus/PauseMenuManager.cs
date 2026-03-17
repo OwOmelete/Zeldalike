@@ -41,5 +41,8 @@ public class PauseMenuManager : MonoBehaviour
     void TogglePauseMenu()
     {
         pauseMenuCanvas.SetActive(!pauseMenuCanvas.activeSelf);
+        Debug.Log($"IsPaused: {pauseMenuCanvas.activeSelf}");
+        if (pauseMenuCanvas.activeSelf){Time.timeScale = 1;}
+        else{Time.timeScale = 0;}
     }
 }
