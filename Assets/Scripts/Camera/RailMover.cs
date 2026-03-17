@@ -6,6 +6,8 @@ public class RailMover : MonoBehaviour {
     public Transform lookAt;
     public bool smothMove = true;
     public float moveSpeed;
+    public int maxRotation;
+    public int minRotation;
 
     private Transform thisTransform;
     private Vector3 lastPosition;
@@ -28,5 +30,8 @@ public class RailMover : MonoBehaviour {
         }
         //thisTransform.position = rail.ProjectOnSegment(Vector3.zero, Vector3.forward * 20, lookAt.position);
         thisTransform.LookAt(lookAt.position);
+        Vector3 rot = new Vector3(Mathf.Clamp(transform.rotation.eulerAngles.x, -minRotation, maxRotation) ,transform.rotation.eulerAngles.y,transform.rotation.eulerAngles.z);
+
+        transform.rotation = Quaternion.Euler(rot);
     }
 }
