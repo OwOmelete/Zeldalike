@@ -4,7 +4,8 @@ using UnityEngine.UI;
 public class PauseMenuManager : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenuCanvas;
-    [SerializeField] private Button settingsButton;
+    [SerializeField] private Button toSettingsButton;
+    [SerializeField] private Button toMainMenuButton;
     
     public static PauseMenuManager Instance;
     private void Awake()
@@ -19,11 +20,15 @@ public class PauseMenuManager : MonoBehaviour
             Destroy(gameObject);
         }
         
-        settingsButton.onClick.AddListener(() =>
+        toSettingsButton.onClick.AddListener(() =>
         {
             Debug.Log("Settings Button Pressed");
             GlobalEvents.ButtonPressed();
             GlobalEvents.SettingsButtonPressed();
+        });
+        toMainMenuButton.onClick.AddListener(() =>
+        {
+            Debug.Log("Main Menu Button Pressed");
         });
 
     }
