@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,12 +38,18 @@ public class PauseMenuManager : MonoBehaviour
     {
         GlobalEvents.OnPauseButtonPressed += TogglePauseMenu;
     }
-    
+
+    private void OnDisable()
+    {
+        GlobalEvents.OnPauseButtonPressed -= TogglePauseMenu;
+    }
+
     void TogglePauseMenu()
     {
         pauseMenuCanvas.SetActive(!pauseMenuCanvas.activeSelf);
         Debug.Log($"IsPaused: {pauseMenuCanvas.activeSelf}");
-        if (pauseMenuCanvas.activeSelf){Time.timeScale = 1;}
-        else{Time.timeScale = 0;}
+        if (pauseMenuCanvas.activeSelf){Time.timeScale = 0;}
+        else {Time.timeScale = 1;}
+        Debug.Log($"TimeScale: {Time.timeScale}");
     }
 }
