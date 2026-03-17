@@ -51,6 +51,6 @@ public class StateDisabled : IState
     void addDispersion()
     {
         Vector3 dir = Quaternion.Euler(Random.Range(0, 45), Random.Range(0, 360), 0) * Vector3.up;
-        owner._InvoInstance.rb.AddForce(dir * 3, ForceMode.Impulse);
+        owner._InvoInstance.rb.AddForce(dir * 5, ForceMode.Impulse);
     }
 }

@@ -18,6 +18,7 @@ public class InvoManager : MonoBehaviour
     public static event Action<List<InvoBehaviour>> OnProtection;
     
     public static event Action<Transform> OnLock;
+    public static event Action<Transform> OnDelock;
     
     
 
@@ -84,10 +85,15 @@ public class InvoManager : MonoBehaviour
         {
             Enemy enemy = CharacterTargeting.FindClosestEnemy(transform.position, 10, layerMask);
 
-            if (enemy == lastEnemyLocked)
+            if (!enemy)
+            {
+                
+            }
+            else if (enemy == lastEnemyLocked)
             {
                 enemy.cible.enabled = false;
                 lastEnemyLocked = null;
+                OnDelock?.Invoke(enemy.transform);
             }
             else if (enemy != null)
             {

@@ -24,11 +24,13 @@ public class InvoBehaviour : MonoBehaviour
     private void OnEnable()
     {
         InvoManager.OnLock += HandleLock;
+        InvoManager.OnDelock += HandleDelock;
     }
 
     private void OnDisable()
     {
         InvoManager.OnLock -= HandleLock;
+        InvoManager.OnDelock -= HandleDelock;
     }
 
     public void InvoActivate()
@@ -93,7 +95,7 @@ public class InvoBehaviour : MonoBehaviour
         {
             Enemy enemy = other.GetComponent<Enemy>();
 
-            if (enemy != null)
+            if (enemy != null && _InvoInstance.currentState == stateAttack)
             {
                 enemy.TakeDamage(_InvoInstance.damage, attackID);
                 ChangeState(stateDisabled);
@@ -121,6 +123,11 @@ public class InvoBehaviour : MonoBehaviour
     {
         _InvoInstance.ennemyTarget = transform;
     }
+
+    private void HandleDelock(Transform t)
+    {
+        _InvoInstance.ennemyTarget = null;
+    }
     
     #region coroutines
     IEnumerator attackDelay()
@@ -128,7 +135,15 @@ public class InvoBehaviour : MonoBehaviour
         yield return new WaitForSeconds(2);
         _InvoInstance.rb.isKinematic = true;
         _InvoInstance.isMovingDirection = true;
-        _InvoInstance.direction = (_InvoInstance.ennemyTarget.position - transform.position).normalized;
+        if (_InvoInstance.ennemyTarget == null)
+        {
+            _InvoInstance.direction = player.forward;
+        }
+        else
+        {
+            _InvoInstance.direction = (_InvoInstance.ennemyTarget.position - transform.position).normalized;
+        }
+        
         
         yield return new WaitForSeconds(3);
         ChangeState(stateDisabled);

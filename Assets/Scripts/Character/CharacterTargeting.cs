@@ -8,6 +8,11 @@ public class CharacterTargeting
     {
         Collider[] hits = Physics.OverlapSphere(pos, radius, layerMask);
 
+        if (hits.Length == 0)
+        {
+            return null;
+        }
+
         Enemy closestTarget = null;
         GameObject go = null;
         float bestDistance = math.INFINITY;
