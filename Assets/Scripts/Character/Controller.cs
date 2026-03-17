@@ -30,6 +30,7 @@ public class Controller : MonoBehaviour
     {
         Movement();
     }
+    
 
     void Movement()
     {

@@ -6,13 +6,21 @@ public class InvoSource : MonoBehaviour
     private bool canInteract;
     [SerializeField] private Collider col;
     [SerializeField] private GameObject go;
-    
-    private void Update()
+
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.R) && canInteract)
-        {
-            releaseInvos();
-        }
+        InvoManager.FireWaveAction += Interact;
+    }
+
+    private void OnDisable()
+    {
+        InvoManager.FireWaveAction -= Interact;
+    }
+    
+
+    private void Interact()
+    {
+        if(canInteract) releaseInvos();
     }
 
     private void releaseInvos()
