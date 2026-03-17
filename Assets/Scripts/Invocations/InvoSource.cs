@@ -5,6 +5,7 @@ public class InvoSource : MonoBehaviour
 {
     private bool canInteract;
     [SerializeField] private Collider col;
+    [SerializeField] private GameObject go;
     
     private void Update()
     {
@@ -26,6 +27,7 @@ public class InvoSource : MonoBehaviour
             t.gameObject.SetActive(true);
             t.SetParent(null);
         }
+        Destroy(go);
     }
     
     private void OnTriggerEnter(Collider other)
