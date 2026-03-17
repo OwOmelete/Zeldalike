@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InvoManager : MonoBehaviour
 {
@@ -9,12 +10,18 @@ public class InvoManager : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
     private int currentAttackID = 0;
     private int currentDeactivated = 0;
+
+    private Enemy lastEnemyLocked;
     
     
     
-    public static event Action<List<InvoBehaviour>> OnAttack;
+    public static event Action<List<InvoBehaviour>> OnAttackAction;
+    public static event Action<List<InvoBehaviour>> OnProtection;
     
     public static event Action<Transform> OnLock;
+    public static event Action<Transform> OnDelock;
+
+    public static event Action FireWaveAction;
     
     
 
@@ -46,36 +53,65 @@ public class InvoManager : MonoBehaviour
             currentDeactivated--;
         }
     }
-
-    private void Update()
+    
+    private void OnShield(InputValue value)
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        List<InvoBehaviour> l = new();
+        foreach (var invo in InvoList)
         {
-            Debug.Log(currentDeactivated);
-            List<InvoBehaviour> invos = GetClosest((int)((InvoList.Count-currentDeactivated)/2));
-
-            int attackID = GetNewAttackID();
-
-            foreach (var invo in invos)
+            if (invo._InvoInstance.isActivated)
             {
-                if (invo != null)
-                    invo.SetAttackID(attackID);
+                l.Add(invo);
             }
+        }
+        OnProtection?.Invoke(l);
+    }
 
-            OnAttack?.Invoke(invos);
+    private void OnAttack()
+    {
+        Debug.Log(currentDeactivated);
+        List<InvoBehaviour> invos = GetClosest((int)((InvoList.Count-currentDeactivated)/2));
+
+        int attackID = GetNewAttackID();
+
+        foreach (var invo in invos)
+        {
+            if (invo != null)
+                invo.SetAttackID(attackID);
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Transform t = CharacterTargeting.FindClosestEnemy(transform.position, 10, layerMask);
+        OnAttackAction?.Invoke(invos);
+    }
 
-            if (t != null)
-            {
-                OnLock?.Invoke(t);
-            }
+    private void OnLockEnemy()
+    {
+        Enemy enemy = CharacterTargeting.FindClosestEnemy(transform.position, 10, layerMask);
+
+        if (!enemy)
+        {
+                
+        }
+        else if (enemy == lastEnemyLocked)
+        {
+            enemy.cible.enabled = false;
+            lastEnemyLocked = null;
+            OnDelock?.Invoke(enemy.transform);
+        }
+        else if (enemy != null)
+        {
+            if(lastEnemyLocked != null) lastEnemyLocked.cible.enabled = false;
+                
+            enemy.cible.enabled = true;
+            lastEnemyLocked = enemy;
+            OnLock?.Invoke(enemy.transform);
         }
     }
 
+    private void OnFireWave()
+    {
+        FireWaveAction?.Invoke();
+    }
+    
     public int GetNewAttackID()
     {
         currentAttackID++;

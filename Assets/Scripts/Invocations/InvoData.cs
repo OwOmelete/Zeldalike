@@ -19,7 +19,7 @@ public class InvoDataInstance
 {
     public Vector3 offset;
     public Transform target;
-    public Transform ennemyTarget;
+    public Transform ennemyTarget = null;
     public Vector3 direction;
     public Rigidbody rb;
     public float acceleration;

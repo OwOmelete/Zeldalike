@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class CharacterTargeting
 {
-    public static Transform FindClosestEnemy(Vector3 pos, int radius, int layerMask)
+    public static Enemy FindClosestEnemy(Vector3 pos, int radius, int layerMask)
     {
         Collider[] hits = Physics.OverlapSphere(pos, radius, layerMask);
 
-        Transform closestTarget = null;
+        if (hits.Length == 0)
+        {
+            return null;
+        }
+
+        Enemy closestTarget = null;
+        GameObject go = null;
         float bestDistance = math.INFINITY;
 
         foreach (Collider col in hits)
@@ -19,10 +25,12 @@ public class CharacterTargeting
             if (dist < bestDistance)
             {
                 bestDistance = dist;
-                closestTarget = col.transform;
+                go = col.gameObject;
             }
         }
 
+        closestTarget = go.GetComponent<Enemy>();
+        
         return closestTarget;
     }
 }
