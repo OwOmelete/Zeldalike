@@ -10,12 +10,12 @@ public class InvoAttack : MonoBehaviour
 
     private void OnEnable()
     {
-        InvoManager.OnAttack += ATK;
+        InvoManager.OnAttackAction += ATK;
     }
 
     private void OnDisable()
     {
-        InvoManager.OnAttack -= ATK;
+        InvoManager.OnAttackAction -= ATK;
     }
 
     private void ATK(List<InvoBehaviour> invoList)
