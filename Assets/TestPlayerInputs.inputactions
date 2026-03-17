@@ -3,13 +3,13 @@
     "name": "TestPlayerInputs",
     "maps": [
         {
-            "name": "YES",
-            "id": "6aa5cf8b-bf9e-4261-8c01-131f762a47e9",
+            "name": "TestPlayer",
+            "id": "e6dc1082-4ee2-411f-a314-cc865e96d6af",
             "actions": [
                 {
-                    "name": "OpenSettings",
+                    "name": "PauseMenu",
                     "type": "Button",
-                    "id": "85422714-12f1-4f29-9427-f2af3b1a49ec",
+                    "id": "b1b44165-41a9-45aa-b81b-b0512bca28fb",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -19,12 +19,23 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "7651e8cc-571c-49b1-bd76-da8594283274",
-                    "path": "<Keyboard>/space",
+                    "id": "45d299f8-a553-4fa0-a8ac-c2696ec8cd5f",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "067aa4c1-1569-4422-b374-7f108e80f5fd",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "OpenSettings",
+                    "action": "PauseMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

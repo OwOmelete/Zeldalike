@@ -16,4 +16,11 @@ public static class GlobalEvents
     {
         OnSettingsButtonPressed?.Invoke();
     }
+    
+    public static event Action OnPauseButtonPressed;
+
+    public static void PauseButtonPressed()
+    {
+        OnPauseButtonPressed?.Invoke();
+    }
 }
