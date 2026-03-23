@@ -19,10 +19,10 @@ public class CharacterDirection : MonoBehaviour
 
     private int angleToInt(float angle)
     {
-        angle -= 45/2;
+        angle -= 360/spriteList.Length/2;
         if (angle < 0) angle += 360;
 
-        return Mathf.FloorToInt(angle / 45);
+        return Mathf.FloorToInt(angle / 360 / spriteList.Length);
 
     }
 
