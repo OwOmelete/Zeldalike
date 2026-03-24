@@ -6,9 +6,16 @@ public class CamFollow : MonoBehaviour
     [SerializeField] private GameObject followed;
     [SerializeField] private float lerpAmount;
     private Vector3 pos;
+
+    private void Start()
+    {
+        pos = followed.transform.position - transform.position;
+    }
     
+    
+
     private void LateUpdate()
     {
-        transform.position = Vector3.Lerp(transform.position, followed.transform.position, lerpAmount);
+        transform.position = Vector3.Lerp(transform.position, followed.transform.position - pos, lerpAmount);
     }
 }

@@ -31,10 +31,10 @@ public class InvoAttack : MonoBehaviour
         float currentColIndex = 0;
         for (int i = 0; i < invos.Count; i++)
         {
-            invos[i]._InvoInstance.offset =
+            invos[i].Data.offset =
                 Vector3.forward * 5 + Vector3.up * 2 +
                 Vector3.right * (0.7f * (currentColIndex - (rowIndex) / 2)) - Vector3.forward * rowIndex - Vector3.forward * (0.5f * Mathf.Abs(rowIndex/2 - currentColIndex));
-            invos[i]._InvoInstance.damage = invos.Count;
+            invos[i].Data.damage = invos.Count;
             invos[i].ChangeState(invos[i].stateAttack);
             if (currentColIndex >= rowIndex)
             {

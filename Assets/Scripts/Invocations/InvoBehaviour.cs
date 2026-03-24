@@ -6,7 +6,7 @@ using UnityEngine;
 public class InvoBehaviour : MonoBehaviour
 {
     public InvoData _Invo;
-    public InvoDataInstance _InvoInstance;
+    public InvoDataInstance Data;
     public Transform player;
     public string st;
     private int attackID;
@@ -35,23 +35,23 @@ public class InvoBehaviour : MonoBehaviour
 
     public void InvoActivate()
     {
-        _InvoInstance.isActivated = true;
+        Data.isActivated = true;
         OnInvoActivate?.Invoke(true);
     }
 
     public void InvoDeactivate()
     {
-        _InvoInstance.isActivated = false;
+        Data.isActivated = false;
         OnInvoActivate?.Invoke(false);
     }
     
     private void Start()
     {
-        _InvoInstance = _Invo.Instance();
+        Data = _Invo.Instance();
         
         OnInvoSpawn?.Invoke(this);
         
-        _InvoInstance.rb = rb;
+        Data.rb = rb;
 
         stateIdle = new StateIdle(this);
         stateProtection = new StateProtection(this);
@@ -63,20 +63,25 @@ public class InvoBehaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _InvoInstance.currentState.Execute();
+        Data.currentState.Execute();
     }
 
     public void ChangeState(IState newState)
     {
         StopAllCoroutines();
-        if (_InvoInstance.currentState != null)
-            _InvoInstance.currentState.Exit();
+        if (Data.currentState != null)
+            Data.currentState.Exit();
 
-        _InvoInstance.currentState = newState;
-        _InvoInstance.currentState.Enter();
-        st = _InvoInstance.currentState.ToString();
+        Data.currentState = newState;
+        Data.currentState.Enter();
+        st = Data.currentState.ToString();
     }
 
+    public void resetPosition()
+    {
+        transform.position = Data.target.position + Data.offset;
+    }
+    
     public void startAttackDelay()
     {
         StopCoroutine(attackDelay());
@@ -95,15 +100,15 @@ public class InvoBehaviour : MonoBehaviour
         {
             Enemy enemy = other.GetComponent<Enemy>();
 
-            if (enemy != null && _InvoInstance.currentState == stateAttack)
+            if (enemy != null && Data.currentState == stateAttack)
             {
-                enemy.TakeDamage(_InvoInstance.damage, attackID);
+                enemy.TakeDamage(Data.damage, attackID);
                 ChangeState(stateDisabled);
             }
         }
         if (other.gameObject.CompareTag("Wall"))
         {
-            if (_InvoInstance.currentState == stateAttack)
+            if (Data.currentState == stateAttack)
             {
                 ChangeState(stateDisabled);
                 StopCoroutine(attackDelay());
@@ -111,41 +116,45 @@ public class InvoBehaviour : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Player"))
         {
-            if (_InvoInstance.currentState == stateDisabled)
+            if (Data.currentState == stateDisabled)
             {
                 ChangeState(stateIdle);
             }
         }
 
+        if (other.CompareTag("DeathZone"))
+        {
+            resetPosition();
+        }
     }
     
     private void HandleLock(Transform transform)
     {
-        _InvoInstance.ennemyTarget = transform;
+        Data.ennemyTarget = transform;
     }
 
     private void HandleDelock(Transform t)
     {
-        _InvoInstance.ennemyTarget = null;
+        Data.ennemyTarget = null;
     }
     
     #region coroutines
     IEnumerator attackDelay()
     {
         yield return new WaitForSeconds(2);
-        _InvoInstance.rb.isKinematic = true;
-        _InvoInstance.isMovingDirection = true;
-        if (_InvoInstance.ennemyTarget == null)
+        Data.rb.isKinematic = true;
+        Data.isMovingDirection = true;
+        if (Data.ennemyTarget == null)
         {
-            _InvoInstance.direction = player.forward;
+            Data.direction = player.forward;
         }
         else
         {
-            _InvoInstance.direction = (_InvoInstance.ennemyTarget.position - transform.position).normalized;
+            Data.direction = (Data.ennemyTarget.position - transform.position).normalized;
         }
         
         
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         ChangeState(stateDisabled);
     }
 

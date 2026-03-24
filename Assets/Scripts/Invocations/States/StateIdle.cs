@@ -12,16 +12,16 @@ public class StateIdle : IState
     
     public override void Enter()
     {
-        owner._InvoInstance.offset = owner._Invo.offset;
-        owner._InvoInstance.acceleration = owner._Invo.acceleration;
-        owner._InvoInstance.rb.useGravity = true;
-        owner._InvoInstance.target = owner.player;
-        owner._InvoInstance.rb.isKinematic = false;
+        owner.Data.offset = owner._Invo.offset;
+        owner.Data.acceleration = owner._Invo.acceleration;
+        owner.Data.rb.useGravity = true;
+        owner.Data.target = owner.player;
+        owner.Data.rb.isKinematic = false;
     }
 
     public override void Execute()
     {
-        Vector3 dir = owner._InvoInstance.target.position + (owner._InvoInstance.target.rotation * owner._InvoInstance.offset)  - owner.transform.position;
+        Vector3 dir = owner.Data.target.position + (owner.Data.target.rotation * owner.Data.offset)  - owner.transform.position;
         dir = new Vector3(dir.x, 0, dir.z);
         
         movement(owner, dir);

@@ -11,19 +11,19 @@ public abstract class IState
     
     public void movement(InvoBehaviour owner, Vector3 dir)
     {
-        if (!owner._InvoInstance.isMoving) return;
+        if (!owner.Data.isMoving) return;
         
-        if (owner._InvoInstance.rb.linearVelocity.magnitude > owner._InvoInstance.maxSpeed)
+        if (owner.Data.rb.linearVelocity.magnitude > owner.Data.maxSpeed)
         {
             Vector3 force = Maths.OrthogonalProjection(
-                dir.normalized * owner._InvoInstance.acceleration,
-                owner._InvoInstance.rb.linearVelocity.normalized * owner._InvoInstance.maxSpeed);
-            owner._InvoInstance.rb.AddForce(force);
+                dir.normalized * owner.Data.acceleration,
+                owner.Data.rb.linearVelocity.normalized * owner.Data.maxSpeed);
+            owner.Data.rb.AddForce(force);
         }
         
         else
         {
-            owner._InvoInstance.rb.AddForce(dir.normalized * owner._InvoInstance.acceleration);
+            owner.Data.rb.AddForce(dir.normalized * owner.Data.acceleration);
         }
     }
 }

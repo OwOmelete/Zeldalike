@@ -23,7 +23,7 @@ public class Controller : MonoBehaviour
 
     private void OnAttack(InputValue value)
     {
-        rb.AddForce(rb.linearVelocity.normalized * 100);
+        //rb.AddForce(rb.linearVelocity.normalized * 100);
     }
 
     private void FixedUpdate()
@@ -43,11 +43,22 @@ public class Controller : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(InputDirection.normalized), 0.1f)  ;
         
         pm.dynamicFriction = 0;
+        RaycastHit hit;
+        Vector3 moveDir = InputDirection;
+
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.5f))
+        {
+            moveDir = Vector3.ProjectOnPlane(moveDir, hit.normal);
+        }
+
+        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+        
+        
         if (rb.linearVelocity.magnitude > maxSpeed)
         {
             Vector3 force = Maths.OrthogonalProjection(
-                InputDirection.normalized * acceleration,
-                rb.linearVelocity.normalized * maxSpeed);
+                moveDir.normalized * acceleration,
+                horizontalVelocity.normalized * maxSpeed);
             float m = force.magnitude;
             Vector3 finalForce = new Vector3(force.x, 0, force.z).normalized;
             
@@ -55,7 +66,7 @@ public class Controller : MonoBehaviour
         }
         else
         {
-            Vector3 force = InputDirection.normalized * acceleration;
+            Vector3 force = moveDir.normalized * acceleration;
             
             float m = force.magnitude;
             Vector3 finalForce = new Vector3(force.x, 0, force.z).normalized;

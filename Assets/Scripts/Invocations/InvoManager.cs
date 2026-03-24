@@ -22,13 +22,12 @@ public class InvoManager : MonoBehaviour
     public static event Action<Transform> OnDelock;
 
     public static event Action FireWaveAction;
-    
-    
 
     private void OnEnable()
     {
         InvoBehaviour.OnInvoSpawn += AddInvocation;
         InvoBehaviour.OnInvoActivate += removeInvo;
+        DeathZone.OnFall += Fall;
     }
 
     private void OnDisable()
@@ -54,12 +53,21 @@ public class InvoManager : MonoBehaviour
         }
     }
     
+    private void Fall(Transform t)
+    {
+        transform.position = t.position;
+        foreach (var invo in InvoList)
+        {
+            invo.resetPosition();
+        }
+    }
+    
     private void OnShield(InputValue value)
     {
         List<InvoBehaviour> l = new();
         foreach (var invo in InvoList)
         {
-            if (invo._InvoInstance.isActivated)
+            if (invo.Data.isActivated)
             {
                 l.Add(invo);
             }
@@ -85,7 +93,7 @@ public class InvoManager : MonoBehaviour
 
     private void OnLockEnemy()
     {
-        Enemy enemy = CharacterTargeting.FindClosestEnemy(transform.position, 10, layerMask);
+        Enemy enemy = CharacterTargeting.FindClosestEnemy(transform.position, 30, layerMask);
 
         if (!enemy)
         {
@@ -129,7 +137,7 @@ public class InvoManager : MonoBehaviour
 
         for (int i = 0; i < InvoList.Count; i++)
         {
-            if (!InvoList[i]._InvoInstance.isActivated)
+            if (!InvoList[i].Data.isActivated)
                 continue;
 
             float dist = (InvoList[i].transform.position - transform.position).sqrMagnitude;
