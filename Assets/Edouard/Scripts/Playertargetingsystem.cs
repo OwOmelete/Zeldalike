@@ -3,15 +3,16 @@ using UnityEngine;
 
 public class Playertargetingsystem : MonoBehaviour
 {
-    [SerializeField] private bool active;
+    [SerializeField] private bool isActive;
     [SerializeField] private float detectRadius = 8f;
     private Transform currentTarget;
 
     private void Update()
     {
-        if (active)
+        if (isActive)
         {
             FindClosestEnemy();
+            return;
         }
     }
 
