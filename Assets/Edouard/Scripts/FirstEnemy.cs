@@ -79,7 +79,10 @@ public class FirstEnemy : MonoBehaviour
 
         if (distanceFromTarget > attackRadius && distanceFromTarget < detectionRadius)
         {
+            //Chasing
+            Debug.Log("ChasingPlayer");
             gameObject.transform.position = Vector3.MoveTowards(transform.position, target.position, movementSpeed * Time.deltaTime);
+            gameObject.transform.LookAt(target);
         }
         
         if (distanceFromTarget > detectionRadius)
