@@ -71,7 +71,7 @@ public class InvoProtection : MonoBehaviour
             Vector3 offset = Maths.coordsCircleInSphere(-angle * circList.Count / circList.Count * currentIndex,
                 360 /  (invos.Count * circList[currentIndex] / n) * (i - lastIndex)) * 3;
             
-            invos[i]._InvoInstance.offset = offset;
+            invos[i].Data.offset = offset;
             invos[i].ChangeState(invos[i].stateProtection);
             
             

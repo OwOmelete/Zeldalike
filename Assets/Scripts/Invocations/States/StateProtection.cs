@@ -12,21 +12,21 @@ public class StateProtection : IState
 
     public override void Enter()
     {
-        owner._InvoInstance.rb.useGravity = false;
-        owner._InvoInstance.acceleration = 60;
+        owner.Data.rb.useGravity = false;
+        owner.Data.acceleration = 60;
         owner.transform.position =
-            owner._InvoInstance.target.position + owner._InvoInstance.offset;
+            owner.Data.target.position + owner.Data.offset;
     }
 
     public override void Execute()
     {
-        movement(owner,owner._InvoInstance.target.position + owner._InvoInstance.offset - owner.transform.position);
+        movement(owner,owner.Data.target.position + owner.Data.offset - owner.transform.position);
     }
 
     public override void Exit()
     {
-        owner._InvoInstance.rb.useGravity = true;
-        owner._InvoInstance.acceleration = 15;
+        owner.Data.rb.useGravity = true;
+        owner.Data.acceleration = 15;
     }
 
     

@@ -13,21 +13,21 @@ public class StateAttack : IState
 
     public override void Enter()
     {
-        owner._InvoInstance.acceleration = 60;
+        owner.Data.acceleration = 60;
         owner.startAttackDelay();
-        owner._InvoInstance.direction = Vector3.zero;
-        owner._InvoInstance.isMovingDirection = false;
-        if (owner._InvoInstance.ennemyTarget == null)
+        owner.Data.direction = Vector3.zero;
+        owner.Data.isMovingDirection = false;
+        if (owner.Data.ennemyTarget == null)
         {
-            owner.transform.position = owner._InvoInstance.target.position +
-                                        owner._InvoInstance.target.rotation
-                                         * owner._InvoInstance.offset;
+            owner.transform.position = owner.Data.target.position +
+                                        owner.Data.target.rotation
+                                         * owner.Data.offset;
         }
         else
         {
-            owner.transform.position = owner._InvoInstance.target.position + 
-                                       ((Quaternion.FromToRotation(Vector3.forward, owner._InvoInstance.ennemyTarget.position - owner._InvoInstance.target.position)
-                                         * owner._InvoInstance.offset));
+            owner.transform.position = owner.Data.target.position + 
+                                       ((Quaternion.FromToRotation(Vector3.forward, owner.Data.ennemyTarget.position - owner.Data.target.position)
+                                         * owner.Data.offset));
         }
         
 
@@ -35,30 +35,29 @@ public class StateAttack : IState
 
     public override void Execute()
     {
-        Debug.Log(owner._InvoInstance.ennemyTarget);
-        if (owner._InvoInstance.direction != Vector3.zero && owner._InvoInstance.isMovingDirection)
+        if (owner.Data.direction != Vector3.zero && owner.Data.isMovingDirection)
         {
             //owner.transform.position += owner._InvoInstance.direction;
-            owner._InvoInstance.rb.MovePosition(owner.transform.position + owner._InvoInstance.direction);
+            owner.Data.rb.MovePosition(owner.transform.position + owner.Data.direction);
         }
-        else if (owner._InvoInstance.ennemyTarget == null)
+        else if (owner.Data.ennemyTarget == null)
         {
-            movement(owner,owner._InvoInstance.target.position + (owner._InvoInstance.target.rotation * owner._InvoInstance.offset) - owner.transform.position);
+            movement(owner,owner.Data.target.position + (owner.Data.target.rotation * owner.Data.offset) - owner.transform.position);
         }
         else
         {
-            movement(owner,owner._InvoInstance.target.position + 
-                (Quaternion.FromToRotation(Vector3.forward, owner._InvoInstance.ennemyTarget.position - owner._InvoInstance.target.position)
-                 * owner._InvoInstance.offset) - owner.transform.position);
+            movement(owner,owner.Data.target.position + 
+                (Quaternion.FromToRotation(Vector3.forward, owner.Data.ennemyTarget.position - owner.Data.target.position)
+                 * owner.Data.offset) - owner.transform.position);
         }
     }
 
     public override void Exit()
     {
-        owner._InvoInstance.rb.MovePosition(owner.transform.position);
-        owner._InvoInstance.direction = Vector3.zero;
-        owner._InvoInstance.isMovingDirection = false;
-        owner._InvoInstance.rb.isKinematic = false;
-        owner._InvoInstance.isMoving = true;
+        owner.Data.rb.MovePosition(owner.transform.position);
+        owner.Data.direction = Vector3.zero;
+        owner.Data.isMovingDirection = false;
+        owner.Data.rb.isKinematic = false;
+        owner.Data.isMoving = true;
     }
 }

@@ -14,8 +14,8 @@ public class StateDisabled : IState
     
     public override void Enter()
     {
-        owner._InvoInstance.rb.linearVelocity = Vector3.zero;
-        owner._InvoInstance.rb.angularVelocity = Vector3.zero;
+        owner.Data.rb.linearVelocity = Vector3.zero;
+        owner.Data.rb.angularVelocity = Vector3.zero;
         owner.gameObject.layer = LayerMask.NameToLayer("InvoDisabled");
         addDispersion();
         int r = Random.Range(0, 100);
@@ -25,7 +25,7 @@ public class StateDisabled : IState
         }
         else
         {
-            if (!owner._InvoInstance.isActivated)
+            if (!owner.Data.isActivated)
             {
                 owner.InvoActivate();
             }
@@ -40,17 +40,17 @@ public class StateDisabled : IState
 
     public override void Exit()
     {
-        if (!owner._InvoInstance.isActivated)
+        if (!owner.Data.isActivated)
         {
             owner.InvoActivate();
         }
-        owner._InvoInstance.isActivated = true;
+        owner.Data.isActivated = true;
         owner.gameObject.layer = LayerMask.NameToLayer("Invo");
     }
 
     void addDispersion()
     {
         Vector3 dir = Quaternion.Euler(Random.Range(0, 45), Random.Range(0, 360), 0) * Vector3.up;
-        owner._InvoInstance.rb.AddForce(dir * 5, ForceMode.Impulse);
+        owner.Data.rb.AddForce(dir * 5, ForceMode.Impulse);
     }
 }
