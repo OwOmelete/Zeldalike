@@ -28,12 +28,15 @@ public class InvoManager : MonoBehaviour
         InvoBehaviour.OnInvoSpawn += AddInvocation;
         InvoBehaviour.OnInvoActivate += removeInvo;
         DeathZone.OnFall += Fall;
+        ButtonChainManager.OnPattern += HandlePattern;
     }
 
     private void OnDisable()
     {
         InvoBehaviour.OnInvoSpawn -= AddInvocation;
         InvoBehaviour.OnInvoActivate -= removeInvo;
+        DeathZone.OnFall -= Fall;
+        ButtonChainManager.OnPattern -= HandlePattern;
     }
 
     private void AddInvocation(InvoBehaviour instance)
@@ -75,9 +78,16 @@ public class InvoManager : MonoBehaviour
         OnProtection?.Invoke(l);
     }
 
-    private void OnAttack()
+    private void HandlePattern(string name)
     {
-        Debug.Log(currentDeactivated);
+        if (name == "lance")
+        {
+            LancePattern();
+        }
+    }
+    
+    private void LancePattern()
+    {
         List<InvoBehaviour> invos = GetClosest((int)((InvoList.Count-currentDeactivated)/2));
 
         int attackID = GetNewAttackID();

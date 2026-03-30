@@ -113938,6 +113938,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 296223003020906809, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2118672625}
+    - targetCorrespondingSourceObject: {fileID: 296223003020906809, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2118672635}
   m_SourcePrefab: {fileID: 100100000, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
 --- !u!1 &1960452394 stripped
 GameObject:
@@ -123510,6 +123513,21 @@ CapsuleCollider:
   m_Height: 2.64
   m_Direction: 1
   m_Center: {x: 0, y: 0.61, z: 0}
+--- !u!114 &2118672635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960452394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f579304f6ae78742a8252f03b313e9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonChainManager
+  patterns:
+  - {fileID: 11400000, guid: 991e03a7dc924ae4fa7933f4216011e0, type: 2}
+  comboResetDelay: 2
 --- !u!1001 &2119266297
 PrefabInstance:
   m_ObjectHideFlags: 0
