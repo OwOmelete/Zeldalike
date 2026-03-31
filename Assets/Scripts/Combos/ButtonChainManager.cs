@@ -52,11 +52,18 @@ public class ButtonChainManager : MonoBehaviour
 
     private void verifyChain()
     {
+        foreach (var VARIABLE in playerChain.Directions)
+        {
+            Debug.Log(VARIABLE);
+        }
+        
+        
         for (int i = 0; i < patterns.Length; i++)
         {
             if (AreListsEqual(playerChain.Directions, patterns[i].Directions))
             {
                 playerChain.Directions.Clear();
+                isInCombo = false;
                 StopCoroutine(currentCoroutine);
                 OnPattern?.Invoke(patterns[i].name);
             }
