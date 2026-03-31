@@ -141,7 +141,7 @@ public class InvoBehaviour : MonoBehaviour
     #region coroutines
     IEnumerator attackDelay()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(.75f);
         Data.rb.isKinematic = true;
         Data.isMovingDirection = true;
         if (Data.ennemyTarget == null)
@@ -165,7 +165,7 @@ public class InvoBehaviour : MonoBehaviour
     
     IEnumerator reactivationDelay()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         ChangeState(stateIdle);
     }
 
