@@ -1,13 +1,16 @@
-using System;
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class BasicEnemy : MonoBehaviour
 {
+    #region Unity Variables
+    
     #region Stats
 
     [Header("Stats")]
-    [SerializeField] private int maxHealthPoints;
-    [SerializeField] private int currentHealthPoints;
+    [SerializeField] private float maxHealthPoints;
+    [SerializeField] private float currentHealthPoints;
     
     [SerializeField] private int damagePoints;
     
@@ -29,23 +32,43 @@ public class BasicEnemy : MonoBehaviour
 
     #endregion
     
+    #region Other
+    
     [Header("Other")]
     [SerializeField] private GameObject detectorGameObject;
+    [SerializeField] private Slider healtBar;
+    [SerializeField] private Canvas enemyCanvas;
 
     private Transform playerTransform;
+
+    private GameObject camera;
+    
+    private HashSet<int> receivedAttacks = new HashSet<int>();
+    public Image cible;
+    
+    #endregion
+    
+    #endregion
     
     private void Start()
     {
         currentHealthPoints = maxHealthPoints;
         HandleEnemyState(StateFlags.IDLE);
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        UpdateHealthBar();
+        camera = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
     private void Update()
     {
+        enemyCanvas.transform.LookAt(camera.transform);
         if (currentHealthPoints == 0)
         {
             HandleEnemyState(StateFlags.DEATH);
+        }
+        else
+        {
+            UpdateHealthBar();
         }
         switch (currentStateFlag)
         {
@@ -64,6 +87,33 @@ public class BasicEnemy : MonoBehaviour
         }
     }
 
+    private void UpdateHealthBar()
+    {
+        healtBar.value = currentHealthPoints / maxHealthPoints;
+    }
+
+    public void TakeDamage(float damage, int attackID)
+    {
+        if (receivedAttacks.Contains(attackID))
+        {
+            return;
+        }
+
+        receivedAttacks.Add(attackID);
+
+        currentHealthPoints -= damage;
+
+        if (currentHealthPoints <= 0)
+        {
+            HandleEnemyState(StateFlags.DEATH);
+        }
+        else
+        {
+            UpdateHealthBar();
+        }
+        Debug.Log($"Enemy took {damage} damage");
+    }
+
     public void HandleEnemyState(StateFlags state)
     {
         if (currentStateFlag == state) return;
@@ -72,6 +122,7 @@ public class BasicEnemy : MonoBehaviour
         Debug.Log($"Changed state to {state}");
     }
 
+    #region Behaviours
     private void IdleBehavior()
     {
         Debug.Log("Current behaviour is idle");
@@ -94,5 +145,5 @@ public class BasicEnemy : MonoBehaviour
         Debug.Log("Current behaviour is death");
         Destroy(gameObject);
     }
-    
+    #endregion
 }
