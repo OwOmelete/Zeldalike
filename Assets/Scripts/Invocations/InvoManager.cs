@@ -11,6 +11,8 @@ public class InvoManager : MonoBehaviour
     private int currentAttackID = 0;
     private int currentDeactivated = 0;
 
+    private List<Enemy> enemiesInRange = new List<Enemy>();
+    
     private Enemy lastEnemyLocked;
     
     
@@ -19,7 +21,7 @@ public class InvoManager : MonoBehaviour
     public static event Action<List<InvoBehaviour>> OnProtection;
     
     public static event Action<Transform> OnLock;
-    public static event Action<Transform> OnDelock;
+    public static event Action OnDelock;
 
     public static event Action FireWaveAction;
 
@@ -113,7 +115,7 @@ public class InvoManager : MonoBehaviour
         {
             enemy.cible.enabled = false;
             lastEnemyLocked = null;
-            OnDelock?.Invoke(enemy.transform);
+            OnDelock?.Invoke();
         }
         else if (enemy != null)
         {
@@ -135,11 +137,62 @@ public class InvoManager : MonoBehaviour
         currentAttackID++;
         return currentAttackID;
     }
-    
-    
-    
-    
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("EnemyZone"))
+        {
+            Enemy enemy = other.GetComponentInParent<Enemy>();
+
+            if (!enemiesInRange.Contains(enemy))
+            {
+                enemiesInRange.Add(enemy);
+                
+            }
+            
+            UpdateTarget();
+        }
+    }
+
+    
+    
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("EnemyZone")) return;
+
+        Enemy enemy = other.GetComponentInParent<Enemy>();
+
+        
+        Debug.Log(enemiesInRange.Count);
+        
+        enemy.cible.enabled = false;
+        enemiesInRange.Remove(enemy);
+
+        UpdateTarget();
+    }
+    
+    private void UpdateTarget()
+    {
+        if (enemiesInRange.Count > 0)
+        {
+            TargetLock(enemiesInRange[0]);
+        }
+        else
+        {
+            lastEnemyLocked.cible.enabled = false;
+            lastEnemyLocked = null;
+            OnDelock?.Invoke();
+        
+        }
+    }
+
+    private void TargetLock(Enemy enemy)
+    {
+        enemy.cible.enabled = true;
+        lastEnemyLocked = enemy;
+        OnLock?.Invoke(enemy.transform);
+    }
+    
     private List<InvoBehaviour> GetClosest(int n)
     {
         List<InvoBehaviour> result = new();
