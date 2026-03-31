@@ -22,6 +22,7 @@ public class BasicEnemy : MonoBehaviour
         IDLE,
         CHASING,
         ATTACKING,
+        DEATH
     }
     [Header("StateFlags")]
     [SerializeField] private  StateFlags currentStateFlag;
@@ -42,6 +43,10 @@ public class BasicEnemy : MonoBehaviour
 
     private void Update()
     {
+        if (currentHealthPoints == 0)
+        {
+            HandleEnemyState(StateFlags.DEATH);
+        }
         switch (currentStateFlag)
         {
             case StateFlags.IDLE:
@@ -52,6 +57,9 @@ public class BasicEnemy : MonoBehaviour
                 break;
             case StateFlags.ATTACKING:
                 AttackingBehavior();
+                break;
+            case StateFlags.DEATH:
+                DeathBehavior();
                 break;
         }
     }
@@ -80,6 +88,11 @@ public class BasicEnemy : MonoBehaviour
     {
         Debug.Log("Current behaviour is attacking");
     }
-    
+
+    private void DeathBehavior()
+    {
+        Debug.Log("Current behaviour is death");
+        Destroy(gameObject);
+    }
     
 }
