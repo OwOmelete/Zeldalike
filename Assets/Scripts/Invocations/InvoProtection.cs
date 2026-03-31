@@ -4,61 +4,39 @@ using UnityEngine;
 
 public class InvoProtection : MonoBehaviour
 {
-    [SerializeField] private InvoBehaviour[] _invoBehaviours;
     [SerializeField] private GameObject reference;
 
+    private bool isProtecting = false;
 
-    private void Update()
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        InvoManager.OnProtection += protect;
+    }
+
+    
+    private void OnDisable()
+    {
+        InvoManager.OnProtection -= protect;
+    }
+
+    void protect(List<InvoBehaviour> invos)
+    {
+        if(!isProtecting) NewTarget(25, invos);
+        else
         {
-            NewTarget(25);
+            foreach (var invo in invos)
+            {
+                invo.ChangeState(invo.stateIdle);
+            }
+
+            isProtecting = false;
         }
     }
 
-
-    void AssignNewTarget()
+    void NewTarget(float angle, List<InvoBehaviour> invos)
     {
-        Vector3 dir = Vector3.zero;
 
-        for (int i = 0; i < _invoBehaviours.Length; i++)
-        {
-            GameObject go = new GameObject();
-            
-
-            if (i == 0)
-            {
-                dir = Vector3.up;
-            }
-            
-            else if (i < _invoBehaviours.Length / 2)
-            {
-                dir = Quaternion.Euler(-35,
-                    360 / _invoBehaviours.Length * 2 * i, 0) * Vector3.forward;
-            }
-            else
-            {
-                dir = Quaternion.Euler(0,
-                    360 / _invoBehaviours.Length * 2 *i -  _invoBehaviours.Length / 2 , 0) * Vector3.forward;
-            }
-            
-            go.transform.parent = reference.transform; 
-            
-            go.transform.localPosition = Vector3.zero;
-            
-            go.transform.localPosition = dir;
-
-            _invoBehaviours[i].acceleration = 60;
-            _invoBehaviours[i].target = go.transform;
-        }
-
-
-
-
-    }
-
-    void NewTarget(float angle)
-    {
+        isProtecting = true;
 
         float n = 0;
         
@@ -78,10 +56,8 @@ public class InvoProtection : MonoBehaviour
         int currentIndex = 0;
         int lastIndex = 0;
         
-        for (int i = 0; i < _invoBehaviours.Length; i++)
+        for (int i = 0; i < invos.Count; i++)
         {
-            GameObject go = new GameObject();
-            
             /*Debug.Log(n * _invoBehaviours.Length / circList[currentIndex]);
             Debug.Log(n);
             Debug.Log( _invoBehaviours.Length);
@@ -91,22 +67,16 @@ public class InvoProtection : MonoBehaviour
             //dir = Quaternion.Euler(-90 / circList.Count * currentIndex,
               //  360 / circList[currentIndex] * i - lastIndex, 0) * Vector3.forward;
             
-            
-            go.transform.parent = reference.transform; 
-            
-            go.transform.localPosition = Vector3.zero;
-            
-            Debug.Log(360 /  _invoBehaviours.Length * circList[currentIndex] / n * (i - lastIndex));
 
-            go.transform.localPosition = Maths.coordsCircleInSphere(-angle * circList.Count / circList.Count * currentIndex,
-                360 /  (_invoBehaviours.Length * circList[currentIndex] / n) * (i - lastIndex));
+            Vector3 offset = Maths.coordsCircleInSphere(-angle * circList.Count / circList.Count * currentIndex,
+                360 /  (invos.Count * circList[currentIndex] / n) * (i - lastIndex)) * 3;
             
-            _invoBehaviours[i].acceleration = 60;
-            _invoBehaviours[i].target = go.transform;
+            invos[i].Data.offset = offset;
+            invos[i].ChangeState(invos[i].stateProtection);
             
-            if (i - lastIndex > _invoBehaviours.Length * circList[currentIndex] / n)
+            
+            if (i - lastIndex > invos.Count * circList[currentIndex] / n)
             {
-                Debug.Log("hihi");
                 currentIndex++;
                 lastIndex = i;
             }

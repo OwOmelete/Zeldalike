@@ -40,4 +40,12 @@ public class Maths : MonoBehaviour
         //Debug.Log(Mathf.Abs(Mathf.Sin(angle * Mathf.Deg2Rad)));
         return Mathf.Abs(Mathf.Sin(angle * Mathf.Deg2Rad ));
     }
+    
+    public static Vector3 idleOffset(float t, float d)
+    {
+        return new Vector3(
+            Mathf.Cos(Time.time * t*0.7f)*d*1.5f,
+            Mathf.Sin(Time.time * t*0.3f)*d*0.3f,
+            Mathf.Sin(Time.time * t*0.7f)*d*1.5f);
+    }
 }

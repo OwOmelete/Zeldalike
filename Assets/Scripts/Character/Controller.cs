@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Controller : MonoBehaviour
 {
+    [SerializeField] private Transform cam;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private PhysicsMaterial pm;
     [SerializeField] private float friction;
@@ -16,17 +17,20 @@ public class Controller : MonoBehaviour
     {
         InputDirection = value.Get<Vector2>();
         InputDirection = new Vector3(InputDirection.x, 0, InputDirection.y);
+        InputDirection = cam.rotation * InputDirection;
+        InputDirection = new Vector3(InputDirection.x, 0, InputDirection.z);
     }
 
     private void OnAttack(InputValue value)
     {
-        rb.AddForce(rb.linearVelocity.normalized * 100);
+        //rb.AddForce(rb.linearVelocity.normalized * 100);
     }
 
     private void FixedUpdate()
     {
         Movement();
     }
+    
 
     void Movement()
     {
@@ -36,19 +40,39 @@ public class Controller : MonoBehaviour
             return;
         }
 
-        transform.rotation = Quaternion.LookRotation(InputDirection.normalized);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(InputDirection.normalized), 0.1f)  ;
         
         pm.dynamicFriction = 0;
+        RaycastHit hit;
+        Vector3 moveDir = InputDirection;
+
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.5f))
+        {
+            moveDir = Vector3.ProjectOnPlane(moveDir, hit.normal);
+        }
+
+        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+        
+        
         if (rb.linearVelocity.magnitude > maxSpeed)
         {
             Vector3 force = Maths.OrthogonalProjection(
-                InputDirection.normalized * acceleration,
-                rb.linearVelocity.normalized * maxSpeed);
-            rb.AddForce(force);
+                moveDir.normalized * acceleration,
+                horizontalVelocity.normalized * maxSpeed);
+            float m = force.magnitude;
+            Vector3 finalForce = new Vector3(force.x, 0, force.z).normalized;
+            
+            rb.AddForce(finalForce*m);
         }
         else
         {
-            rb.AddForce(InputDirection.normalized * acceleration);
+            Vector3 force = moveDir.normalized * acceleration;
+            
+            float m = force.magnitude;
+            Vector3 finalForce = new Vector3(force.x, 0, force.z).normalized;
+
+            
+            rb.AddForce(finalForce*m);
         }
     }
 }
