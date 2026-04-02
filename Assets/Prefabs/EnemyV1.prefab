@@ -202,10 +202,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f1c46d21435df4ab6005c89a69eaf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BasicEnemy
-  maxHealthPoints: 30
+  maxHealthPoints: 12
   currentHealthPoints: 0
   damagePoints: 12
-  moveSpeed: 3
+  moveSpeed: 0
   currentStateFlag: 0
   detectorGameObject: {fileID: 1783314020399177124}
   healthBar: {fileID: 340274231957894277}
@@ -277,7 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c8772b5edfbfa64e8dda48f011e09d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DetectorLogic
-  BasicEnemyScriptReference: {fileID: 2551689640468601685}
+  basicEnemyV1ScriptReference: {fileID: 2551689640468601685}
   attackRadius: 1
 --- !u!1 &3061641898458253984
 GameObject:

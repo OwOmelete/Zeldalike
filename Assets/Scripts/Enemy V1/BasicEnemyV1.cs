@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class BasicEnemy : MonoBehaviour
+public class BasicEnemyV1 : MonoBehaviour
 {
     #region Unity Variables
 
@@ -98,10 +98,7 @@ public class BasicEnemy : MonoBehaviour
 
     public void TakeDamage(float damage, int attackID)
     {
-        if (receivedAttacks.Contains(attackID))
-        {
-            return;
-        }
+        if (receivedAttacks.Contains(attackID)) {return;}
 
         receivedAttacks.Add(attackID);
 
