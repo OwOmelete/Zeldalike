@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class DetectorLogicV2 : MonoBehaviour
 {
-    [SerializeField] private BasicEnemyV1 basicEnemyV1ScriptReference;
-    [SerializeField] private int attackRadius;
+    [SerializeField] private BasicEnemyV2 basicEnemyV2ScriptReference;
+    [SerializeField] private float attackRadius;
     private Transform playerTransform;
     private bool isPlayerInRange;
 
@@ -35,21 +35,22 @@ public class DetectorLogicV2 : MonoBehaviour
         }
         else
         {
-            basicEnemyV1ScriptReference.HandleEnemyState(BasicEnemyV1.StateFlags.IDLE);
+            basicEnemyV2ScriptReference.HandleEnemyState(BasicEnemyV2.StateFlags.IDLE);
         }
     }
 
     private void BehaviourHandler()
     {
-        float distanceFromPlayer = Vector3.Distance(transform.position, playerTransform.transform.position);
-        
+        float distanceFromPlayer = Vector3.Distance(
+            basicEnemyV2ScriptReference.transform.position,
+            playerTransform.position
+        );
+
+        if (basicEnemyV2ScriptReference.isAttacking) return;
+
         if (distanceFromPlayer > attackRadius)
-        {
-            basicEnemyV1ScriptReference.HandleEnemyState(BasicEnemyV1.StateFlags.CHASING);
-        }
+            basicEnemyV2ScriptReference.HandleEnemyState(BasicEnemyV2.StateFlags.CHASING);
         else
-        {
-            basicEnemyV1ScriptReference.HandleEnemyState(BasicEnemyV1.StateFlags.ATTACKING);
-        }
+            basicEnemyV2ScriptReference.HandleEnemyState(BasicEnemyV2.StateFlags.ATTACKING);
     }
 }

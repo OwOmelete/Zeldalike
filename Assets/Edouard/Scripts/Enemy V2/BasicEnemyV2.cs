@@ -31,13 +31,16 @@ public class BasicEnemyV2 : MonoBehaviour
     [Header("StateFlags")]
     [SerializeField] private StateFlags currentStateFlag;
 
+    public bool isAttacking;
+    
     #endregion
 
 
     #region Timers
 
-    private float attackCooldown;
-    private float attackPreparationCooldown;
+    [Header("Timers")]
+    [SerializeField] private float attackCooldown;
+    [SerializeField] private float attackPreparationCooldown;
 
     #endregion
 
@@ -102,10 +105,7 @@ public class BasicEnemyV2 : MonoBehaviour
 
     public void TakeDamage(float damage, int attackID)
     {
-        if (receivedAttacks.Contains(attackID))
-        {
-            return;
-        }
+        if (receivedAttacks.Contains(attackID)) {return;}
 
         receivedAttacks.Add(attackID);
 
@@ -133,34 +133,42 @@ public class BasicEnemyV2 : MonoBehaviour
     #region Behaviours
     private void IdleBehavior()
     {
-        Debug.Log("Current behaviour is idle");
+        //Debug.Log("Current behaviour is idle");
     }
 
     private void ChasingBehavior()
     {
-        Debug.Log("Current behaviour is chasing");
+        //Debug.Log("Current behaviour is chasing");
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position,
             playerTransform.position, moveSpeed * Time.deltaTime);
         gameObject.transform.LookAt(playerTransform);
     }
     private void AttackingBehavior()
     {
-        CoolDown(attackPreparationCooldown);
-        Debug.Log("Attacking");
-        CoolDown(attackCooldown);
-        Debug.Log("Attack cooldown ended");
+        if (!isAttacking)
+            StartCoroutine(AttackRoutine());
     }
 
     private void DeathBehavior()
     {
-        Debug.Log("Current behaviour is death");
+        //Debug.Log("Current behaviour is death");
         Destroy(gameObject);
     }
     #endregion
 
-    IEnumerator CoolDown(float time)
+    private IEnumerator AttackRoutine()
     {
-        yield return new WaitForSeconds(time);
+        isAttacking = true;
+        
+        Debug.Log("Preparing attack...");
+        yield return new WaitForSeconds(attackPreparationCooldown);
+
+        Debug.Log("Attacking");
+
+        yield return new WaitForSeconds(attackCooldown);
+        Debug.Log("Attack cooldown ended");
+        
+        isAttacking = false;
     }
     
 }

@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 
-public class DetectorLogic : MonoBehaviour
+public class DetectorLogicV1 : MonoBehaviour
 {
     [SerializeField] private BasicEnemyV1 basicEnemyV1ScriptReference;
-    [SerializeField] private int attackRadius;
+    [SerializeField] private float attackRadius;
     private Transform playerTransform;
     private bool isPlayerInRange;
 
