@@ -1,18 +1,10 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class TestInputs : MonoBehaviour
 {
-    private PlayerInput playerInput;
-
-    private void Awake()
+    void OnPauseMenu()
     {
-        playerInput = gameObject.GetComponent<PlayerInput>();
-    }
-    
-    private void OnToggleSettings()
-    {
-        GlobalEvents.SettingsButtonPressed();
+        Debug.Log("PauseMenuInput pressed");
+        GlobalEvents.PauseButtonPressed();
     }
 }

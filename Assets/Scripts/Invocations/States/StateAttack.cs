@@ -35,7 +35,6 @@ public class StateAttack : IState
 
     public override void Execute()
     {
-        Debug.Log(owner.Data.ennemyTarget);
         if (owner.Data.direction != Vector3.zero && owner.Data.isMovingDirection)
         {
             //owner.transform.position += owner._InvoInstance.direction;

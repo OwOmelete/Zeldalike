@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 
 public class SettingsMenuManager : MonoBehaviour
@@ -29,7 +28,12 @@ public class SettingsMenuManager : MonoBehaviour
     {
         GlobalEvents.OnSettingsButtonPressed += ToggleSettings;
     }
-    
+
+    private void OnDisable()
+    {
+        GlobalEvents.OnSettingsButtonPressed -= ToggleSettings;
+    }
+
 
     public void ToggleSettings()
     {
