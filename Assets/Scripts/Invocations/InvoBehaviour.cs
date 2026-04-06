@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class InvoBehaviour : MonoBehaviour
 {
+
+    public Renderer renderer1;
+    public Renderer renderer2;
     public InvoData _Invo;
     public InvoDataInstance Data;
     public Transform player;
