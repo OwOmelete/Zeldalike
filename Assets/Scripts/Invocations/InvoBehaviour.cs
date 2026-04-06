@@ -106,14 +106,6 @@ public class InvoBehaviour : MonoBehaviour
                 ChangeState(stateDisabled);
             }
         }
-        if (other.gameObject.CompareTag("Wall"))
-        {
-            if (Data.currentState == stateAttack)
-            {
-                ChangeState(stateDisabled);
-                StopCoroutine(attackDelay());
-            }
-        }
         if (other.gameObject.CompareTag("Player"))
         {
             if (Data.currentState == stateDisabled)

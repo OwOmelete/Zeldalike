@@ -26,7 +26,7 @@ public class StateProtection : IState
     public override void Exit()
     {
         owner.Data.rb.useGravity = true;
-        owner.Data.acceleration = 15;
+        owner.Data.acceleration = owner._Invo.acceleration;
     }
 
     
