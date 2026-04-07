@@ -49,9 +49,10 @@ public class BasicEnemyV2 : MonoBehaviour
 
     [Header("Other")]
     [SerializeField] private GameObject detectorGameObject;
-    [SerializeField] private Slider healthBar;
     [SerializeField] private Canvas enemyCanvas;
-    [SerializeField] public Image targetUI;
+    [SerializeField] private GameObject attackZone;
+    public Slider healthBar;
+    public Image targetUI;
 
     private Transform playerTransform;
     private GameObject mainCamera;
@@ -161,7 +162,9 @@ public class BasicEnemyV2 : MonoBehaviour
         isAttacking = true;
         
         Debug.Log("Preparing attack...");
+        attackZone.SetActive(true);
         yield return new WaitForSeconds(attackPreparationCooldown);
+        attackZone.SetActive(false);
 
         Debug.Log("Attacking");
 
