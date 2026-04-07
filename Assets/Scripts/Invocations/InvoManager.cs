@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,9 +12,11 @@ public class InvoManager : MonoBehaviour
     private int currentAttackID = 0;
     private int currentDeactivated = 0;
 
-    private List<Enemy> enemiesInRange = new List<Enemy>();
+    private List<BasicEnemyV2> enemiesInRange = new List<BasicEnemyV2>();
     
-    private Enemy lastEnemyLocked;
+    private BasicEnemyV2 lastEnemyLocked;
+
+    public MeshRenderer wave;
     
     
     
@@ -67,7 +70,7 @@ public class InvoManager : MonoBehaviour
         }
     }
     
-    private void OnShield(InputValue value)
+    /*private void OnShield(InputValue value)
     {
         List<InvoBehaviour> l = new();
         foreach (var invo in InvoList)
@@ -78,7 +81,7 @@ public class InvoManager : MonoBehaviour
             }
         }
         OnProtection?.Invoke(l);
-    }
+    }*/
 
     private void HandlePattern(string name)
     {
@@ -103,7 +106,7 @@ public class InvoManager : MonoBehaviour
         OnAttackAction?.Invoke(invos);
     }
 
-    private void OnLockEnemy()
+    /*private void OnLockEnemy()
     {
         Enemy enemy = CharacterTargeting.FindClosestEnemy(transform.position, 30, layerMask);
 
@@ -126,10 +129,19 @@ public class InvoManager : MonoBehaviour
             OnLock?.Invoke(enemy.transform);
         }
     }
-
+    */
+    
     private void OnFireWave()
     {
+        StartCoroutine(waveTimer());
         FireWaveAction?.Invoke();
+    }
+
+    IEnumerator waveTimer()
+    {
+        wave.enabled = true;
+        yield return new WaitForSeconds(0.4f);
+        wave.enabled = false;
     }
     
     public int GetNewAttackID()
@@ -142,7 +154,7 @@ public class InvoManager : MonoBehaviour
     {
         if (other.CompareTag("EnemyZone"))
         {
-            Enemy enemy = other.GetComponentInParent<Enemy>();
+            BasicEnemyV2 enemy = other.GetComponentInParent<BasicEnemyV2>();
 
             if (!enemiesInRange.Contains(enemy))
             {
@@ -160,12 +172,12 @@ public class InvoManager : MonoBehaviour
     {
         if (!other.CompareTag("EnemyZone")) return;
 
-        Enemy enemy = other.GetComponentInParent<Enemy>();
+        BasicEnemyV2 enemy = other.GetComponentInParent<BasicEnemyV2>();
 
         
         Debug.Log(enemiesInRange.Count);
         
-        enemy.cible.enabled = false;
+        enemy.targetUI.enabled = false;
         enemiesInRange.Remove(enemy);
 
         UpdateTarget();
@@ -179,16 +191,16 @@ public class InvoManager : MonoBehaviour
         }
         else
         {
-            lastEnemyLocked.cible.enabled = false;
+            lastEnemyLocked.targetUI.enabled = false;
             lastEnemyLocked = null;
             OnDelock?.Invoke();
         
         }
     }
 
-    private void TargetLock(Enemy enemy)
+    private void TargetLock(BasicEnemyV2 enemy)
     {
-        enemy.cible.enabled = true;
+        enemy.targetUI.enabled = true;
         lastEnemyLocked = enemy;
         OnLock?.Invoke(enemy.transform);
     }

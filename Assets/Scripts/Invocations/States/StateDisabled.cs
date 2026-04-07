@@ -22,6 +22,8 @@ public class StateDisabled : IState
         if (r > 80)
         {
             owner.InvoDeactivate();
+            owner.renderer1.material.color = Color.cyan;
+            owner.renderer2.material.color = Color.cyan;
         }
         else
         {
@@ -43,6 +45,8 @@ public class StateDisabled : IState
         if (!owner.Data.isActivated)
         {
             owner.InvoActivate();
+            owner.renderer1.material.color = Color.white;
+            owner.renderer2.material.color = Color.white;
         }
         owner.Data.isActivated = true;
         owner.gameObject.layer = LayerMask.NameToLayer("Invo");
