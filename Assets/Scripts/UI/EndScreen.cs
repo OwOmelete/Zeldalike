@@ -5,7 +5,6 @@ public class EndScreen : MonoBehaviour
 {
     private void OnSubmit()
     {
-        Debug.Log("coucou");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
