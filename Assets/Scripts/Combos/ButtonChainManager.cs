@@ -111,7 +111,7 @@ public class ButtonChainManager : MonoBehaviour
     {
         images[i].color = Color.yellow;
     }
-
+ 
     private void resetIcons()
     {
         foreach (var VARIABLE in images)
