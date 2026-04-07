@@ -29,7 +29,7 @@ public class BasicEnemyV2 : MonoBehaviour
     }
 
     [Header("StateFlags")]
-    [SerializeField] private StateFlags currentStateFlag;
+    [SerializeField] public StateFlags currentStateFlag;
 
     public bool isAttacking;
     
