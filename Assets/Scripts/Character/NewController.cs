@@ -50,11 +50,11 @@ public class TopDownPlayerController : MonoBehaviour
 
     private void OnDash()
     {
-        if (isDashing || Time.deltaTime - lastDash < dashCooldown) return;
+        if (isDashing || Time.time - lastDash < dashCooldown) return;
 
         isDashing = true;
         dashTimer = dashDuration;
-        lastDash = Time.deltaTime;
+        lastDash = Time.time;
 
         dashDirection = moveDirection.normalized;
 
