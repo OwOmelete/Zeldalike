@@ -19,7 +19,7 @@ public class TopDownPlayerController : MonoBehaviour
     [Header("Dash Settings")] 
     public float dashDuration;
     public float dashSpeed;
-    
+    public float dashCooldown;
 
     [Header("References")]
     public Transform cameraTransform;
@@ -31,6 +31,7 @@ public class TopDownPlayerController : MonoBehaviour
 
     private float dashTimer = 0f;
     private Vector3 dashDirection;
+    private float lastDash;
     
     private bool isDashing = false;
     
@@ -49,10 +50,11 @@ public class TopDownPlayerController : MonoBehaviour
 
     private void OnDash()
     {
-        if (isDashing) return;
+        if (isDashing || Time.deltaTime - lastDash < dashCooldown) return;
 
         isDashing = true;
         dashTimer = dashDuration;
+        lastDash = Time.deltaTime;
 
         dashDirection = moveDirection.normalized;
 
