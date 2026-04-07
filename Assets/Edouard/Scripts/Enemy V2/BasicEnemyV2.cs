@@ -51,7 +51,7 @@ public class BasicEnemyV2 : MonoBehaviour
     [SerializeField] private GameObject detectorGameObject;
     [SerializeField] private Slider healthBar;
     [SerializeField] private Canvas enemyCanvas;
-    [SerializeField] private Image targetUI;
+    [SerializeField] public Image targetUI;
 
     private Transform playerTransform;
     private GameObject mainCamera;
@@ -72,7 +72,7 @@ public class BasicEnemyV2 : MonoBehaviour
 
     private void Update()
     {
-        enemyCanvas.transform.LookAt(mainCamera.transform);
+        //enemyCanvas.transform.LookAt(mainCamera.transform);
         if (currentHealthPoints == 0)
         {
             HandleEnemyState(StateFlags.DEATH);

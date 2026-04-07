@@ -101,7 +101,7 @@ public class InvoBehaviour : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Enemy enemy = other.GetComponent<Enemy>();
+            BasicEnemyV2 enemy = other.GetComponent<BasicEnemyV2>();
 
             if (enemy != null && Data.currentState == stateAttack)
             {
