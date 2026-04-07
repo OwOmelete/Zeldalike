@@ -73,7 +73,7 @@ public class BasicEnemyV2 : MonoBehaviour
     private void Update()
     {
         //enemyCanvas.transform.LookAt(mainCamera.transform);
-        if (currentHealthPoints == 0)
+        if (currentHealthPoints <= 0)
         {
             HandleEnemyState(StateFlags.DEATH);
         }
