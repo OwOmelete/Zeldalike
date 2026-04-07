@@ -38,7 +38,7 @@ public class StateAttack : IState
         if (owner.Data.direction != Vector3.zero && owner.Data.isMovingDirection)
         {
             //owner.transform.position += owner._InvoInstance.direction;
-            owner.Data.rb.MovePosition(owner.transform.position + owner.Data.direction);
+            SafeMove(owner.Data.direction);
         }
         else if (owner.Data.ennemyTarget == null)
         {
@@ -52,6 +52,32 @@ public class StateAttack : IState
         }
     }
 
+    
+    private void SafeMove(Vector3 direction)
+    {
+        Vector3 move = direction * (25 * Time.fixedDeltaTime);
+        float distance = move.magnitude;
+
+        Rigidbody rb = owner.Data.rb;
+
+        if (rb.SweepTest(direction, out RaycastHit hit, distance))
+        {
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
+            {
+                Vector3 safePosition =
+                    hit.point - direction * 0.05f;
+
+                rb.MovePosition(safePosition);
+
+                // Stop attaque au contact
+                owner.ChangeState(owner.stateDisabled);
+                return;
+            }
+            
+        }
+
+        rb.MovePosition(rb.position + move);
+    }
     public override void Exit()
     {
         owner.Data.rb.MovePosition(owner.transform.position);
@@ -59,5 +85,6 @@ public class StateAttack : IState
         owner.Data.isMovingDirection = false;
         owner.Data.rb.isKinematic = false;
         owner.Data.isMoving = true;
+        owner.Data.acceleration = owner._Invo.acceleration;
     }
 }

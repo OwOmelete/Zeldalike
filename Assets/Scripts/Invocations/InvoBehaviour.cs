@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class InvoBehaviour : MonoBehaviour
 {
+
+    public Renderer renderer1;
+    public Renderer renderer2;
     public InvoData _Invo;
     public InvoDataInstance Data;
     public Transform player;
@@ -104,14 +107,6 @@ public class InvoBehaviour : MonoBehaviour
             {
                 enemy.TakeDamage(Data.damage, attackID);
                 ChangeState(stateDisabled);
-            }
-        }
-        if (other.gameObject.CompareTag("Wall"))
-        {
-            if (Data.currentState == stateAttack)
-            {
-                ChangeState(stateDisabled);
-                StopCoroutine(attackDelay());
             }
         }
         if (other.gameObject.CompareTag("Player"))

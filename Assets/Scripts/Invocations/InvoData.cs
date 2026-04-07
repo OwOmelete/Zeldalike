@@ -7,7 +7,6 @@ public class InvoData : ScriptableObject
     public float acceleration;
     public float maxSpeed;
     public float maxDistance;
-    
 
     public InvoDataInstance Instance()
     {

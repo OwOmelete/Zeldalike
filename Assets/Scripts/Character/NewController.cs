@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -15,7 +16,9 @@ public class TopDownPlayerController : MonoBehaviour
     public float stickToGroundForce = 5f;
     public float slopeForce = 8f;
 
-
+    [Header("Dash Settings")] 
+    public float dashDuration;
+    public float dashSpeed;
     
 
     [Header("References")]
@@ -26,6 +29,11 @@ public class TopDownPlayerController : MonoBehaviour
     private Vector3 moveDirection;
     private Vector3 currentHorizontalVelocity;
 
+    private float dashTimer = 0f;
+    private Vector3 dashDirection;
+    
+    private bool isDashing = false;
+    
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -39,16 +47,36 @@ public class TopDownPlayerController : MonoBehaviour
         HandleMovement();
     }
 
+    private void OnDash()
+    {
+        if (isDashing) return;
+
+        isDashing = true;
+        dashTimer = dashDuration;
+
+        dashDirection = moveDirection.normalized;
+
+        if (dashDirection.magnitude < 0.1f)
+        {
+            dashDirection = transform.forward;
+        }
+    }
+    
     void HandleMovement()
     {
+        
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
         Vector3 input = new Vector3(horizontal, 0f, vertical).normalized;
+        
+        
 
         Vector3 camForward = cameraTransform.forward;
         Vector3 camRight = cameraTransform.right;
 
+        
+        
         camForward.y = 0f;
         camRight.y = 0f;
 
@@ -57,6 +85,18 @@ public class TopDownPlayerController : MonoBehaviour
 
         Vector3 targetDirection = (camForward * input.z + camRight * input.x).normalized;
 
+        if (isDashing)
+        {
+            dashTimer -= Time.deltaTime;
+
+            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
+
+            if (dashTimer <= 0f)
+                isDashing = false;
+
+            return;
+        }
+        
         if (targetDirection.magnitude > 0.1f)
         {
             moveDirection = Vector3.Lerp(

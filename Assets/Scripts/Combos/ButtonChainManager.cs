@@ -2,15 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ButtonChainManager : MonoBehaviour
 {
     [SerializeField]
     private patternButtonChain[] patterns;
 
+    [SerializeField] private Image[] images;
     [SerializeField] private int comboResetDelay;
 
     private bool isInCombo = false;
+    private bool isInPattern = true;
     
     private ButtonChainObject playerChain = new ButtonChainObject();
 
@@ -52,9 +55,17 @@ public class ButtonChainManager : MonoBehaviour
 
     private void verifyChain()
     {
-        foreach (var VARIABLE in playerChain.Directions)
+        if (playerChain.Directions.Count <= 3  && isInPattern)
         {
-            Debug.Log(VARIABLE);
+            if (playerChain.Directions[playerChain.Directions.Count - 1] ==
+                patterns[0].Directions[playerChain.Directions.Count - 1])
+            {
+                activateIcons(playerChain.Directions.Count - 1);
+            }
+        }
+        else
+        {
+            isInPattern = false;
         }
         
         
@@ -63,6 +74,7 @@ public class ButtonChainManager : MonoBehaviour
             if (AreListsEqual(playerChain.Directions, patterns[i].Directions))
             {
                 playerChain.Directions.Clear();
+                resetIcons();
                 isInCombo = false;
                 StopCoroutine(currentCoroutine);
                 OnPattern?.Invoke(patterns[i].name);
@@ -92,6 +104,21 @@ public class ButtonChainManager : MonoBehaviour
         yield return new WaitForSeconds(comboResetDelay);
         isInCombo = false;
         playerChain.Directions.Clear();
+        resetIcons();
     }
-    
+
+    private void activateIcons(int i)
+    {
+        images[i].color = Color.yellow;
+    }
+
+    private void resetIcons()
+    {
+        foreach (var VARIABLE in images)
+        {
+            VARIABLE.color = Color.white;
+        }
+
+        isInPattern = true;
+    }
 }
