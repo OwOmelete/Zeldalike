@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,6 +15,8 @@ public class InvoManager : MonoBehaviour
     private List<Enemy> enemiesInRange = new List<Enemy>();
     
     private Enemy lastEnemyLocked;
+
+    public MeshRenderer wave;
     
     
     
@@ -129,7 +132,15 @@ public class InvoManager : MonoBehaviour
 
     private void OnFireWave()
     {
+        StartCoroutine(waveTimer());
         FireWaveAction?.Invoke();
+    }
+
+    IEnumerator waveTimer()
+    {
+        wave.enabled = true;
+        yield return new WaitForSeconds(0.4f);
+        wave.enabled = false;
     }
     
     public int GetNewAttackID()
