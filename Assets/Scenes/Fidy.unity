@@ -34871,6 +34871,10 @@ PrefabInstance:
       propertyPath: moveSpeed
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 312630289878061654, guid: 59b4a1b19f3ba254296dc50b0954f1c5, type: 3}
+      propertyPath: m_TagString
+      value: EnemyZone
+      objectReference: {fileID: 0}
     - target: {fileID: 1057107925664152356, guid: 59b4a1b19f3ba254296dc50b0954f1c5, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 341
@@ -34962,7 +34966,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3576057880209323752, guid: 59b4a1b19f3ba254296dc50b0954f1c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1261951133}
   m_SourcePrefab: {fileID: 100100000, guid: 59b4a1b19f3ba254296dc50b0954f1c5, type: 3}
 --- !u!1 &793202302 stripped
 GameObject:
@@ -56263,6 +56270,24 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 100, y: 100, z: 100}
   m_Center: {x: 50.00006, y: 50, z: -50.000244}
+--- !u!1 &1261951128 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3576057880209323752, guid: 59b4a1b19f3ba254296dc50b0954f1c5, type: 3}
+  m_PrefabInstance: {fileID: 792432275}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1261951133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261951128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48488849be5127241acc20b56145709a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Billboard
+  mainCam: {fileID: 297841651}
 --- !u!4 &1265187611 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8956503536201551520, guid: b6d7509426ee8744f8ccd5b1b0feef9b, type: 3}
