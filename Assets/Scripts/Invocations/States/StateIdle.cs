@@ -23,6 +23,9 @@ public class StateIdle : IState
     {
         Vector3 dir = owner.Data.target.position + (owner.Data.target.rotation * owner.Data.offset)  - owner.transform.position;
         dir = new Vector3(dir.x, 0, dir.z);
+
+        if (dir.magnitude > owner._Invo.maxDistance)
+            owner.transform.position = owner.Data.target.position + (owner.Data.target.rotation * owner.Data.offset);
         
         movement(owner, dir);
     }

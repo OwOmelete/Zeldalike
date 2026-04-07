@@ -67,7 +67,7 @@ public class InvoManager : MonoBehaviour
         }
     }
     
-    private void OnShield(InputValue value)
+    /*private void OnShield(InputValue value)
     {
         List<InvoBehaviour> l = new();
         foreach (var invo in InvoList)
@@ -78,7 +78,7 @@ public class InvoManager : MonoBehaviour
             }
         }
         OnProtection?.Invoke(l);
-    }
+    }*/
 
     private void HandlePattern(string name)
     {
