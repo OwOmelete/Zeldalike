@@ -2,21 +2,20 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class BasicEnemy : MonoBehaviour
+public class BasicEnemyV1 : MonoBehaviour
 {
     #region Unity Variables
-    
+
     #region Stats
 
     [Header("Stats")]
     [SerializeField] private float maxHealthPoints;
     [SerializeField] private float currentHealthPoints;
-    
     [SerializeField] private int damagePoints;
-    
     [SerializeField] private int moveSpeed;
 
     #endregion
+
 
     #region StateFlags
 
@@ -27,27 +26,32 @@ public class BasicEnemy : MonoBehaviour
         ATTACKING,
         DEATH
     }
+
     [Header("StateFlags")]
-    [SerializeField] private  StateFlags currentStateFlag;
+    [SerializeField] private StateFlags currentStateFlag;
 
     #endregion
-    
-    #region Other
-    
-    [Header("Other")]
+
+
+    #region References
+
+    [Header("References")]
     [SerializeField] private GameObject detectorGameObject;
-    [SerializeField] private Slider healtBar;
+    [SerializeField] private Slider healthBar;
     [SerializeField] private Canvas enemyCanvas;
+    [SerializeField] private Image targetUI;
+
+    #endregion
+
+
+    #region Runtime
 
     private Transform playerTransform;
-
-    private GameObject camera;
-    
+    private GameObject mainCamera;
     private HashSet<int> receivedAttacks = new HashSet<int>();
-    public Image cible;
-    
+
     #endregion
-    
+
     #endregion
     
     private void Start()
@@ -56,12 +60,12 @@ public class BasicEnemy : MonoBehaviour
         HandleEnemyState(StateFlags.IDLE);
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         UpdateHealthBar();
-        camera = GameObject.FindGameObjectWithTag("MainCamera");
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
     private void Update()
     {
-        enemyCanvas.transform.LookAt(camera.transform);
+        enemyCanvas.transform.LookAt(mainCamera.transform);
         if (currentHealthPoints == 0)
         {
             HandleEnemyState(StateFlags.DEATH);
@@ -89,15 +93,12 @@ public class BasicEnemy : MonoBehaviour
 
     private void UpdateHealthBar()
     {
-        healtBar.value = currentHealthPoints / maxHealthPoints;
+        healthBar.value = currentHealthPoints / maxHealthPoints;
     }
 
     public void TakeDamage(float damage, int attackID)
     {
-        if (receivedAttacks.Contains(attackID))
-        {
-            return;
-        }
+        if (receivedAttacks.Contains(attackID)) {return;}
 
         receivedAttacks.Add(attackID);
 
