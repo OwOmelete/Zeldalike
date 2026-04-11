@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class BasicEnemyV2 : MonoBehaviour
+public class BasicEnemyV2 : MonoBehaviour, IDamagable
 {
     #region Unity Variables
 
@@ -103,26 +103,7 @@ public class BasicEnemyV2 : MonoBehaviour
     {
         healthBar.value = currentHealthPoints / maxHealthPoints;
     }
-
-    public void TakeDamage(float damage, int attackID)
-    {
-        if (receivedAttacks.Contains(attackID)) {return;}
-
-        receivedAttacks.Add(attackID);
-
-        currentHealthPoints -= damage;
-
-        if (currentHealthPoints <= 0)
-        {
-            HandleEnemyState(StateFlags.DEATH);
-        }
-        else
-        {
-            UpdateHealthBar();
-        }
-        Debug.Log($"Enemy took {damage} damage");
-    }
-
+    
     public void HandleEnemyState(StateFlags state)
     {
         if (currentStateFlag == state) return;
@@ -173,5 +154,23 @@ public class BasicEnemyV2 : MonoBehaviour
         
         isAttacking = false;
     }
-    
+
+    public void TakeDamage(float damage, int attackID)
+    {
+        if (receivedAttacks.Contains(attackID)) {return;}
+
+        receivedAttacks.Add(attackID);
+
+        currentHealthPoints -= damage;
+
+        if (currentHealthPoints <= 0)
+        {
+            HandleEnemyState(StateFlags.DEATH);
+        }
+        else
+        {
+            UpdateHealthBar();
+        }
+        Debug.Log($"Enemy took {damage} damage");
+    }
 }
