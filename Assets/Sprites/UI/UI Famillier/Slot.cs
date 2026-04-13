@@ -3,8 +3,6 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class Slot : MonoBehaviour,
-    IPointerEnterHandler,
-    IPointerExitHandler,
     ISelectHandler,
     IDeselectHandler
 {
@@ -57,16 +55,6 @@ public class Slot : MonoBehaviour,
         else if (h <= 6) humeur.sprite = famillier.humeurSprite[1];
         else if (h <= 9) humeur.sprite = famillier.humeurSprite[2];
         else humeur.sprite = famillier.humeurSprite[3];
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        inventoryManager?.ShowToolTip(currentfamillier, this);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        inventoryManager?.HideToolTip();
     }
 
     public void OnSelect(BaseEventData eventData)

@@ -51,10 +51,6 @@ public class SlotManager : MonoBehaviour
             AddRandomFamilliers(1);
         }
     }
-
-    // =========================
-    // CREATE
-    // =========================
     void CreateSlots()
     {
         int count = 0;
@@ -71,8 +67,10 @@ public class SlotManager : MonoBehaviour
 
                 slots.Add(slot);
 
-                if (count < testFamilliers.Length)
-                    slot.SetFamillier(testFamilliers[count]);
+                //if (count < testFamilliers.Length)
+                // slot.SetFamillier(testFamilliers[count]);
+
+                //Au chargement je peux charger mes famillier stocker dans mes player pref ici
 
                 count++;
 
@@ -86,10 +84,6 @@ public class SlotManager : MonoBehaviour
             slotPosition.y -= slotOffset + 30;
         }
     }
-
-    // =========================
-    // RANDOM ADD
-    // =========================
     public void AddRandomFamilliers(int amount)
 {
     if (testFamilliers == null || testFamilliers.Length == 0)
@@ -99,14 +93,15 @@ public class SlotManager : MonoBehaviour
     {
         FamillierData random = testFamilliers[Random.Range(0, testFamilliers.Length)];
 
-        AddFamillier(random); // 👈 ici étape 3 est utilisée indirectement
+        AddFamillier(random); 
     }
 }
 
    public void AddFamillier(FamillierData famillier)
 {
     FamillierData newFamillier = Instantiate(famillier);
-    newFamillier.humeur = 0; // 👈 reset ici
+    newFamillier.humeur = 0; 
+    //Il faudrait mettre les famillier dans une liste pour enregistrer plus facilement apres
 
     foreach (Slot s in slots)
     {
@@ -125,9 +120,6 @@ public FamillierData CreateRuntimeFamillier(FamillierData baseData)
     instance.humeur = 0;
     return instance;
 }
-    // =========================
-    // SCROLL
-    // =========================
     void HandleScroll()
     {
         if (!isMoving) return;
@@ -144,7 +136,6 @@ public FamillierData CreateRuntimeFamillier(FamillierData baseData)
             isMoving = false;
         }
     }
-
     public void OnSlotSelected(int slotId)
     {
         int row = (slotId - 1) / RowsCount;
@@ -156,10 +147,6 @@ public FamillierData CreateRuntimeFamillier(FamillierData baseData)
 
         isMoving = true;
     }
-
-    // =========================
-    // NAVIGATION
-    // =========================
     void SetupNavigation()
     {
         for (int i = 0; i < slots.Count; i++)
