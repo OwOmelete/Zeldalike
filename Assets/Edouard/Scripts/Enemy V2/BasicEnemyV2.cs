@@ -39,7 +39,6 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
     #region Timers
 
     [Header("Timers")]
-    [SerializeField] private float attackCooldown;
     [SerializeField] private float attackPreparationCooldown;
 
     #endregion
@@ -124,6 +123,7 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position,
             playerTransform.position, moveSpeed * Time.deltaTime);
         gameObject.transform.LookAt(playerTransform);
+        GlobalEvents.EnemyMove();
     }
     private void AttackingBehavior()
     {
@@ -148,9 +148,9 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
         attackZone.SetActive(false);
 
         Debug.Log("Attacking");
-
-        yield return new WaitForSeconds(attackCooldown);
-        Debug.Log("Attack cooldown ended");
+        GlobalEvents.EnemyAttack();
+        
+        yield return new  WaitForSeconds(0.8f); //replacing animation
         
         isAttacking = false;
     }
