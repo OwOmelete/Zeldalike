@@ -62,6 +62,10 @@ public class ButtonChainManager : MonoBehaviour
             {
                 activateIcons(playerChain.Directions.Count - 1);
             }
+            else
+            {
+                isInPattern = false;
+            }
         }
         else
         {
@@ -74,7 +78,7 @@ public class ButtonChainManager : MonoBehaviour
             if (AreListsEqual(playerChain.Directions, patterns[i].Directions))
             {
                 playerChain.Directions.Clear();
-                resetIcons();
+                StartCoroutine(resetIconsTimer());
                 isInCombo = false;
                 StopCoroutine(currentCoroutine);
                 OnPattern?.Invoke(patterns[i].name);
@@ -107,6 +111,12 @@ public class ButtonChainManager : MonoBehaviour
         resetIcons();
     }
 
+    IEnumerator resetIconsTimer()
+    {
+        yield return new WaitForSeconds(0.7f);
+        resetIcons();
+    }
+    
     private void activateIcons(int i)
     {
         images[i].color = Color.yellow;
