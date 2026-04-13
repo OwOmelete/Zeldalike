@@ -7,28 +7,46 @@ public class PlayerHealthComponent : MonoBehaviour
     private float currentHealth;
     private float maxHealth;
     private bool isHealthRegenRunning;
-    private bool isBeenHitRecently;
+
+    private Coroutine regenCoroutine;
+    private Coroutine regenDelayCoroutine;
 
     private void Start()
     {
         currentHealth = maxHealth;
         isHealthRegenRunning = false;
-        isBeenHitRecently = false;
     }
 
-    private void Update()
+    public void TakeDamage(float damage)
     {
-        if (isBeenHitRecently)
+        currentHealth -= damage;
+
+        if (currentHealth < 0f)
+            currentHealth = 0f;
+
+        if (regenCoroutine != null)
         {
-            if (currentHealth < maxHealth)
-            {
-                isHealthRegenRunning = true;
-                StartCoroutine(Regen());
-            }
+            StopCoroutine(regenCoroutine);
+            regenCoroutine = null;
+            isHealthRegenRunning = false;
         }
-        else
+
+        if (regenDelayCoroutine != null)
         {
-            StopCoroutine(Regen());
+            StopCoroutine(regenDelayCoroutine);
+        }
+
+        regenDelayCoroutine = StartCoroutine(RegenDelay());
+    }
+
+    private IEnumerator RegenDelay()
+    {
+        yield return new WaitForSeconds(10f);
+
+        if (currentHealth < maxHealth && !isHealthRegenRunning)
+        {
+            regenCoroutine = StartCoroutine(Regen());
+            isHealthRegenRunning = true;
         }
     }
 
@@ -39,6 +57,8 @@ public class PlayerHealthComponent : MonoBehaviour
             currentHealth++;
             yield return new WaitForSeconds(0.3f);
         }
+
         isHealthRegenRunning = false;
+        regenCoroutine = null;
     }
 }
