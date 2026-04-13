@@ -4,40 +4,41 @@ using UnityEngine;
 
 public class PlayerHealthComponent : MonoBehaviour
 {
-    private static float currentHealth;
+    private float currentHealth;
     private float maxHealth;
+    private bool isHealthRegenRunning;
+    private bool isBeenHitRecently;
 
     private void Start()
     {
         currentHealth = maxHealth;
+        isHealthRegenRunning = false;
+        isBeenHitRecently = false;
     }
 
     private void Update()
     {
-        if (currentHealth != maxHealth)
+        if (isBeenHitRecently)
         {
-            StartCoroutine(RegenHealth());
+            if (currentHealth < maxHealth)
+            {
+                isHealthRegenRunning = true;
+                StartCoroutine(Regen());
+            }
         }
-
-        if (currentHealth <= 0)
+        else
         {
-            Debug.Log("Game Over");
+            StopCoroutine(Regen());
         }
     }
 
-    public static void PlayerTakeDamage(float amount)
+    private IEnumerator Regen()
     {
-        currentHealth -= amount;
-        
-    }
-    
-    private IEnumerator RegenHealth()
-    {
-        yield return new WaitForSeconds(10);
-        
-        while (currentHealth != maxHealth)
+        while (currentHealth < maxHealth)
         {
             currentHealth++;
+            yield return new WaitForSeconds(0.3f);
         }
+        isHealthRegenRunning = false;
     }
 }

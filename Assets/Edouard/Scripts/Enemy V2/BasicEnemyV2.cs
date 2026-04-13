@@ -146,7 +146,7 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
 
         Debug.Log("Attacking");
         GlobalEvents.EnemyAttack(); //Attack sound WIP
-        PlayerHealthComponent.PlayerTakeDamage(damagePoints);
+        //PlayerHealthComponent.PlayerTakeDamage(damagePoints);
         
         yield return new  WaitForSeconds(0.8f); //TODO: replace with animation
         
