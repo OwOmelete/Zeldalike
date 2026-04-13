@@ -22,6 +22,8 @@ public class uiManager : MonoBehaviour
     public GameObject ParentOption;
     public GameObject ParentQuiter;
     public Animator Joystick;
+    public Animator fond;
+    public NavigationMenuStart navigationMenuStart;
 
     public float sliderSpeed = 2f;
 
@@ -35,13 +37,15 @@ public class uiManager : MonoBehaviour
 
     void Update()
     {
-        if (Gamepad.current == null) return;
+      
+             if (Gamepad.current == null) return;
 
         if (Gamepad.current.startButton.wasPressedThisFrame)
         {
-            TogglePauseMenu();
+            TogglePauseMenuwithStart();
         }
-
+  if (UiPauseMenu.activeSelf == true)
+        {
         Vector2 leftStick = Gamepad.current.leftStick.ReadValue();
 
         if (leftStick.magnitude < 0.1f)
@@ -86,6 +90,8 @@ public class uiManager : MonoBehaviour
 
         CheckSliderAction();
     }
+        }
+       
 
     // =========================
     // SLIDERS
@@ -163,21 +169,22 @@ public class uiManager : MonoBehaviour
         if (actionName=="Options")
         {
             ParentOption.SetActive(true);
-            Joystick.SetTrigger("Option");
+            Joystick.Play("JoystickOption");
         }
          if (actionName=="Quitter")
         {
             ParentQuiter.SetActive(true);
-            Joystick.SetTrigger("Quiter");
+            navigationMenuStart.OnSetActive();
+            Joystick.Play("JoystickQuiter");
         }
          if (actionName=="Famillier")
         {
             ParentFamillier.SetActive(true);
-            Joystick.SetTrigger("Famillier");
+            Joystick.Play("JoystickFamillier");
         }
          if (actionName=="Reprendre")
         {
-            Joystick.SetTrigger("Reprendre");
+            Joystick.Play("JoystickReprendre");
         }
         yield return CloseMenu();
 
@@ -194,8 +201,10 @@ public class uiManager : MonoBehaviour
         {
             OpenMenu();
             stickImage.enabled = true;
+            fond.SetTrigger("Open");
+            Joystick.SetTrigger("Open");
+
             
-        Joystick.SetTrigger("Open");
         }
         else
         {
@@ -206,6 +215,7 @@ public class uiManager : MonoBehaviour
     void OpenMenu()
     {
         UiPauseMenu.SetActive(true);
+        
 
         foreach (Animator anim in animators)
         {
@@ -214,15 +224,35 @@ public class uiManager : MonoBehaviour
 
         ResetAllSliders();
     }
+    
+    public void TogglePauseMenuwithStart()
+    {
+        if (!UiPauseMenu.activeSelf)
+        {
+            OpenMenu();
+            Joystick.Play("JoystickReprendre 0");
+            
+            stickImage.enabled = true;
+            fond.SetTrigger("Open");
+            
+        }
+        else
+        {
+            StartCoroutine(CloseMenu());
+        }
+    }
+
+ 
 
     IEnumerator CloseMenu()
     {
+        fond.SetTrigger("Close");
         foreach (Animator anim in animators)
         {
             anim.Play("AnimUiclose");
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.1f);
 
         UiPauseMenu.SetActive(false);
         stickImage.enabled = false;

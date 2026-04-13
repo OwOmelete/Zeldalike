@@ -17,6 +17,10 @@ public class NavigationMenuStart : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(boutons[0]);
         }
     }
+    public void OnSetActive()
+    {
+        EventSystem.current.SetSelectedGameObject(boutons[0]);
+    }
 
     void SetupNavigation()
     {
