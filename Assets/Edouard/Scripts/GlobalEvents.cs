@@ -24,6 +24,13 @@ public static class GlobalEvents
     {
         OnPauseButtonPressed?.Invoke();
     }
+    
+    public static event Action OnPauseSelecting;
+
+    public static void PauseSelecting(int mood)
+    {
+        OnPauseSelecting?.Invoke(/*mood.ToString()*/);
+    }
 
     #endregion
 

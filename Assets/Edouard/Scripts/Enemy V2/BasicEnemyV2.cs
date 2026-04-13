@@ -114,12 +114,10 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
     #region Behaviours
     private void IdleBehavior()
     {
-        //Debug.Log("Current behaviour is idle");
     }
 
     private void ChasingBehavior()
     {
-        //Debug.Log("Current behaviour is chasing");
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position,
             playerTransform.position, moveSpeed * Time.deltaTime);
         gameObject.transform.LookAt(playerTransform);
@@ -133,7 +131,6 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
 
     private void DeathBehavior()
     {
-        //Debug.Log("Current behaviour is death");
         Destroy(gameObject);
     }
     #endregion
@@ -148,9 +145,10 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
         attackZone.SetActive(false);
 
         Debug.Log("Attacking");
-        GlobalEvents.EnemyAttack();
+        GlobalEvents.EnemyAttack(); //Attack sound WIP
+        PlayerHealthComponent.PlayerTakeDamage(damagePoints);
         
-        yield return new  WaitForSeconds(0.8f); //replacing animation
+        yield return new  WaitForSeconds(0.8f); //TODO: replace with animation
         
         isAttacking = false;
     }
