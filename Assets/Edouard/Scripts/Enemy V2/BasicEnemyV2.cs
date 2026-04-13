@@ -17,7 +17,6 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
 
     #endregion
 
-
     #region StateFlags
 
     public enum StateFlags
@@ -32,9 +31,8 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
     [SerializeField] public StateFlags currentStateFlag;
 
     public bool isAttacking;
-    
-    #endregion
 
+    #endregion
 
     #region Timers
 
@@ -42,7 +40,6 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
     [SerializeField] private float attackPreparationCooldown;
 
     #endregion
-
 
     #region Other
 
@@ -54,26 +51,29 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
     public Image targetUI;
 
     private Transform playerTransform;
-    private GameObject mainCamera;
+    private Transform cameraTransform;
     private HashSet<int> receivedAttacks = new HashSet<int>();
 
     #endregion
 
     #endregion
-    
+
     private void Start()
     {
         currentHealthPoints = maxHealthPoints;
         HandleEnemyState(StateFlags.IDLE);
+
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        cameraTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
+
         UpdateHealthBar();
-        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
     private void Update()
     {
-        //enemyCanvas.transform.LookAt(mainCamera.transform);
-        if (currentHealthPoints <= 0)
+        // enemyCanvas.transform.LookAt(cameraTransform);
+
+        if (currentHealthPoints <= 0f)
         {
             HandleEnemyState(StateFlags.DEATH);
         }
@@ -81,17 +81,21 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
         {
             UpdateHealthBar();
         }
+
         switch (currentStateFlag)
         {
             case StateFlags.IDLE:
                 IdleBehavior();
                 break;
+
             case StateFlags.CHASING:
                 ChasingBehavior();
                 break;
+
             case StateFlags.ATTACKING:
                 AttackingBehavior();
                 break;
+
             case StateFlags.DEATH:
                 DeathBehavior();
                 break;
@@ -102,60 +106,73 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
     {
         healthBar.value = currentHealthPoints / maxHealthPoints;
     }
-    
+
     public void HandleEnemyState(StateFlags state)
     {
         if (currentStateFlag == state) return;
-        
+
         currentStateFlag = state;
         Debug.Log($"Changed state to {state}");
     }
 
     #region Behaviours
+
     private void IdleBehavior()
     {
     }
 
     private void ChasingBehavior()
     {
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position,
-            playerTransform.position, moveSpeed * Time.deltaTime);
-        gameObject.transform.LookAt(playerTransform);
+        Vector3 targetPosition = playerTransform.position;
+
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            targetPosition,
+            moveSpeed * Time.deltaTime
+        );
+
+        transform.LookAt(targetPosition);
+
         GlobalEvents.EnemyMove();
     }
+
     private void AttackingBehavior()
     {
         if (!isAttacking)
+        {
             StartCoroutine(AttackRoutine());
+        }
     }
 
     private void DeathBehavior()
     {
         Destroy(gameObject);
     }
+
     #endregion
 
     private IEnumerator AttackRoutine()
     {
         isAttacking = true;
-        
+
         Debug.Log("Preparing attack...");
         attackZone.SetActive(true);
+
         yield return new WaitForSeconds(attackPreparationCooldown);
+
         attackZone.SetActive(false);
 
         Debug.Log("Attacking");
-        GlobalEvents.EnemyAttack(); //Attack sound WIP
-        //PlayerHealthComponent.PlayerTakeDamage(damagePoints);
-        
-        yield return new  WaitForSeconds(0.8f); //TODO: replace with animation
-        
+        GlobalEvents.EnemyAttack();
+
+        yield return new WaitForSeconds(0.8f);
+
         isAttacking = false;
     }
 
     public void TakeDamage(float damage, int attackID)
     {
-        if (receivedAttacks.Contains(attackID)) {return;}
+        if (receivedAttacks.Contains(attackID)) { return; }
 
         receivedAttacks.Add(attackID);
 
