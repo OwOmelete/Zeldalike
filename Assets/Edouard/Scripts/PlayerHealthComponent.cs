@@ -12,7 +12,7 @@ public class PlayerHealthComponent : MonoBehaviour
     private Coroutine regenCoroutine;
     private Coroutine regenDelayCoroutine;
     
-    //[SerializeField] private Material IceScreenShader;   
+    [SerializeField] private Material IceScreenShader;   
 
     private void Start()
     {
@@ -20,9 +20,12 @@ public class PlayerHealthComponent : MonoBehaviour
         isHealthRegenRunning = false;
     }
 
-    /*private void Update()
+    private void Update()
     {
-    }*/
+        var color = IceScreenShader.color;
+        color.a = currentHealth / maxHealth;
+        IceScreenShader.color = color;
+    }
 
     public void TakeDamage(float damage)
     {
