@@ -9,8 +9,10 @@ public class DeathZone : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
+        
         if (other.CompareTag("Player"))
         {
+            Debug.Log("coucou");
             OnFall?.Invoke(respawnPoint);
         }
     }

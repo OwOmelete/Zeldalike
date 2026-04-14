@@ -19,8 +19,8 @@ public class InvoManager : MonoBehaviour
     private Transform lastEnemyLocked;
 
     public MeshRenderer wave;
-    
-    
+
+    public CharacterController Controller;
     
     public static event Action<List<InvoBehaviour>> OnAttackAction;
     public static event Action<List<InvoBehaviour>> OnProtection;
@@ -65,7 +65,9 @@ public class InvoManager : MonoBehaviour
     
     private void Fall(Transform t)
     {
+        Controller.enabled = false;
         transform.position = t.position;
+        Controller.enabled = true;
         foreach (var invo in InvoList)
         {
             invo.resetPosition();
