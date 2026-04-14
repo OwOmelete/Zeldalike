@@ -23,7 +23,6 @@ public class uiManager : MonoBehaviour
     public GameObject ParentQuiter;
     public Animator Joystick;
     public Animator fond;
-    public NavigationMenuStart navigationMenuStart;
 
     public float sliderSpeed = 2f;
 
@@ -100,23 +99,23 @@ public class uiManager : MonoBehaviour
     void IncreaseSlider(Slider target)
     {
         // Augmente le bon slider
-        target.value += Time.deltaTime * sliderSpeed;
+        target.value += Time.unscaledDeltaTime * sliderSpeed;
 
         // Diminue les autres
-        if (target != reprendre) reprendre.value -= Time.deltaTime * sliderSpeed;
-        if (target != option) option.value -= Time.deltaTime * sliderSpeed;
-        if (target != quiter) quiter.value -= Time.deltaTime * sliderSpeed;
-        if (target != famillier) famillier.value -= Time.deltaTime * sliderSpeed;
+        if (target != reprendre) reprendre.value -= Time.unscaledDeltaTime * sliderSpeed;
+        if (target != option) option.value -= Time.unscaledDeltaTime * sliderSpeed;
+        if (target != quiter) quiter.value -= Time.unscaledDeltaTime * sliderSpeed;
+        if (target != famillier) famillier.value -= Time.unscaledDeltaTime * sliderSpeed;
 
         ClampAll();
     }
 
     void DecreaseAllSliders()
     {
-        reprendre.value -= Time.deltaTime * sliderSpeed;
-        option.value -= Time.deltaTime * sliderSpeed;
-        quiter.value -= Time.deltaTime * sliderSpeed;
-        famillier.value -= Time.deltaTime * sliderSpeed;
+        reprendre.value -= Time.unscaledDeltaTime * sliderSpeed;
+        option.value -= Time.unscaledDeltaTime * sliderSpeed;
+        quiter.value -= Time.unscaledDeltaTime * sliderSpeed;
+        famillier.value -= Time.unscaledDeltaTime * sliderSpeed;
 
         ClampAll();
     }
@@ -174,7 +173,6 @@ public class uiManager : MonoBehaviour
          if (actionName=="Quitter")
         {
             ParentQuiter.SetActive(true);
-            navigationMenuStart.OnSetActive();
             Joystick.Play("JoystickQuiter");
         }
          if (actionName=="Famillier")
@@ -214,6 +212,8 @@ public class uiManager : MonoBehaviour
 
     void OpenMenu()
     {
+        Time.timeScale = 0;
+        
         UiPauseMenu.SetActive(true);
         
 
@@ -252,7 +252,9 @@ public class uiManager : MonoBehaviour
             anim.Play("AnimUiclose");
         }
 
-        yield return new WaitForSeconds(1.1f);
+        yield return new WaitForSecondsRealtime(1f);
+
+        Time.timeScale = 1;
 
         UiPauseMenu.SetActive(false);
         stickImage.enabled = false;
