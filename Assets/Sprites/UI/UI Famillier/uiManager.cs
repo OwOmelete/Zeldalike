@@ -23,6 +23,7 @@ public class uiManager : MonoBehaviour
     public GameObject ParentQuiter;
     public Animator Joystick;
     public Animator fond;
+    public NavigationMenuStart navigationMenuStart;
 
     public float sliderSpeed = 2f;
 
@@ -173,6 +174,7 @@ public class uiManager : MonoBehaviour
          if (actionName=="Quitter")
         {
             ParentQuiter.SetActive(true);
+            navigationMenuStart.OnSetActive();
             Joystick.Play("JoystickQuiter");
         }
          if (actionName=="Famillier")
