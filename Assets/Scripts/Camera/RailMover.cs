@@ -13,7 +13,7 @@ public class RailMover : MonoBehaviour
     public Rail rail;
     public Transform lookAt;
     public bool smoothMove = true;
-    public float moveSpeed = 5f;
+    public float lerpSpeed = 5f;
     public int maxRotation = 45;
     public int minRotation = 45;
 
@@ -57,12 +57,10 @@ public class RailMover : MonoBehaviour
                 UpdateFixed();
                 break;
         }
-
-        // Rotation fluide
+        
         Vector3 lookTarget = GetLookTarget();
         targetRotation = Quaternion.LookRotation(lookTarget - thisTransform.position);
-
-        // Clamp rotation X
+        
         Vector3 euler = targetRotation.eulerAngles;
         euler.x = Mathf.Clamp(euler.x > 180 ? euler.x - 360 : euler.x, -minRotation, maxRotation);
         targetRotation = Quaternion.Euler(euler);
@@ -78,7 +76,7 @@ public class RailMover : MonoBehaviour
 
         if (smoothMove)
         {
-            lastRailPosition = Vector3.Lerp(lastRailPosition, railPos, Time.deltaTime * moveSpeed);
+            lastRailPosition = Vector3.Lerp(lastRailPosition, railPos, Time.deltaTime * lerpSpeed);
             thisTransform.position = lastRailPosition;
         }
         else
