@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 4983104941721621871}
   - component: {fileID: 3503408809389679458}
   - component: {fileID: 7757381535292343697}
+  - component: {fileID: -7777725538217967254}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -239,6 +240,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
+  target: {fileID: 0}
   wave: {fileID: 4245628959529136858}
 --- !u!114 &4366930612459446604
 MonoBehaviour:
@@ -342,7 +344,22 @@ MonoBehaviour:
   slopeForce: 8
   dashDuration: 0.2
   dashSpeed: 15
+  dashCooldown: 0
   cameraTransform: {fileID: 0}
+--- !u!114 &-7777725538217967254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296223003020906809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 980e70ee4fe03824db421c7468aab401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthComponent
+  currentHealth: 0
+  maxHealth: 100
 --- !u!1 &581819563829318607
 GameObject:
   m_ObjectHideFlags: 0

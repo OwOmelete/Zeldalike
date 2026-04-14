@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerHealthComponent : MonoBehaviour
 {
-    private float currentHealth;
-    private float maxHealth;
+    [SerializeField] private float currentHealth;
+    [SerializeField] private float maxHealth;
     private bool isHealthRegenRunning;
 
     private Coroutine regenCoroutine;

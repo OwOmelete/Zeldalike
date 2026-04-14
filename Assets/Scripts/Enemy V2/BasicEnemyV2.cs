@@ -53,6 +53,7 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
     private Transform playerTransform;
     private Transform cameraTransform;
     private HashSet<int> receivedAttacks = new HashSet<int>();
+    private PlayerHealthComponent playerHealthComponentRef;
 
     #endregion
 
@@ -65,6 +66,7 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
 
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         cameraTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        playerHealthComponentRef = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealthComponent>();
 
         UpdateHealthBar();
     }
@@ -164,6 +166,7 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
 
         Debug.Log("Attacking");
         GlobalEvents.EnemyAttack();
+        playerHealthComponentRef.TakeDamage(damagePoints);
 
         yield return new WaitForSeconds(0.8f);
 
