@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealthComponent : MonoBehaviour
 {
@@ -10,12 +11,18 @@ public class PlayerHealthComponent : MonoBehaviour
 
     private Coroutine regenCoroutine;
     private Coroutine regenDelayCoroutine;
+    
+    //[SerializeField] private Material IceScreenShader;   
 
     private void Start()
     {
         currentHealth = maxHealth;
         isHealthRegenRunning = false;
     }
+
+    /*private void Update()
+    {
+    }*/
 
     public void TakeDamage(float damage)
     {
