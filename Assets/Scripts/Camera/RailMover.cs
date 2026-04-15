@@ -38,6 +38,8 @@ public class RailMover : MonoBehaviour
     private Vector3 lastRailPosition;
     private Quaternion targetRotation;
 
+    public Quaternion fixedTargetRotation;
+    
     void Start()
     {
         thisTransform = transform;
@@ -83,6 +85,10 @@ public class RailMover : MonoBehaviour
         
         targetRotation = Quaternion.Euler(euler);
 
+        if (currentMode == CameraMode.Fixed)
+        {
+            targetRotation = fixedTargetRotation;
+        }
         
         
         thisTransform.rotation = Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * followSpeed);
