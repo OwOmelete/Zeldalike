@@ -101,11 +101,11 @@ public class InvoBehaviour : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            IDamagable damagable = other.GetComponent<IDamagable>();
+            BasicEnemyV2 enemy = other.GetComponent<BasicEnemyV2>();
 
-            if (damagable != null && Data.currentState == stateAttack)
+            if (enemy != null && Data.currentState == stateAttack)
             {
-                damagable.TakeDamage(Data.damage, attackID);
+                enemy.TakeDamage(Data.damage, attackID);
                 ChangeState(stateDisabled);
             }
         }
