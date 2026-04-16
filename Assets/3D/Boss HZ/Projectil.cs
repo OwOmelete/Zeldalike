@@ -28,6 +28,7 @@ public class Projectile : MonoBehaviour
 
 
             Destroy(gameObject);
+            Destroy(other.gameObject);
         }
 
         // Si tu veux aussi détruire sur les murs

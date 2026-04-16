@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class BossManager : MonoBehaviour
 {
-    public int healPoint;
-    public int maxHealPoint;
+    public float currentHeal;
+    public float maxHealPoint;
+    public Slider HealBarre;
+    public Image cible;
 
     public float vitesseAttaque;
     public int attaque;
@@ -21,6 +24,7 @@ public class BossManager : MonoBehaviour
 
     public bool FightStarted;
     private bool isAttacking;
+    private int StalactiteCount;
 
     public SphereCollider zoneChasse;
     public GameObject player;
@@ -31,11 +35,13 @@ public GameObject projectilePrefab;
 public GameObject murGlacePrefab;
 
 public LayerMask playerLayer;
+    private HashSet<int> receivedAttacks = new HashSet<int>();
+
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        healPoint = maxHealPoint;
+        currentHeal = maxHealPoint;
     }
 
    void Update()
@@ -68,6 +74,8 @@ public LayerMask playerLayer;
         // ATTACK LIST
         List<System.Action> attaquesPossibles = new List<System.Action>();
 
+        StalactiteCount = GameObject.FindGameObjectsWithTag("Stalactite").Length;
+
         if (distance <= porteeAttaqueBase)
             attaquesPossibles.Add(AttaqueBase);
 
@@ -77,7 +85,7 @@ public LayerMask playerLayer;
         if (distance <= porteeAttaqueSpe2)
             attaquesPossibles.Add(AttaqueSpe2);
 
-        if (GameObject.FindGameObjectsWithTag("Stalactite").Length > 0)
+        if ( StalactiteCount > 0)
             attaquesPossibles.Add(AttaqueSpe3);
 
         Debug.Log($"[AI] Attaques possibles: {attaquesPossibles.Count}");
@@ -92,7 +100,42 @@ public LayerMask playerLayer;
             HandleMovement();
         }
     }
+      private void UpdateHealthBar()
+{
+    HealBarre.value = (float)currentHeal / (float)maxHealPoint;
+}
 
+public void TakeDamage(float damage, int attackID)
+{
+    if (receivedAttacks.Contains(attackID)) return;
+
+    receivedAttacks.Add(attackID);
+    StartCoroutine(ClearAttackID(attackID));
+
+    currentHeal -= damage;
+
+    if (currentHeal <= 0)
+    {
+        Die();
+    }
+    else
+    {
+        UpdateHealthBar();
+    }
+
+    Debug.Log($"Enemy took {damage} damage");
+}
+
+IEnumerator ClearAttackID(int id)
+{
+    yield return new WaitForSeconds(0.5f);
+    receivedAttacks.Remove(id);
+}
+
+private void Die()
+{
+    Destroy(gameObject);
+}
     // ---------------- MOVEMENT LOGIC ----------------
 
     void HandleMovement()
@@ -105,17 +148,15 @@ public LayerMask playerLayer;
             ? Vector3.Distance(transform.position, closestStalactite.transform.position)
             : Mathf.Infinity;
 
-        Debug.Log($"[DIST] Player: {playerDist} | Stalactite: {stalDist}");
 
         // règle : joueur prioritaire si plus proche que danger environnemental
-        if (closestStalactite != null && playerDist > stalDist)
+        if (closestStalactite != null && playerDist*(StalactiteCount*0.2)-stalDist > 0)
         {
             Debug.Log("[MOVE] Spe3 (interaction environnement)");
             AttaqueSpe4(closestStalactite);
         }
         else
         {
-            Debug.Log("[MOVE] Player move");
             DeplacementVersJoueur();
         }
     }
@@ -148,6 +189,7 @@ public LayerMask playerLayer;
         if (other.CompareTag("Player"))
         {
             FightStarted = true;
+            cible.enabled=true;
             Debug.Log("Combat commencé !");
         }
     }
@@ -338,12 +380,19 @@ IEnumerator AttaqueSpe4Routine(GameObject closest)
         yield break;
     }
 
-    while (Vector3.Distance(transform.position, closest.transform.position) > 1f)
+   while (Vector3.Distance(transform.position, closest.transform.position) > 1f)
+{
+    if (closest == null)
     {
-        Vector3 dir = (closest.transform.position - transform.position).normalized;
-        transform.position += dir * speed * Time.deltaTime;
-        yield return null;
+        isAttacking = false;
+        yield break;
     }
+
+    Vector3 dir = (closest.transform.position - transform.position).normalized;
+    transform.position += dir * speed * Time.deltaTime;
+
+    yield return null;
+}
 
     Destroy(closest);
 
