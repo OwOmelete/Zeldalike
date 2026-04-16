@@ -122,7 +122,7 @@ public class RailMover : MonoBehaviour
         if (distanceToRail < railBlendDistance)
         {
             float t = 1f - (distanceToRail / railBlendDistance);
-            Vector3 blendedPos = Vector3.Lerp(targetPos, railPos, t);
+            Vector3 blendedPos = Vector3.Lerp(targetPos, railPos, t * CameraTransitionSpeed);
             thisTransform.position = Vector3.Lerp(thisTransform.position, blendedPos, Time.deltaTime * followSpeed);
         }
         else
