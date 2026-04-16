@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class BossManager : MonoBehaviour
+public class BossManager : MonoBehaviour, IDamagable
 {
     public float currentHeal;
     public float maxHealPoint;

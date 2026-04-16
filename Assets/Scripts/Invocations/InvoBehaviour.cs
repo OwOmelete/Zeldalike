@@ -99,7 +99,7 @@ public class InvoBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Boss"))
+        /*if (other.CompareTag("Boss"))
         {
             BossManager boss = other.GetComponent<BossManager>();
 
@@ -108,7 +108,7 @@ public class InvoBehaviour : MonoBehaviour
                      ChangeState(stateDisabled);
                      boss.TakeDamage(Data.damage, attackID);
                 }
-        }
+        }*/
         if (other.gameObject.CompareTag("Enemy"))
         {
             IDamagable damagable = other.GetComponent<IDamagable>();
