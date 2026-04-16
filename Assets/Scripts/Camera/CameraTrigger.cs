@@ -8,6 +8,7 @@ public class CameraTrigger : MonoBehaviour
     public Rail rail;
     public Transform fixedPoint = null;
     public Vector3 followOffset;
+    
 
     public bool lockVertical;
     public bool lockHorizontal;
@@ -21,6 +22,7 @@ public class CameraTrigger : MonoBehaviour
                 railMover.fixedPoint = fixedPoint;
                 railMover.lockedHorizontal = lockHorizontal;
                 railMover.lockedVertical = lockVertical;
+                railMover.fixedTargetRotation = fixedPoint.localRotation;
             }
 
             if (modeToActivate == CameraMode.Rail)

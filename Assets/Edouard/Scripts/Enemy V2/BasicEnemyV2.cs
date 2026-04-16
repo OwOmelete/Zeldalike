@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class BasicEnemyV2 : MonoBehaviour
+public class BasicEnemyV2 : MonoBehaviour, IDamagable
 {
     #region Unity Variables
 
