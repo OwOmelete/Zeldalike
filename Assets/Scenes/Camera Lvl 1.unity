@@ -5731,7 +5731,7 @@ Transform:
   m_GameObject: {fileID: 325239257}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 32.23, y: -13.48, z: 32.07}
+  m_LocalPosition: {x: 37.08, y: -14.66, z: 32.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12251,6 +12251,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &771970783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 771970784}
+  m_Layer: 0
+  m_Name: FixedPoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &771970784
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771970783}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0663587, y: 0.92898715, z: -0.20473552, w: 0.30110252}
+  m_LocalPosition: {x: 100.24, y: -7.0999985, z: 32.070007}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1773955681}
+  m_LocalEulerAnglesHint: {x: 24.857, y: 144.083, z: 0}
 --- !u!1 &776671255
 GameObject:
   m_ObjectHideFlags: 0
@@ -15658,7 +15689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de15e216d36c3484ca9a5860c16aca1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RailMover
-  CameraTransitionSpeed: 0.2
+  CameraTransitionSpeed: 1
   rail: {fileID: 1035533670}
   lookAt: {fileID: 22163918}
   smoothMove: 1
@@ -17215,6 +17246,79 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 982783224}
   m_Mesh: {fileID: -852527717184843196, guid: 8a76d69cb77ce864f8c67a402074f1ab, type: 3}
+--- !u!1 &987129405
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 987129406}
+  - component: {fileID: 987129408}
+  - component: {fileID: 987129407}
+  m_Layer: 0
+  m_Name: CameraTriggerCorridor1Exit1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &987129406
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987129405}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 57.3, y: -23.45, z: 18.56}
+  m_LocalScale: {x: 1, y: 9.319484, z: 8.1974}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1155064112}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &987129407
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987129405}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &987129408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987129405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc9d9d65aaa91964a86f22657ea9bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraTrigger
+  modeToActivate: 0
+  railMover: {fileID: 928874457}
+  rail: {fileID: 1035533670}
+  fixedPoint: {fileID: 0}
+  followOffset: {x: 0, y: 0, z: 0}
+  lockVertical: 0
+  lockHorizontal: 0
 --- !u!1001 &999934961
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18148,7 +18252,6 @@ Transform:
   m_Children:
   - {fileID: 325239258}
   - {fileID: 1092118345}
-  - {fileID: 1937406659}
   m_Father: {fileID: 474967844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1040717244
@@ -19216,7 +19319,7 @@ Transform:
   m_GameObject: {fileID: 1092118344}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 80.91, y: -13.48, z: 32.07}
+  m_LocalPosition: {x: 47.65, y: -14.66, z: 32.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20126,6 +20229,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2054154754}
+  - {fileID: 1369871232}
+  - {fileID: 987129406}
+  - {fileID: 1903135377}
   - {fileID: 2057438842}
   m_Father: {fileID: 474967844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -22629,6 +22735,79 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4d28674cef1201428d636c680c304ab, type: 3}
+--- !u!1 &1369871231
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1369871232}
+  - component: {fileID: 1369871234}
+  - component: {fileID: 1369871233}
+  m_Layer: 0
+  m_Name: CameraTriggerSalle1Enter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1369871232
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369871231}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 26.01, y: -18.16, z: 18.56}
+  m_LocalScale: {x: 1, y: 9.319484, z: 8.1974}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1155064112}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1369871233
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369871231}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1369871234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369871231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc9d9d65aaa91964a86f22657ea9bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraTrigger
+  modeToActivate: 2
+  railMover: {fileID: 928874457}
+  rail: {fileID: 0}
+  fixedPoint: {fileID: 1467860260}
+  followOffset: {x: 0, y: 0, z: 0}
+  lockVertical: 1
+  lockHorizontal: 1
 --- !u!1 &1372164235
 GameObject:
   m_ObjectHideFlags: 0
@@ -30053,6 +30232,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1467860260}
+  - {fileID: 771970784}
   m_Father: {fileID: 474967844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1783098127
@@ -33075,6 +33255,79 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 15a0227579976774881a3757a4cdbb34, type: 3}
   m_PrefabInstance: {fileID: 1902825320}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1903135376
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1903135377}
+  - component: {fileID: 1903135379}
+  - component: {fileID: 1903135378}
+  m_Layer: 0
+  m_Name: 'CameraTriggerCorridor1Enter '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1903135377
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903135376}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 59.04, y: -24.03, z: 18.56}
+  m_LocalScale: {x: 1, y: 9.319484, z: 8.1974}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1155064112}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1903135378
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903135376}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1903135379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903135376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc9d9d65aaa91964a86f22657ea9bf3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraTrigger
+  modeToActivate: 1
+  railMover: {fileID: 928874457}
+  rail: {fileID: 0}
+  fixedPoint: {fileID: 0}
+  followOffset: {x: -90, y: 90, z: 180}
+  lockVertical: 0
+  lockHorizontal: 0
 --- !u!1001 &1908438933
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33747,37 +34000,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 54f328ae9e18023488098d0684212a2a, type: 3}
   m_PrefabInstance: {fileID: 1931812102}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1937406658
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1937406659}
-  m_Layer: 0
-  m_Name: RailObject (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1937406659
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937406658}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100.24, y: -7.1, z: 32.07}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1035533671}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1938627106
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35222,11 +35444,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9d9d65aaa91964a86f22657ea9bf3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraTrigger
-  modeToActivate: 1
+  modeToActivate: 0
   railMover: {fileID: 928874457}
-  rail: {fileID: 0}
+  rail: {fileID: 1035533670}
   fixedPoint: {fileID: 0}
-  followOffset: {x: -90, y: 90, z: 180}
+  followOffset: {x: 0, y: 0, z: 0}
   lockVertical: 0
   lockHorizontal: 0
 --- !u!1 &2057438841
@@ -35241,7 +35463,7 @@ GameObject:
   - component: {fileID: 2057438844}
   - component: {fileID: 2057438843}
   m_Layer: 0
-  m_Name: CameraTriggerSalle2Enter
+  m_Name: CameraTriggerCorridor1Exit2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35256,7 +35478,7 @@ Transform:
   m_GameObject: {fileID: 2057438841}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 129.9, y: -23.22, z: 18.56}
+  m_LocalPosition: {x: 103.63, y: -23.22, z: 18.56}
   m_LocalScale: {x: 1, y: 9.319484, z: 8.1974}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -35295,13 +35517,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9d9d65aaa91964a86f22657ea9bf3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraTrigger
-  modeToActivate: 0
+  modeToActivate: 2
   railMover: {fileID: 928874457}
-  rail: {fileID: 571992218}
-  fixedPoint: {fileID: 0}
+  rail: {fileID: 0}
+  fixedPoint: {fileID: 771970784}
   followOffset: {x: 0, y: 0, z: 0}
   lockVertical: 0
-  lockHorizontal: 1
+  lockHorizontal: 0
 --- !u!1001 &2062996244
 PrefabInstance:
   m_ObjectHideFlags: 0
