@@ -15,7 +15,7 @@ public class BossManager : MonoBehaviour, IDamagable
 
     public int porteeAttaqueBase;
     public int porteeAttaqueSpe1;
-    public int porteeAttaqueSpe2;
+    public Vector2 porteeAttaqueSpe2;
 
     public float cooldownEntreAttaque;
     private float cooldownTimer;
@@ -25,6 +25,7 @@ public class BossManager : MonoBehaviour, IDamagable
     public bool FightStarted;
     private bool isAttacking;
     private int StalactiteCount;
+    public float cooldownAttaqueSpe3=0;
 
     public SphereCollider zoneChasse;
     public GameObject player;
@@ -50,56 +51,98 @@ public LayerMask playerLayer;
         if (isAttacking) return;
 
         float distance = Vector3.Distance(transform.position, player.transform.position);
-
+ if (cooldownAttaqueSpe3 > 0)
+{
+    cooldownAttaqueSpe3 -= Time.deltaTime;
+}
         // COOLDOWN + MOVEMENT
-        if (cooldownTimer > 0)
-        {
-            cooldownTimer -= Time.deltaTime;
+       if (cooldownTimer > 0)
+{
+    cooldownTimer -= Time.deltaTime;
 
-            if (distance > porteeAttaqueSpe2)
-                StartCoroutine(Dash());
-            else
-                HandleMovement();
+    // 👉 Priorité dash SI vraiment loin
+    if (distance > porteeAttaqueSpe2.x * 1.5f)
+    {
+        if (!isAttacking)
+            StartCoroutine(Dash());
+    }
+    else
+    {
+        // 👉 Toujours bouger sinon
+        HandleMovement();
+    }
 
-            return;
-        }
+    return;
+}
 
         // DASH PRIORITY
-        if (distance > porteeAttaqueSpe2)
+        if (distance > porteeAttaqueSpe2.x)
         {
             StartCoroutine(Dash());
             return;
         }
+        int StalactiteCount = GameObject.FindGameObjectsWithTag("Stalactite").Length;
 
         // ATTACK LIST
-        List<System.Action> attaquesPossibles = new List<System.Action>();
+        List<(System.Action action, float weight)> attaquesPonderees = new List<(System.Action, float)>();
 
-        StalactiteCount = GameObject.FindGameObjectsWithTag("Stalactite").Length;
+float distNorm = Mathf.InverseLerp(porteeAttaqueSpe2.x, porteeAttaqueBase, distance);
+// distNorm = 0 → loin
+// distNorm = 1 → proche
 
-        if (distance <= porteeAttaqueBase)
-            attaquesPossibles.Add(AttaqueBase);
+// 👉 Attaque Base (50% → 75%)
+if (distance <= porteeAttaqueBase)
+{
+    float weightBase = Mathf.Lerp(0.5f, 0.75f, distNorm);
+    attaquesPonderees.Add((AttaqueBase, weightBase));
+}
 
-        if (distance <= porteeAttaqueSpe1)
-            attaquesPossibles.Add(AttaqueSpe1);
+// 👉 Spe1 (poids fixe)
+if (distance <= porteeAttaqueSpe1)
+{
+    attaquesPonderees.Add((AttaqueSpe1, 0.4f));
+}
 
-        if (distance <= porteeAttaqueSpe2)
-            attaquesPossibles.Add(AttaqueSpe2);
+// 👉 Spe2 (poids fixe)
+if (porteeAttaqueSpe2.y <= distance && distance <= porteeAttaqueSpe2.x)
+{
+    attaquesPonderees.Add((AttaqueSpe2, 0.5f));
+}
+// 👉 Spe3 dépend du nombre de stalactites
+if (StalactiteCount > 0 && cooldownAttaqueSpe3 <= 0 )
+{
+    float weightSpe3 = Mathf.Clamp(StalactiteCount * 0.3f, 0.3f, 2f);
+    attaquesPonderees.Add((AttaqueSpe3, weightSpe3));
+}
 
-        if ( StalactiteCount > 0)
-            attaquesPossibles.Add(AttaqueSpe3);
+// 👉 Spe3 dépend du nombre de stalactites
+float attackChance = 0.8f; // 80% attaque, 20% move
 
-        Debug.Log($"[AI] Attaques possibles: {attaquesPossibles.Count}");
+if (attaquesPonderees.Count > 0 && Random.value < attackChance)
+{
+    float totalWeight = 0f;
 
-        if (attaquesPossibles.Count > 0)
+    foreach (var atk in attaquesPonderees)
+        totalWeight += atk.weight;
+
+    float rand = Random.value * totalWeight;
+
+    foreach (var atk in attaquesPonderees)
+    {
+        if (rand < atk.weight)
         {
-            int rand = Random.Range(0, attaquesPossibles.Count);
-            attaquesPossibles[rand].Invoke();
+            atk.action.Invoke();
+            return;
         }
-        else
-        {
-            HandleMovement();
-        }
+
+        rand -= atk.weight;
     }
+}
+else
+{
+    HandleMovement();
+}
+}
       private void UpdateHealthBar()
 {
     HealBarre.value = (float)currentHeal / (float)maxHealPoint;
@@ -139,27 +182,27 @@ private void Die()
     // ---------------- MOVEMENT LOGIC ----------------
 
     void HandleMovement()
+{
+    GameObject closestStalactite = GetClosestStalactite();
+
+    float playerDist = Vector3.Distance(transform.position, player.transform.position);
+
+    float stalDist = closestStalactite != null
+        ? Vector3.Distance(transform.position, closestStalactite.transform.position)
+        : Mathf.Infinity;
+
+    float influence = 0.5f + (StalactiteCount * 0.2f);
+
+    if (closestStalactite != null && stalDist < playerDist * influence)
     {
-        GameObject closestStalactite = GetClosestStalactite();
-
-        float playerDist = Vector3.Distance(transform.position, player.transform.position);
-
-        float stalDist = closestStalactite != null
-            ? Vector3.Distance(transform.position, closestStalactite.transform.position)
-            : Mathf.Infinity;
-
-
-        // règle : joueur prioritaire si plus proche que danger environnemental
-        if (closestStalactite != null && playerDist*(StalactiteCount*0.2)-stalDist > 0)
-        {
-            Debug.Log("[MOVE] Spe3 (interaction environnement)");
-            AttaqueSpe4(closestStalactite);
-        }
-        else
-        {
-            DeplacementVersJoueur();
-        }
+        Debug.Log("[MOVE] Spe4");
+        AttaqueSpe4(closestStalactite);
     }
+    else
+    {
+        DeplacementVersJoueur();
+    }
+}
 
     GameObject GetClosestStalactite()
     {
@@ -195,10 +238,25 @@ private void Die()
     }
 
     void DeplacementVersJoueur()
+{
+    // Direction SANS Y
+    Vector3 direction = player.transform.position - transform.position;
+    direction.y = 0f;
+    direction.Normalize();
+
+    float distance = Vector3.Distance(transform.position, player.transform.position);
+
+    // ✔ Stop si trop proche
+    if (distance <= 5f)
     {
-        Vector3 direction = (player.transform.position - transform.position).normalized;
-        transform.position += direction * speed * Time.deltaTime;
+        // ✔ Bonus : cooldown accéléré
+        cooldownTimer -= Time.deltaTime * 2f; // tweak si besoin
+        return;
     }
+
+    // Déplacement normal
+    transform.position += direction * speed * Time.deltaTime;
+}
 
 
     IEnumerator Dash()
@@ -230,13 +288,41 @@ IEnumerator AttaqueBaseRoutine()
 {
     isAttacking = true;
 
-    // 1. Spawn cone devant le boss
-    GameObject cone = Instantiate(conePrefab, transform.position, transform.rotation);
+  Vector3 targetPos = player.transform.position;
+targetPos.y = transform.position.y;
 
-    // 2. Attente (prévisualisation)
-    yield return new WaitForSeconds(vitesseAttaque);
+Vector3 dir = (targetPos - transform.position).normalized;
 
-    // 3. Check si player dans le cone
+Quaternion rot = Quaternion.LookRotation(dir) * Quaternion.Euler(0, -90, 0);
+
+GameObject cone = Instantiate(conePrefab, transform.position, rot, transform);
+
+    // 3. Distance à plat
+    float distanceToPlayer = Vector3.Distance(transform.position, targetPos);
+
+    float targetDistance = Mathf.Min(distanceToPlayer, porteeAttaqueBase * 0.5f);
+
+    float movedDistance = 0f;
+
+ yield return new WaitForSeconds(vitesseAttaque/2);
+    // 4. Dash contrôlé
+    while (movedDistance < targetDistance)
+    {
+        float step = speed * 3f * Time.deltaTime;
+
+        if (movedDistance + step > targetDistance)
+            step = targetDistance - movedDistance;
+
+        transform.position += dir * step;
+        movedDistance += step;
+
+        yield return null;
+    }
+
+    // 5. Télégraphe
+    yield return new WaitForSeconds(vitesseAttaque/2);
+
+    // 6. Hit detection
     Collider[] hits = Physics.OverlapSphere(cone.transform.position, porteeAttaqueBase, playerLayer);
 
     foreach (Collider hit in hits)
@@ -244,7 +330,6 @@ IEnumerator AttaqueBaseRoutine()
         if (hit.CompareTag("Player"))
         {
             Debug.Log("Player touché par AttaqueBase");
-            // TODO : appliquer dégâts
         }
     }
 
@@ -260,7 +345,9 @@ IEnumerator AttaqueBaseRoutine()
 
 IEnumerator AttaqueSpe1Routine()
 {
+    
     isAttacking = true;
+    
 
     List<Vector3> positions = new List<Vector3>();
     List<GameObject> zones = new List<GameObject>();
@@ -269,9 +356,9 @@ IEnumerator AttaqueSpe1Routine()
     for (int i = 0; i < 4; i++)
     {
         Vector3 randomPos = transform.position + new Vector3(
-            Random.Range(-5f, 5f),
+            Random.Range(-10f, 10f),
             0,
-            Random.Range(-5f, 5f)
+            Random.Range(-10f, 10f)
         );
 
         positions.Add(randomPos);
@@ -309,14 +396,18 @@ public void AttaqueSpe2()
     StartCoroutine(AttaqueSpe2Routine());
 }
 
-IEnumerator AttaqueSpe2Routine()
+IEnumerator AttaqueSpe2Routine() 
 {
     isAttacking = true;
 
     Vector3 dir = (player.transform.position - transform.position).normalized;
 
     // 1. Spawn mur
-    GameObject mur = Instantiate(murGlacePrefab, transform.position + dir * 2f, Quaternion.LookRotation(dir));
+    GameObject mur = Instantiate(
+        murGlacePrefab,
+        transform.position + dir * 2f,
+        Quaternion.LookRotation(dir)
+    );
 
     yield return new WaitForSeconds(vitesseAttaque);
 
@@ -326,10 +417,14 @@ IEnumerator AttaqueSpe2Routine()
         Vector3 offset = new Vector3(i - 1.5f, 0, 0);
         Vector3 spawnPos = mur.transform.position + mur.transform.right * offset.x;
 
+        Vector3 shootDir = (spawnPos - transform.position).normalized;
+
         GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
 
-        Vector3 shootDir = (spawnPos - transform.position ).normalized;
+        // 👉 ORIENTATION VISUELLE = direction du tir
+        proj.transform.forward = shootDir;
 
+        // 👉 PHYSIQUE
         proj.GetComponent<Rigidbody>().linearVelocity = shootDir * 10f;
     }
 
@@ -348,21 +443,33 @@ IEnumerator AttaqueSpe3Routine()
     isAttacking = true;
 
     int nbProjectiles = 24;
+    float delay = 0.5f;
+
+    yield return new WaitForSeconds(delay);
+
+    float radius = 1.5f; // petit décalage autour du boss
 
     for (int i = 0; i < nbProjectiles; i++)
     {
-        float angle = i * Mathf.PI * 2 / nbProjectiles;
+        float angle = i * Mathf.PI * 2f / nbProjectiles;
 
-        Vector3 dir = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+        // 👉 position autour du boss
+        Vector3 offset = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
 
-        GameObject proj = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        Vector3 spawnPos = transform.position + offset;
 
-        proj.GetComponent<Rigidbody>().linearVelocity = dir * 8f;
+        // 👉 direction vers l'extérieur
+        Vector3 dir = offset.normalized;
+
+        GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+
+         proj.transform.forward = dir;
+
+        // 👉 PHYSIQUE
+        proj.GetComponent<Rigidbody>().linearVelocity = dir * 0.0f;
     }
 
-    yield return new WaitForSeconds(0.2f);
-
-    cooldownTimer = cooldownEntreAttaque;
+    cooldownAttaqueSpe3 = 30f;
     isAttacking = false;
 }
 public void AttaqueSpe4(GameObject target)
@@ -379,8 +486,8 @@ IEnumerator AttaqueSpe4Routine(GameObject closest)
         isAttacking = false;
         yield break;
     }
-
-   while (Vector3.Distance(transform.position, closest.transform.position) > 1f)
+if (!closest) yield break;
+   while (true)
 {
     if (closest == null)
     {
@@ -388,10 +495,18 @@ IEnumerator AttaqueSpe4Routine(GameObject closest)
         yield break;
     }
 
-    Vector3 dir = (closest.transform.position - transform.position).normalized;
+    Vector3 targetPos = closest.transform.position;
+
+    float distance = Vector3.Distance(transform.position, targetPos);
+
+    if (distance <= 1f)
+        break;
+
+    Vector3 dir = (targetPos - transform.position).normalized;
     transform.position += dir * speed * Time.deltaTime;
 
     yield return null;
+
 }
 
     Destroy(closest);
@@ -401,7 +516,7 @@ IEnumerator AttaqueSpe4Routine(GameObject closest)
     GameObject proj = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 
     Vector3 dirShot = (cible - transform.position).normalized;
-
+    proj.transform.forward = dirShot;
     proj.GetComponent<Rigidbody>().linearVelocity = dirShot * 12f;
 
     yield return new WaitForSeconds(0.5f);
