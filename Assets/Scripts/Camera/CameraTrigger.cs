@@ -8,11 +8,11 @@ public class CameraTrigger : MonoBehaviour
     public Rail rail;
     public Transform fixedPoint = null;
     public Vector3 followOffset;
-    
+    public float camSize;
 
     public bool lockVertical;
     public bool lockHorizontal;
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -34,7 +34,8 @@ public class CameraTrigger : MonoBehaviour
             {
                 railMover.followOffset = followOffset;
             }
-            
+
+            railMover.cam.orthographicSize = camSize;
             railMover.SetCameraMode(modeToActivate);
         }
     }
