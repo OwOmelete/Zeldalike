@@ -39,6 +39,8 @@ public class RailMover : MonoBehaviour
     private Quaternion targetRotation;
 
     public Quaternion fixedTargetRotation;
+
+    public Camera cam;
     
     void Start()
     {
@@ -69,26 +71,19 @@ public class RailMover : MonoBehaviour
         
         Vector3 euler = targetRotation.eulerAngles;
         
-        
-        
         euler.x = Mathf.Clamp(euler.x > 180 ? euler.x - 360 : euler.x, -minRotation, maxRotation);
-
-        if (lockedHorizontal)
+        
+        if (lockedHorizontal && currentMode == CameraMode.Fixed)
         {
-            euler.y = 0;
+            euler.y = fixedTargetRotation.y;
         }
 
-        if (lockedVertical)
+        if (lockedVertical && currentMode == CameraMode.Fixed)
         {
-            euler.x = 0;
+            euler.x = fixedTargetRotation.x;
         }
         
         targetRotation = Quaternion.Euler(euler);
-
-        if (currentMode == CameraMode.Fixed)
-        {
-            targetRotation = fixedTargetRotation;
-        }
         
         
         thisTransform.rotation = Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * followSpeed);
