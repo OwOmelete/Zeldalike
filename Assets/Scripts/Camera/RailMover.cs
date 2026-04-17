@@ -47,6 +47,7 @@ public class RailMover : MonoBehaviour
         thisTransform = transform;
         lastRailPosition = transform.position;
         targetRotation = transform.rotation;
+        fixedTargetRotation = fixedPoint.localRotation;
     }
 
     void Update()
