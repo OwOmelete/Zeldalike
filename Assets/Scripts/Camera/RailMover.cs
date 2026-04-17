@@ -159,11 +159,15 @@ public class RailMover : MonoBehaviour
 
     public void SetCameraMode(CameraMode newMode)
     {
-        lockedHorizontal = false;
-        lockedVertical = false;
         if (newMode == CameraMode.Rail)
         {
             lastRailPosition = transform.position;
+        }
+
+        if (newMode != CameraMode.Fixed)
+        {
+            lockedHorizontal = false;
+            lockedVertical = false;
         }
 
         currentMode = newMode;
