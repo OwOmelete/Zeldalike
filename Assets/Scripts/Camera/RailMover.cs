@@ -74,6 +74,8 @@ public class RailMover : MonoBehaviour
         
         euler.x = Mathf.Clamp(euler.x > 180 ? euler.x - 360 : euler.x, -minRotation, maxRotation);
         
+        targetRotation = Quaternion.Euler(euler);
+        
         if (lockedHorizontal && currentMode == CameraMode.Fixed)
         {
             euler.y = fixedTargetRotation.y;
@@ -83,9 +85,6 @@ public class RailMover : MonoBehaviour
         {
             euler.x = fixedTargetRotation.x;
         }
-        
-        targetRotation = Quaternion.Euler(euler);
-        
         
         thisTransform.rotation = Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * followSpeed);
     }
