@@ -31,20 +31,16 @@ public class BasicEnemyV3 : MonoBehaviour, IDamagable
     private State currentState;
 
     private Dictionary<State, EnemyBehaviourSO> behaviourMap;
-
     private HashSet<int> receivedAttacks = new HashSet<int>();
     private PlayerHealthComponent playerHealth;
 
     void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player").transform;
-        playerHealth = Player.GetComponent<PlayerHealthComponent>();
-
         currentHealth = Stats.maxHealth;
 
         BuildBehaviourMap();
-
         SetState(State.IDLE);
+
         UpdateHealthBar();
     }
 
@@ -62,7 +58,6 @@ public class BasicEnemyV3 : MonoBehaviour, IDamagable
     {
         behaviourMap = new Dictionary<State, EnemyBehaviourSO>();
 
-        // Order must match enum manually
         behaviourMap[State.IDLE] = behaviours[0];
         behaviourMap[State.CHASE] = behaviours[1];
         behaviourMap[State.ATTACK] = behaviours[2];
@@ -74,6 +69,14 @@ public class BasicEnemyV3 : MonoBehaviour, IDamagable
         currentState = newState;
     }
 
+    public void SetPlayer(Transform player)
+    {
+        Player = player;
+
+        if (player != null)
+            playerHealth = player.GetComponent<PlayerHealthComponent>();
+    }
+
     public IEnumerator AttackRoutine()
     {
         IsAttacking = true;
@@ -83,7 +86,8 @@ public class BasicEnemyV3 : MonoBehaviour, IDamagable
 
         attackZone.SetActive(false);
 
-        playerHealth.TakeDamage(Stats.damage);
+        if (playerHealth != null)
+            playerHealth.TakeDamage(Stats.damage);
 
         yield return new WaitForSeconds(0.5f);
 
