@@ -1,44 +1,48 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerHealthComponent : MonoBehaviour
 {
     [SerializeField] private float currentHealth;
-    [SerializeField] private float maxHealth;
-    private bool isHealthRegenRunning;
+    [SerializeField] private float maxHealth = 100f;
+
+    [SerializeField] private float regenRate = 5f;
+    [SerializeField] private float regenDelay = 10f;
+
+    [SerializeField] private Material iceScreenMaterial;
+
+    private static readonly int OpacityID = Shader.PropertyToID("_Opacity");
 
     private Coroutine regenCoroutine;
     private Coroutine regenDelayCoroutine;
-    
-    [SerializeField] private Material IceScreenShader;   
 
     private void Start()
     {
         currentHealth = maxHealth;
-        isHealthRegenRunning = false;
+
+        iceScreenMaterial = Instantiate(iceScreenMaterial);
     }
 
-    /*private void Update()
+    private void Update()
     {
-        var color = IceScreenShader.color;
-        color.a = currentHealth / maxHealth;
-        IceScreenShader.color = color;
-    }*/
+        if (iceScreenMaterial != null)
+        {
+            float normalized = currentHealth / maxHealth;
+
+            float opacity = 1f - normalized;
+
+            iceScreenMaterial.SetFloat(OpacityID, opacity);
+        }
+    }
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
-
-        if (currentHealth < 0f)
-            currentHealth = 0f;
+        currentHealth = Mathf.Max(currentHealth - damage, 0f);
 
         if (regenCoroutine != null)
         {
             StopCoroutine(regenCoroutine);
             regenCoroutine = null;
-            isHealthRegenRunning = false;
         }
 
         if (regenDelayCoroutine != null)
@@ -51,24 +55,20 @@ public class PlayerHealthComponent : MonoBehaviour
 
     private IEnumerator RegenDelay()
     {
-        yield return new WaitForSeconds(10f);
-
-        if (currentHealth < maxHealth && !isHealthRegenRunning)
-        {
-            regenCoroutine = StartCoroutine(Regen());
-            isHealthRegenRunning = true;
-        }
+        yield return new WaitForSeconds(regenDelay);
+        regenCoroutine = StartCoroutine(Regen());
     }
 
     private IEnumerator Regen()
     {
         while (currentHealth < maxHealth)
         {
-            currentHealth++;
-            yield return new WaitForSeconds(0.3f);
+            currentHealth += regenRate * Time.deltaTime;
+            currentHealth = Mathf.Min(currentHealth, maxHealth);
+
+            yield return null;
         }
 
-        isHealthRegenRunning = false;
         regenCoroutine = null;
     }
 }
