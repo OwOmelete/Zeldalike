@@ -19,6 +19,8 @@ public class BossManager : MonoBehaviour, IDamagable
 
     public float cooldownEntreAttaque;
     private float cooldownTimer;
+    private float cooldownTimerStalactite=10;
+     private float cooldownEntreAttaqueStalactite;
 
     public float speed;
 
@@ -55,6 +57,10 @@ public LayerMask playerLayer;
 {
     cooldownAttaqueSpe3 -= Time.deltaTime;
 }
+if (cooldownEntreAttaqueStalactite > 0)
+{
+    cooldownEntreAttaqueStalactite -= Time.deltaTime;
+}
         // COOLDOWN + MOVEMENT
        if (cooldownTimer > 0)
 {
@@ -74,6 +80,10 @@ public LayerMask playerLayer;
 
     return;
 }
+if (cooldownEntreAttaqueStalactite <= 0)
+        {
+            ChuteStalactite();
+        }
 
         // DASH PRIORITY
         if (distance > porteeAttaqueSpe2.x)
@@ -522,6 +532,56 @@ if (!closest) yield break;
     yield return new WaitForSeconds(0.5f);
 
     cooldownTimer = cooldownEntreAttaque;
+    isAttacking = false;
+}
+    public void ChuteStalactite()
+{
+    StartCoroutine(ChuteStalactiteRoutine());
+}
+
+IEnumerator ChuteStalactiteRoutine()
+{
+    
+    isAttacking = true;
+    
+
+    List<Vector3> positions = new List<Vector3>();
+    List<GameObject> zones = new List<GameObject>();
+
+        Vector3 randomPos = transform.position + new Vector3(
+            Random.Range(-10f, 10f),
+            0,
+            Random.Range(-10f, 10f)
+        );
+
+        positions.Add(randomPos);
+        zones.Add(Instantiate(zoneRougePrefab, randomPos, Quaternion.identity));
+    
+
+    yield return new WaitForSeconds(vitesseAttaque);
+
+    // 2. Dégâts + spawn stalactites
+    foreach (Vector3 pos in positions)
+    {
+        Collider[] hits = Physics.OverlapSphere(pos, 1.5f, playerLayer);
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.CompareTag("Player"))
+            {
+                Debug.Log("Player touché Spe1");
+                // TODO dégâts
+            }
+        }
+
+        Instantiate(stalactitePrefab, pos, Quaternion.identity);
+    }
+
+    // Clean zones
+    foreach (GameObject z in zones)
+        Destroy(z);
+
+    cooldownTimerStalactite = cooldownEntreAttaqueStalactite;
     isAttacking = false;
 }
 }
