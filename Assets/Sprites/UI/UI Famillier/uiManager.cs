@@ -203,7 +203,6 @@ public class uiManager : MonoBehaviour
             stickImage.enabled = true;
             fond.SetTrigger("Open");
             Joystick.SetTrigger("Open");
-
             
         }
         else
@@ -211,7 +210,7 @@ public class uiManager : MonoBehaviour
             StartCoroutine(CloseMenu());
         }
     }
-
+   
     void OpenMenu()
     {
         Time.timeScale = 0;
