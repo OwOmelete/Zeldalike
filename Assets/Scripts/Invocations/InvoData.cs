@@ -29,6 +29,13 @@ public class InvoDataInstance
     public bool isMovingDirection = false;
     public float damage;
     public bool isActivated = true;
+
+    public enum temperature
+    {
+        hot,
+        normal,
+        cold
+    }
     
     public InvoDataInstance(InvoData data)
     {
