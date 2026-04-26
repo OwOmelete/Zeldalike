@@ -22,6 +22,7 @@ public class BasicEnemyV3 : MonoBehaviour, IDamagable
     [Header("References")]
     public GameObject attackZone;
     public Slider healthBar;
+    public EnnemyHeatSystem HeatSystem;
 
     public Transform Player { get; private set; }
 
@@ -94,13 +95,29 @@ public class BasicEnemyV3 : MonoBehaviour, IDamagable
         IsAttacking = false;
     }
 
-    public void TakeDamage(float damage, int attackID)
+    public void TakeDamage(float damage, int attackID, InvoDataInstance data)
     {
         if (receivedAttacks.Contains(attackID)) return;
 
         receivedAttacks.Add(attackID);
 
         currentHealth -= damage;
+
+        switch (data.currentTemperature)
+        {
+            case InvoDataInstance.temperature.veryCold:
+                HeatSystem.reduceHeat(data.veryColdValue);
+                break;
+            case InvoDataInstance.temperature.cold:
+                HeatSystem.reduceHeat(data.coldValue);
+                break;
+            case InvoDataInstance.temperature.hot:
+                HeatSystem.increaseHeat(data.hotValue);
+                break;
+            case InvoDataInstance.temperature.veryHot:
+                HeatSystem.increaseHeat(data.veryHotValue);
+                break;
+        }
 
         if (currentHealth <= 0)
         {

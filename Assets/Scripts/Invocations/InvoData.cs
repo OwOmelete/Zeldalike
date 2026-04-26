@@ -7,6 +7,10 @@ public class InvoData : ScriptableObject
     public float acceleration;
     public float maxSpeed;
     public float maxDistance;
+    public float veryColdValue;
+    public float coldValue;
+    public float hotValue;
+    public float veryHotValue;
 
     public InvoDataInstance Instance()
     {
@@ -29,12 +33,25 @@ public class InvoDataInstance
     public bool isMovingDirection = false;
     public float damage;
     public bool isActivated = true;
+    public bool gonnaFreeze = false;
+
+    public float veryColdValue;
+    public float coldValue;
+    public float hotValue;
+    public float veryHotValue;
+
+    public temperature currentTemperature;
+
+    public float attackDelay;
 
     public enum temperature
     {
-        hot,
+        veryCold,
+        cold,
         normal,
-        cold
+        hot,
+        veryHot
+        
     }
     
     public InvoDataInstance(InvoData data)
@@ -43,5 +60,9 @@ public class InvoDataInstance
         acceleration = data.acceleration;
         maxSpeed = data.maxSpeed;
         maxDistance = data.maxDistance;
+        veryColdValue = data.veryColdValue;
+        coldValue = data.coldValue;
+        hotValue = data.hotValue;
+        veryHotValue = data.veryHotValue;
     }
 }

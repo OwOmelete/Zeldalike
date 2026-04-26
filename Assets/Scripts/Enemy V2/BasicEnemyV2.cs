@@ -173,7 +173,7 @@ public class BasicEnemyV2 : MonoBehaviour, IDamagable
         isAttacking = false;
     }
 
-    public void TakeDamage(float damage, int attackID)
+    public void TakeDamage(float damage, int attackID, InvoDataInstance data)
     {
         if (receivedAttacks.Contains(attackID)) { return; }
 

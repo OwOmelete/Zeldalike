@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 
 [CreateAssetMenu(menuName = "Enemies/Behaviours/RangedAttack")]
 public class RangedAttackBehaviour : EnemyBehaviourSO
@@ -40,4 +40,4 @@ public class RangedAttackBehaviour : EnemyBehaviourSO
 
         enemy.IsAttacking = false;
     }
-}
+}*/

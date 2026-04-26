@@ -19,11 +19,12 @@ public class StateDisabled : IState
         owner.gameObject.layer = LayerMask.NameToLayer("InvoDisabled");
         addDispersion();
         int r = Random.Range(0, 100);
-        if (r > 80)
+        if (r > 80 || owner.Data.gonnaFreeze)
         {
             owner.InvoDeactivate();
             owner.renderer1.material.color = Color.cyan;
             owner.renderer2.material.color = Color.cyan;
+            owner.Data.gonnaFreeze = false;
         }
         else
         {
