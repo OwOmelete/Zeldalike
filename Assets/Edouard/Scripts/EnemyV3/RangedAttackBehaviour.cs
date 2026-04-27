@@ -1,10 +1,10 @@
-/*using UnityEngine;
+using System.Collections;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "Enemies/Behaviours/RangedAttack")]
 public class RangedAttackBehaviour : EnemyBehaviourSO
 {
     public GameObject projectilePrefab;
-    public Transform firePoint;
     public float cooldown = 1.5f;
 
     private float lastAttackTime;
@@ -26,7 +26,7 @@ public class RangedAttackBehaviour : EnemyBehaviourSO
 
         GameObject proj = Object.Instantiate(
             projectilePrefab,
-            firePoint.position,
+            enemy.firePoint.position,
             Quaternion.identity
         );
 
@@ -40,4 +40,4 @@ public class RangedAttackBehaviour : EnemyBehaviourSO
 
         enemy.IsAttacking = false;
     }
-}*/
+}

@@ -16,30 +16,37 @@ public class BasicEnemyV3 : MonoBehaviour, IDamagable
     [Header("Config")]
     public EnemyStatsSO Stats;
 
-    [Header("Behaviours")]
-    public List<EnemyBehaviourSO> behaviours;
-
     [Header("References")]
     public GameObject attackZone;
     public Slider healthBar;
     public EnnemyHeatSystem HeatSystem;
+    public Transform firePoint;
 
     public Transform Player { get; private set; }
 
-    public bool IsAttacking { get; private set; }
+    public bool IsAttacking { get; set; }
 
     private float currentHealth;
     private State currentState;
 
     private Dictionary<State, EnemyBehaviourSO> behaviourMap;
-    private HashSet<int> receivedAttacks = new HashSet<int>();
+    
+    [Header("Behaviours")]
+    public EnemyBehaviourSO idleBehaviour;
+    public EnemyBehaviourSO chaseBehaviour;
+    public EnemyBehaviourSO attackBehaviour;
+    public EnemyBehaviourSO deathBehaviour;    private HashSet<int> receivedAttacks = new HashSet<int>();
     private PlayerHealthComponent playerHealth;
 
+    void Awake()
+    {
+        BuildBehaviourMap();
+    }
+    
     void Start()
     {
         currentHealth = Stats.maxHealth;
 
-        BuildBehaviourMap();
         SetState(State.IDLE);
 
         UpdateHealthBar();
@@ -47,6 +54,25 @@ public class BasicEnemyV3 : MonoBehaviour, IDamagable
 
     void Update()
     {
+        if (behaviourMap == null)
+        {
+            Debug.LogError($"{name} behaviourMap is NULL");
+            return;
+        }
+
+        if (!behaviourMap.ContainsKey(currentState))
+        {
+            Debug.LogError($"{name} missing state in map: {currentState}");
+            return;
+        }
+
+        if (behaviourMap[currentState] == null)
+        {
+            Debug.LogError($"{name} has NULL behaviour for state: {currentState}");
+            return;
+        }
+
+        behaviourMap[currentState].Execute(this);
         if (currentHealth <= 0)
         {
             SetState(State.DEATH);
@@ -57,14 +83,25 @@ public class BasicEnemyV3 : MonoBehaviour, IDamagable
 
     void BuildBehaviourMap()
     {
+        if (idleBehaviour == null)
+            Debug.LogError($"{name} idleBehaviour is NULL");
+
+        if (chaseBehaviour == null)
+            Debug.LogError($"{name} chaseBehaviour is NULL");
+
+        if (attackBehaviour == null)
+            Debug.LogError($"{name} attackBehaviour is NULL");
+
+        if (deathBehaviour == null)
+            Debug.LogError($"{name} deathBehaviour is NULL");
+
         behaviourMap = new Dictionary<State, EnemyBehaviourSO>();
 
-        behaviourMap[State.IDLE] = behaviours[0];
-        behaviourMap[State.CHASE] = behaviours[1];
-        behaviourMap[State.ATTACK] = behaviours[2];
-        behaviourMap[State.DEATH] = behaviours[3];
+        behaviourMap[State.IDLE] = idleBehaviour;
+        behaviourMap[State.CHASE] = chaseBehaviour;
+        behaviourMap[State.ATTACK] = attackBehaviour;
+        behaviourMap[State.DEATH] = deathBehaviour;
     }
-
     public void SetState(State newState)
     {
         currentState = newState;

@@ -9,9 +9,10 @@ public class PlayerHealthComponent : MonoBehaviour
     [SerializeField] private float regenRate = 5f;
     [SerializeField] private float regenDelay = 10f;
 
-    [SerializeField] private Material iceScreenMaterial;
+    //[SerializeField] private Material iceScreenMaterial;
+    
+    //public GameObject iceScreen;
 
-    private static readonly int OpacityID = Shader.PropertyToID("_Opacity");
 
     private Coroutine regenCoroutine;
     private Coroutine regenDelayCoroutine;
@@ -20,19 +21,13 @@ public class PlayerHealthComponent : MonoBehaviour
     {
         currentHealth = maxHealth;
 
-        iceScreenMaterial = Instantiate(iceScreenMaterial);
+        //iceScreenMaterial = Instantiate(iceScreenMaterial);
     }
 
     private void Update()
     {
-        if (iceScreenMaterial != null)
-        {
-            float normalized = currentHealth / maxHealth;
-
-            float opacity = 1f - normalized;
-
-            iceScreenMaterial.SetFloat(OpacityID, opacity);
-        }
+        
+       
     }
 
     public void TakeDamage(float damage)
