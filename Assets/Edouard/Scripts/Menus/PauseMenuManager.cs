@@ -7,6 +7,9 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField] private GameObject pauseMenuCanvas;
     [SerializeField] private Button toSettingsButton;
     [SerializeField] private Button toMainMenuButton;
+    [SerializeField] private Button PetsButton;
+    [SerializeField] private Button ContinueButton;
+    
     
     public static PauseMenuManager Instance;
     private void Awake()

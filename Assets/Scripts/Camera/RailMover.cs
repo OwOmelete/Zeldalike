@@ -9,6 +9,8 @@ public enum CameraMode
 
 public class RailMover : MonoBehaviour
 {
+    public float CameraTransitionSpeed = 5f;
+    
     [Header("Rail Settings")]
     public Rail rail;
     public Transform lookAt;
@@ -25,7 +27,9 @@ public class RailMover : MonoBehaviour
 
     [Header("Fixed Camera Settings")]
     public Transform fixedPoint;
-    public float fixedBlendSpeed = 5f;
+
+    public bool lockedVertical;
+    public bool lockedHorizontal;
 
     [Header("Mode")]
     public CameraMode currentMode = CameraMode.Rail;
@@ -34,11 +38,16 @@ public class RailMover : MonoBehaviour
     private Vector3 lastRailPosition;
     private Quaternion targetRotation;
 
+    public Quaternion fixedTargetRotation;
+
+    public Camera cam;
+    
     void Start()
     {
         thisTransform = transform;
         lastRailPosition = transform.position;
         targetRotation = transform.rotation;
+        fixedTargetRotation = fixedPoint.localRotation;
     }
 
     void Update()
@@ -57,16 +66,26 @@ public class RailMover : MonoBehaviour
                 UpdateFixed();
                 break;
         }
-
-        // Rotation fluide
+        
         Vector3 lookTarget = GetLookTarget();
         targetRotation = Quaternion.LookRotation(lookTarget - thisTransform.position);
-
-        // Clamp rotation X
+        
         Vector3 euler = targetRotation.eulerAngles;
+        
         euler.x = Mathf.Clamp(euler.x > 180 ? euler.x - 360 : euler.x, -minRotation, maxRotation);
+        
         targetRotation = Quaternion.Euler(euler);
+        
+        if (lockedHorizontal && currentMode == CameraMode.Fixed)
+        {
+            euler.y = fixedTargetRotation.y;
+        }
 
+        if (lockedVertical && currentMode == CameraMode.Fixed)
+        {
+            euler.x = fixedTargetRotation.x;
+        }
+        
         thisTransform.rotation = Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * followSpeed);
     }
 
@@ -98,7 +117,7 @@ public class RailMover : MonoBehaviour
         if (distanceToRail < railBlendDistance)
         {
             float t = 1f - (distanceToRail / railBlendDistance);
-            Vector3 blendedPos = Vector3.Lerp(targetPos, railPos, t);
+            Vector3 blendedPos = Vector3.Lerp(targetPos, railPos, t * CameraTransitionSpeed);
             thisTransform.position = Vector3.Lerp(thisTransform.position, blendedPos, Time.deltaTime * followSpeed);
         }
         else
@@ -111,21 +130,28 @@ public class RailMover : MonoBehaviour
     {
         if (fixedPoint == null) return;
 
-        thisTransform.position = Vector3.Lerp(thisTransform.position, fixedPoint.position, Time.deltaTime * fixedBlendSpeed);
+        thisTransform.position = Vector3.Lerp(thisTransform.position, fixedPoint.position, Time.deltaTime * CameraTransitionSpeed);
     }
 
     #endregion
 
     Vector3 GetLookTarget()
     {
+        
         switch (currentMode)
         {
             case CameraMode.Rail:
+                lockedHorizontal = false;
+                lockedVertical = false;
                 return lookAt.position;
             case CameraMode.Follow:
+                lockedHorizontal = false;
+                lockedVertical = false;
                 return player != null ? player.position : thisTransform.position;
             case CameraMode.Fixed:
                 return lookAt.position;
+                
+
             default:
                 return thisTransform.position;
         }
@@ -136,6 +162,12 @@ public class RailMover : MonoBehaviour
         if (newMode == CameraMode.Rail)
         {
             lastRailPosition = transform.position;
+        }
+
+        if (newMode != CameraMode.Fixed)
+        {
+            lockedHorizontal = false;
+            lockedVertical = false;
         }
 
         currentMode = newMode;

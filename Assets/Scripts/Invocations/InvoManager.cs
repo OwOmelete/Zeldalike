@@ -12,19 +12,26 @@ public class InvoManager : MonoBehaviour
     private int currentAttackID = 0;
     private int currentDeactivated = 0;
 
-    private List<BasicEnemyV2> enemiesInRange = new List<BasicEnemyV2>();
+    [SerializeField]private Target target;
     
-    private BasicEnemyV2 lastEnemyLocked;
+    private List<Transform> enemiesInRange = new List<Transform>();
+    private float lastBasicAttack;
+    
+    private Transform lastEnemyLocked;
 
     public MeshRenderer wave;
+    public float basicAttackCooldown;
+    
+    public InputActionReference SouthButton;
 
-    public CharacterController Controller;
+    private InvoDataInstance.temperature currentTemperature = InvoDataInstance.temperature.normal;
     
     public static event Action<List<InvoBehaviour>> OnAttackAction;
     public static event Action<List<InvoBehaviour>> OnProtection;
     
     public static event Action<Transform> OnLock;
     public static event Action OnDelock;
+
 
     public static event Action FireWaveAction;
 
@@ -63,9 +70,7 @@ public class InvoManager : MonoBehaviour
     
     private void Fall(Transform t)
     {
-        Controller.enabled = false;
         transform.position = t.position;
-        Controller.enabled = true;
         foreach (var invo in InvoList)
         {
             invo.resetPosition();
@@ -92,6 +97,36 @@ public class InvoManager : MonoBehaviour
             LancePattern();
         }
     }
+
+    private void Update()
+    {
+        if (SouthButton.action.IsPressed())
+        {
+            if (Time.time - lastBasicAttack > basicAttackCooldown)
+            {
+                basicAttack();
+            }
+        }
+    }
+
+    private void OnSouthButton()
+    {
+        
+    }
+
+    private void basicAttack()
+    {
+        if (InvoList.Count > 0)
+        {
+            lastBasicAttack = Time.time;
+            InvoBehaviour invo = GetClosest(1)[0];
+            invo.SetAttackID(GetNewAttackID());
+            invo.Data.currentTemperature = currentTemperature;
+            invo.Data.attackDelay = 0.1f;
+            invo.Data.gonnaFreeze = true;
+            invo.ChangeState(invo.stateAttack);
+        }
+    }
     
     private void LancePattern()
     {
@@ -103,6 +138,7 @@ public class InvoManager : MonoBehaviour
         {
             if (invo != null)
                 invo.SetAttackID(attackID);
+            invo.Data.attackDelay = 0.75f;
         }
 
         OnAttackAction?.Invoke(invos);
@@ -133,12 +169,32 @@ public class InvoManager : MonoBehaviour
     }
     */
     
-    private void OnFireWave()
+    private void OnLeftTrigger()
+    {
+        
+
+        if (currentTemperature > 0)
+        {
+            currentTemperature -= 1;
+        }
+        Debug.Log(currentTemperature);
+    }
+
+    private void OnLeftShoulder()
     {
         StartCoroutine(waveTimer());
         FireWaveAction?.Invoke();
     }
-
+    
+    private void OnRightTrigger()
+    {
+        if (currentTemperature < InvoDataInstance.temperature.veryHot)
+        {
+            currentTemperature += 1;
+        }
+        Debug.Log(currentTemperature);
+    }
+    
     IEnumerator waveTimer()
     {
         wave.enabled = true;
@@ -156,7 +212,7 @@ public class InvoManager : MonoBehaviour
     {
         if (other.CompareTag("EnemyZone"))
         {
-            BasicEnemyV2 enemy = other.GetComponentInParent<BasicEnemyV2>();
+            Transform enemy = other.gameObject.transform;
 
             if (!enemiesInRange.Contains(enemy))
             {
@@ -174,12 +230,10 @@ public class InvoManager : MonoBehaviour
     {
         if (!other.CompareTag("EnemyZone")) return;
 
-        BasicEnemyV2 enemy = other.GetComponentInParent<BasicEnemyV2>();
+        Transform enemy = other.gameObject.transform;
 
         
-        Debug.Log(enemiesInRange.Count);
         
-        enemy.targetUI.enabled = false;
         enemiesInRange.Remove(enemy);
 
         UpdateTarget();
@@ -193,16 +247,17 @@ public class InvoManager : MonoBehaviour
         }
         else
         {
-            lastEnemyLocked.targetUI.enabled = false;
+            target.sprite.enabled = false;
             lastEnemyLocked = null;
             OnDelock?.Invoke();
         
         }
     }
 
-    private void TargetLock(BasicEnemyV2 enemy)
+    private void TargetLock(Transform enemy)
     {
-        enemy.targetUI.enabled = true;
+        target.target = enemy;
+        target.sprite.enabled = true;
         lastEnemyLocked = enemy;
         OnLock?.Invoke(enemy.transform);
     }
@@ -214,7 +269,7 @@ public class InvoManager : MonoBehaviour
 
         for (int i = 0; i < InvoList.Count; i++)
         {
-            if (!InvoList[i].Data.isActivated)
+            if (!InvoList[i].Data.isActivated || InvoList[i].Data.currentState == InvoList[i].stateAttack)
                 continue;
 
             float dist = (InvoList[i].transform.position - transform.position).sqrMagnitude;

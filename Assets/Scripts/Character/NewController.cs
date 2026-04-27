@@ -48,7 +48,7 @@ public class TopDownPlayerController : MonoBehaviour
         HandleMovement();
     }
 
-    private void OnDash()
+    /*private void OnDash()
     {
         if (isDashing || Time.time - lastDash < dashCooldown) return;
 
@@ -62,7 +62,7 @@ public class TopDownPlayerController : MonoBehaviour
         {
             dashDirection = transform.forward;
         }
-    }
+    }*/
     
     void HandleMovement()
     {
