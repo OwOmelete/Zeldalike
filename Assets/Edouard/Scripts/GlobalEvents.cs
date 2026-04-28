@@ -2,6 +2,8 @@ using System;
 
 public static class GlobalEvents
 {
+    #region ButtonEvents
+
     public static event Action OnButtonPressed;
 
     public static void ButtonPressed()
@@ -22,4 +24,31 @@ public static class GlobalEvents
     {
         OnPauseButtonPressed?.Invoke();
     }
+    
+    public static event Action OnPauseSelecting;
+
+    public static void PauseSelecting(int mood)
+    {
+        OnPauseSelecting?.Invoke(/*mood.ToString()*/);
+    }
+
+    #endregion
+
+    #region EnemyEvents
+
+    public static event Action OnEnemyAttack;
+
+    public static void EnemyAttack()
+    {
+        OnEnemyAttack?.Invoke();
+    }
+
+    public static event Action OnEnemyMove;
+
+    public static void EnemyMove()
+    {
+        OnEnemyMove?.Invoke();
+    }
+
+    #endregion
 }

@@ -24,6 +24,8 @@ public class InvoBehaviour : MonoBehaviour
     public static event Action<InvoBehaviour> OnInvoSpawn;
     public static event Action<bool> OnInvoActivate;
 
+    public Coroutine delay;
+
     private void OnEnable()
     {
         InvoManager.OnLock += HandleLock;
@@ -80,6 +82,11 @@ public class InvoBehaviour : MonoBehaviour
         st = Data.currentState.ToString();
     }
 
+    public void ChangeTemperature(InvoDataInstance.temperature temp)
+    {
+        Data.currentTemperature = temp;
+    }
+
     public void resetPosition()
     {
         transform.position = Data.target.position + Data.offset;
@@ -87,8 +94,11 @@ public class InvoBehaviour : MonoBehaviour
     
     public void startAttackDelay()
     {
-        StopCoroutine(attackDelay());
-        StartCoroutine(attackDelay());
+        if (delay != null)
+        {
+            StopCoroutine(delay);
+        }
+        delay = StartCoroutine(attackDelay(Data.attackDelay));
     }
     
     
@@ -115,11 +125,19 @@ public class InvoBehaviour : MonoBehaviour
 
             if (damagable != null && Data.currentState == stateAttack)
             {
-                damagable.TakeDamage(Data.damage, attackID);
+                damagable.TakeDamage(Data.damage, attackID, Data);
                 ChangeState(stateDisabled);
             }
         }
-        if (other.gameObject.CompareTag("Player"))
+
+        if (other.CompareTag("Dummy"))
+        {
+            if (Data.currentState == stateAttack)
+            {
+                ChangeState(stateDisabled);
+            }
+        }
+        if (other.gameObject.CompareTag("CollectZone"))
         {
             if (Data.currentState == stateDisabled)
             {
@@ -144,9 +162,9 @@ public class InvoBehaviour : MonoBehaviour
     }
     
     #region coroutines
-    IEnumerator attackDelay()
+    IEnumerator attackDelay(float delay)
     {
-        yield return new WaitForSeconds(.75f);
+        yield return new WaitForSeconds(delay);
         Data.rb.isKinematic = true;
         Data.isMovingDirection = true;
         if (Data.ennemyTarget == null)

@@ -39,12 +39,15 @@ public class RailMover : MonoBehaviour
     private Quaternion targetRotation;
 
     public Quaternion fixedTargetRotation;
+
+    public Camera cam;
     
     void Start()
     {
         thisTransform = transform;
         lastRailPosition = transform.position;
         targetRotation = transform.rotation;
+        fixedTargetRotation = fixedPoint.localRotation;
     }
 
     void Update()
@@ -69,27 +72,19 @@ public class RailMover : MonoBehaviour
         
         Vector3 euler = targetRotation.eulerAngles;
         
-        
-        
         euler.x = Mathf.Clamp(euler.x > 180 ? euler.x - 360 : euler.x, -minRotation, maxRotation);
-
-        if (lockedHorizontal)
-        {
-            euler.y = 0;
-        }
-
-        if (lockedVertical)
-        {
-            euler.x = 0;
-        }
         
         targetRotation = Quaternion.Euler(euler);
-
-        if (currentMode == CameraMode.Fixed)
-        {
-            targetRotation = fixedTargetRotation;
-        }
         
+        if (lockedHorizontal && currentMode == CameraMode.Fixed)
+        {
+            euler.y = fixedTargetRotation.y;
+        }
+
+        if (lockedVertical && currentMode == CameraMode.Fixed)
+        {
+            euler.x = fixedTargetRotation.x;
+        }
         
         thisTransform.rotation = Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * followSpeed);
     }
@@ -164,11 +159,15 @@ public class RailMover : MonoBehaviour
 
     public void SetCameraMode(CameraMode newMode)
     {
-        lockedHorizontal = false;
-        lockedVertical = false;
         if (newMode == CameraMode.Rail)
         {
             lastRailPosition = transform.position;
+        }
+
+        if (newMode != CameraMode.Fixed)
+        {
+            lockedHorizontal = false;
+            lockedVertical = false;
         }
 
         currentMode = newMode;

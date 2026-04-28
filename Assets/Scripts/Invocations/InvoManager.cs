@@ -15,18 +15,23 @@ public class InvoManager : MonoBehaviour
     [SerializeField]private Target target;
     
     private List<Transform> enemiesInRange = new List<Transform>();
+    private float lastBasicAttack;
     
     private Transform lastEnemyLocked;
 
     public MeshRenderer wave;
+    public float basicAttackCooldown;
     
-    
+    public InputActionReference SouthButton;
+
+    private InvoDataInstance.temperature currentTemperature = InvoDataInstance.temperature.hot;
     
     public static event Action<List<InvoBehaviour>> OnAttackAction;
     public static event Action<List<InvoBehaviour>> OnProtection;
     
     public static event Action<Transform> OnLock;
     public static event Action OnDelock;
+
 
     public static event Action FireWaveAction;
 
@@ -92,6 +97,36 @@ public class InvoManager : MonoBehaviour
             LancePattern();
         }
     }
+
+    private void Update()
+    {
+        if (SouthButton.action.IsPressed())
+        {
+            if (Time.time - lastBasicAttack > basicAttackCooldown)
+            {
+                basicAttack();
+            }
+        }
+    }
+
+    private void OnSouthButton()
+    {
+        
+    }
+
+    private void basicAttack()
+    {
+        if (InvoList.Count > 0)
+        {
+            lastBasicAttack = Time.time;
+            InvoBehaviour invo = GetClosest(1)[0];
+            invo.SetAttackID(GetNewAttackID());
+            invo.Data.currentTemperature = currentTemperature;
+            invo.Data.attackDelay = 0.1f;
+            invo.Data.gonnaFreeze = true;
+            invo.ChangeState(invo.stateAttack);
+        }
+    }
     
     private void LancePattern()
     {
@@ -103,6 +138,7 @@ public class InvoManager : MonoBehaviour
         {
             if (invo != null)
                 invo.SetAttackID(attackID);
+            invo.Data.attackDelay = 0.75f;
         }
 
         OnAttackAction?.Invoke(invos);
@@ -133,12 +169,24 @@ public class InvoManager : MonoBehaviour
     }
     */
     
-    private void OnFireWave()
+    private void OnLeftTrigger()
+    {
+
+
+        currentTemperature = InvoDataInstance.temperature.cold;
+    }
+
+    private void OnLeftShoulder()
     {
         StartCoroutine(waveTimer());
         FireWaveAction?.Invoke();
     }
-
+    
+    private void OnRightTrigger()
+    {
+        currentTemperature = InvoDataInstance.temperature.hot;
+    }
+    
     IEnumerator waveTimer()
     {
         wave.enabled = true;
@@ -213,7 +261,7 @@ public class InvoManager : MonoBehaviour
 
         for (int i = 0; i < InvoList.Count; i++)
         {
-            if (!InvoList[i].Data.isActivated)
+            if (!InvoList[i].Data.isActivated || InvoList[i].Data.currentState == InvoList[i].stateAttack)
                 continue;
 
             float dist = (InvoList[i].transform.position - transform.position).sqrMagnitude;
