@@ -172,18 +172,24 @@ public class InvoManager : MonoBehaviour
     private void OnLeftTrigger()
     {
 
+        StartCoroutine(waveTimer());
+        FireWaveAction?.Invoke();
 
-        currentTemperature = InvoDataInstance.temperature.cold;
+        
     }
 
     private void OnLeftShoulder()
     {
-        StartCoroutine(waveTimer());
-        FireWaveAction?.Invoke();
+        currentTemperature = InvoDataInstance.temperature.cold;
     }
     
     private void OnRightTrigger()
     {
+    }
+
+    private void OnRightShoulder()
+    {
+        
         currentTemperature = InvoDataInstance.temperature.hot;
     }
     
