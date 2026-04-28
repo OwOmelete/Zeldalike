@@ -16,4 +16,5 @@ public class DeathZone : MonoBehaviour
             OnFall?.Invoke(respawnPoint);
         }
     }
+    
 }
