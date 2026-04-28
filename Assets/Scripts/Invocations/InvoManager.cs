@@ -12,15 +12,13 @@ public class InvoManager : MonoBehaviour
     private int currentAttackID = 0;
     private int currentDeactivated = 0;
 
-    [SerializeField]private Target target;
+    private List<BasicEnemyV2> enemiesInRange = new List<BasicEnemyV2>();
     
-    private List<Transform> enemiesInRange = new List<Transform>();
-    
-    private Transform lastEnemyLocked;
+    private BasicEnemyV2 lastEnemyLocked;
 
     public MeshRenderer wave;
-    
-    
+
+    public CharacterController Controller;
     
     public static event Action<List<InvoBehaviour>> OnAttackAction;
     public static event Action<List<InvoBehaviour>> OnProtection;
@@ -65,7 +63,9 @@ public class InvoManager : MonoBehaviour
     
     private void Fall(Transform t)
     {
+        Controller.enabled = false;
         transform.position = t.position;
+        Controller.enabled = true;
         foreach (var invo in InvoList)
         {
             invo.resetPosition();
@@ -156,7 +156,7 @@ public class InvoManager : MonoBehaviour
     {
         if (other.CompareTag("EnemyZone"))
         {
-            Transform enemy = other.gameObject.transform;
+            BasicEnemyV2 enemy = other.GetComponentInParent<BasicEnemyV2>();
 
             if (!enemiesInRange.Contains(enemy))
             {
@@ -174,10 +174,12 @@ public class InvoManager : MonoBehaviour
     {
         if (!other.CompareTag("EnemyZone")) return;
 
-        Transform enemy = other.gameObject.transform;
+        BasicEnemyV2 enemy = other.GetComponentInParent<BasicEnemyV2>();
 
         
+        Debug.Log(enemiesInRange.Count);
         
+        enemy.targetUI.enabled = false;
         enemiesInRange.Remove(enemy);
 
         UpdateTarget();
@@ -191,17 +193,16 @@ public class InvoManager : MonoBehaviour
         }
         else
         {
-            target.sprite.enabled = false;
+            lastEnemyLocked.targetUI.enabled = false;
             lastEnemyLocked = null;
             OnDelock?.Invoke();
         
         }
     }
 
-    private void TargetLock(Transform enemy)
+    private void TargetLock(BasicEnemyV2 enemy)
     {
-        target.target = enemy;
-        target.sprite.enabled = true;
+        enemy.targetUI.enabled = true;
         lastEnemyLocked = enemy;
         OnLock?.Invoke(enemy.transform);
     }
