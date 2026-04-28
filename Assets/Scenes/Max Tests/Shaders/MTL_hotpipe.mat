@@ -170,10 +170,16 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _FireSpeed: 0.15
+    - _Fire_Speed: 0.15
+    - _Fire_progression: -1
     - _Float: 0
+    - _Fresnel_Power: 2
+    - _Glass_Thickness: 1.7
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _Ice_Progression: 1
     - _Ice_Y_offset: -1.61
     - _Metallic: 0
     - _OcclusionStrength: 1
@@ -192,27 +198,32 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _To_Invert_Fire_Direction: 0
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     - _fireOffset: -0.1
     - _fireOffset_1: -0.1
+    - _fresnel_power: 1.7
     - _iceFireOffset: -0.2
     - _iceOffset: -0.2
     - _iceOffset_1: 0
     - _isHot: 1
     - _isInversed: 0
-    - _test: 0
+    - _speed: 0.15
+    - _test: 30
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Center: {r: 0.5, g: 1, b: 0, a: 0}
     - _Cold_Color: {r: 0, g: 0.4528575, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Fire_Position_Tiling: {r: 0.35, g: 8, b: 0, a: 0}
     - _Hot_Color: {r: 1, g: 0.4768409, b: 0, a: 1}
     - _Offset: {r: 0, g: 0.5, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
-    - _test_fire_triplanar: {r: 1, g: 1, b: 0, a: 0}
+    - _multiply_test: {r: 2, g: 2, b: 2, a: 2}
+    - _test_fire_triplanar: {r: 0.35, g: 8, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
