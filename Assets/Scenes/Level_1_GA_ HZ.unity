@@ -2278,6 +2278,7 @@ MonoBehaviour:
   rail: {fileID: 0}
   fixedPoint: {fileID: 1990009506}
   followOffset: {x: 0, y: 0, z: 0}
+  camSize: 0
   lockVertical: 0
   lockHorizontal: 0
 --- !u!1 &72897329
@@ -4317,6 +4318,7 @@ MonoBehaviour:
   rail: {fileID: 0}
   fixedPoint: {fileID: 1616567908}
   followOffset: {x: 0, y: 0, z: 0}
+  camSize: 0
   lockVertical: 0
   lockHorizontal: 0
 --- !u!1 &228707792
@@ -4938,11 +4940,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8492833549898910848, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.02
+      value: 17.35
       objectReference: {fileID: 0}
     - target: {fileID: 8492833549898910848, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -737.4
+      value: -750.11
       objectReference: {fileID: 0}
     - target: {fileID: 8492833549898910848, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5013,7 +5015,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8492833549898910848, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
       insertIndex: -1
       addedObject: {fileID: 470289376}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1885335188778453300, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 253956836}
   m_SourcePrefab: {fileID: 100100000, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
 --- !u!1 &253956833 stripped
 GameObject:
@@ -5031,6 +5036,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0393b24a89c065d419799be96cb3885b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InvoManager
+--- !u!1 &253956835 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1885335188778453300, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
+  m_PrefabInstance: {fileID: 253956832}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &253956836
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253956835}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 77359fc3133153e46b696b298a47a1a9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &258706197
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8663,6 +8695,7 @@ MonoBehaviour:
   rail: {fileID: 0}
   fixedPoint: {fileID: 168893407}
   followOffset: {x: 0, y: 0, z: 0}
+  camSize: 0
   lockVertical: 0
   lockHorizontal: 0
 --- !u!1 &510986517
@@ -9859,6 +9892,7 @@ MonoBehaviour:
   rail: {fileID: 517889616}
   fixedPoint: {fileID: 0}
   followOffset: {x: 0, y: 0, z: 0}
+  camSize: 0
   lockVertical: 0
   lockHorizontal: 0
 --- !u!1 &564555739
@@ -9909,6 +9943,7 @@ MonoBehaviour:
   lockedHorizontal: 0
   currentMode: 2
   fixedTargetRotation: {x: 0, y: 0, z: 0, w: 0}
+  cam: {fileID: 0}
 --- !u!114 &564555741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14574,6 +14609,7 @@ MonoBehaviour:
   rail: {fileID: 0}
   fixedPoint: {fileID: 1273260533}
   followOffset: {x: 0, y: 0, z: 0}
+  camSize: 0
   lockVertical: 0
   lockHorizontal: 0
 --- !u!1 &820136208
@@ -18499,6 +18535,7 @@ MonoBehaviour:
   rail: {fileID: 0}
   fixedPoint: {fileID: 168893407}
   followOffset: {x: 0, y: 0, z: 0}
+  camSize: 0
   lockVertical: 0
   lockHorizontal: 0
 --- !u!1001 &1008779170
@@ -22480,6 +22517,7 @@ MonoBehaviour:
   rail: {fileID: 0}
   fixedPoint: {fileID: 1106400553}
   followOffset: {x: 0, y: 0, z: 0}
+  camSize: 0
   lockVertical: 0
   lockHorizontal: 0
 --- !u!1 &1253743567
@@ -22553,6 +22591,7 @@ MonoBehaviour:
   rail: {fileID: 517889616}
   fixedPoint: {fileID: 0}
   followOffset: {x: 0, y: 0, z: 0}
+  camSize: 0
   lockVertical: 0
   lockHorizontal: 0
 --- !u!1 &1268489251
@@ -31541,6 +31580,7 @@ MonoBehaviour:
   rail: {fileID: 0}
   fixedPoint: {fileID: 1157152365}
   followOffset: {x: 0, y: 0, z: 0}
+  camSize: 0
   lockVertical: 0
   lockHorizontal: 0
 --- !u!1 &1731380468
@@ -33987,15 +34027,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 18b26f984f1d8e3449ccedea9616a3da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.9
+      value: -28.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 18b26f984f1d8e3449ccedea9616a3da, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -356.79227
+      value: -259.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 18b26f984f1d8e3449ccedea9616a3da, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -562.2
+      value: -461.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 18b26f984f1d8e3449ccedea9616a3da, type: 3}
       propertyPath: m_LocalRotation.w
@@ -37005,7 +37045,7 @@ Transform:
   m_GameObject: {fileID: 2081504300}
   serializedVersion: 2
   m_LocalRotation: {x: -0.098293014, y: -0.8946865, z: 0.3236475, w: -0.29176512}
-  m_LocalPosition: {x: -109.9, y: 48.2, z: -715.5}
+  m_LocalPosition: {x: -114.5, y: 48.2, z: -736.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -37339,6 +37379,7 @@ MonoBehaviour:
   rail: {fileID: 0}
   fixedPoint: {fileID: 1157152365}
   followOffset: {x: 0, y: 0, z: 0}
+  camSize: 0
   lockVertical: 0
   lockHorizontal: 0
 --- !u!1001 &2104713037
@@ -37926,6 +37967,7 @@ MonoBehaviour:
   rail: {fileID: 0}
   fixedPoint: {fileID: 1273260533}
   followOffset: {x: 0, y: 0, z: 0}
+  camSize: 0
   lockVertical: 0
   lockHorizontal: 0
 --- !u!1 &2144170769
@@ -37999,6 +38041,7 @@ MonoBehaviour:
   rail: {fileID: 0}
   fixedPoint: {fileID: 1616567908}
   followOffset: {x: 0, y: 0, z: 0}
+  camSize: 0
   lockVertical: 0
   lockHorizontal: 0
 --- !u!1001 &2144506916
