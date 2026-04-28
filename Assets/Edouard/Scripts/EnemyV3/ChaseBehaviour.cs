@@ -3,8 +3,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Enemies/Behaviours/Chase")]
 public class ChaseBehaviour : EnemyBehaviourSO
 {
-    public override void Execute(BasicEnemyV3 enemy)
+    public override void Execute(EnemyController enemy)
     {
+        if (enemy.Player == null) return;
+        if (enemy.CurrentState != EnemyController.State.CHASE) return;
+
         Vector3 target = enemy.Player.position;
 
         enemy.transform.position = Vector3.MoveTowards(

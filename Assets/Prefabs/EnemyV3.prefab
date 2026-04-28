@@ -307,6 +307,7 @@ GameObject:
   - component: {fileID: 6277218811875239240}
   - component: {fileID: 5990705575658346360}
   - component: {fileID: 2411724826775476465}
+  - component: {fileID: 7482266429632454008}
   - component: {fileID: 4218596360005017481}
   m_Layer: 8
   m_Name: EnemyV3
@@ -424,15 +425,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 383fb3c4a6493e042a25ae0e7c6533c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BasicEnemyV3
-  Stats: {fileID: 11400000, guid: b41deb61883d670419f16aeec463484f, type: 2}
-  attackZone: {fileID: 8254220631121576528}
-  healthBar: {fileID: 277638319737233073}
-  HeatSystem: {fileID: 4218596360005017481}
-  firePoint: {fileID: 5595878929203874171}
+  animator: {fileID: 0}
   idleBehaviour: {fileID: 11400000, guid: fff4ccc2c4286e84d8073e4b5d56222f, type: 2}
   chaseBehaviour: {fileID: 11400000, guid: 51a4508085d6da74bbaece8d9a276e12, type: 2}
   attackBehaviour: {fileID: 11400000, guid: 231df87e9cc81e944abeaea07fa4d3db, type: 2}
   deathBehaviour: {fileID: 11400000, guid: 0cba4de982f28504ba3e9cefd7b51d15, type: 2}
+  Stats: {fileID: 11400000, guid: b41deb61883d670419f16aeec463484f, type: 2}
+--- !u!114 &7482266429632454008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3134737471405312256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75cf3e0cb2e55d04a99bffc060d705c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyRangedAttack
+  projectilePrefab: {fileID: 0}
+  firePoint: {fileID: 0}
+  cooldown: 1.5
 --- !u!114 &4218596360005017481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -925,7 +938,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DetectorLogicV3
   enemy: {fileID: 2411724826775476465}
-  attackRadius: 5
+  attack: {fileID: 0}
 --- !u!135 &777783279402450777
 SphereCollider:
   m_ObjectHideFlags: 0

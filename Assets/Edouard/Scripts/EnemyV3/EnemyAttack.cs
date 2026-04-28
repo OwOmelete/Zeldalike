@@ -46,7 +46,7 @@ public class EnemyAttack : MonoBehaviour
         playerHealth = null;
     }
 
-    void TryAttack()
+    public void TryAttack()
     {
         if (player == null || attackRoutine != null) return;
 

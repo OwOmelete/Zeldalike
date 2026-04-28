@@ -19,9 +19,13 @@ public class EnemyController : MonoBehaviour
     public EnemyBehaviourSO chaseBehaviour;
     public EnemyBehaviourSO attackBehaviour;
     public EnemyBehaviourSO deathBehaviour;
+    
+    [Header("Config")]
+    public EnemyStatsSO Stats;
 
     private Dictionary<State, EnemyBehaviourSO> behaviourMap;
     private State currentState;
+    public State CurrentState => currentState;
 
     public Transform Player { get; private set; }
 
@@ -43,7 +47,7 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        behaviourMap[currentState]?.Execute(this);
+        //behaviourMap[currentState]?.Execute(this);
     }
 
     public void SetState(State newState)
