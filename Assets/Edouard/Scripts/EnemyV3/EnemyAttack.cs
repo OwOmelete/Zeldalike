@@ -4,61 +4,89 @@ using System.Collections;
 public class EnemyAttack : MonoBehaviour
 {
     [Header("Config")]
-    public float attackRadius;
     public EnemyStatsSO stats;
 
     [Header("References")]
     public GameObject attackZone;
+    public Animator animator;
 
     private Transform player;
     private PlayerHealthComponent playerHealth;
     private EnemyController enemy;
 
-    public bool IsAttacking { get; private set; }
+    private Coroutine attackRoutine;
 
     void Awake()
     {
         enemy = GetComponent<EnemyController>();
     }
 
-    public void SetTarget(Transform target)
+    private void OnTriggerEnter(Collider other)
     {
-        player = target;
+        if (!other.CompareTag("Player")) return;
 
-        if (player != null)
-            playerHealth = player.GetComponent<PlayerHealthComponent>();
+        player = other.transform;
+        playerHealth = player.GetComponent<PlayerHealthComponent>();
+
+        TryAttack();
     }
 
-    void Update()
+    private void OnTriggerStay(Collider other)
     {
-        if (player == null || IsAttacking) return;
+        if (!other.CompareTag("Player")) return;
 
-        float distance = Vector3.Distance(
-            transform.position,
-            player.position
-        );
+        TryAttack();
+    }
 
-        if (distance <= attackRadius)
-        {
-            enemy.SetState(EnemyController.State.ATTACK);
-            StartCoroutine(AttackRoutine());
-        }
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+
+        player = null;
+        playerHealth = null;
+    }
+
+    void TryAttack()
+    {
+        if (player == null || attackRoutine != null) return;
+
+        enemy.SetState(EnemyController.State.ATTACK);
+        attackRoutine = StartCoroutine(AttackRoutine());
     }
 
     IEnumerator AttackRoutine()
     {
-        IsAttacking = true;
+        if (animator != null)
+            animator.SetTrigger("Attack");
 
-        attackZone.SetActive(true);
         yield return new WaitForSeconds(stats.attackCooldown);
 
-        attackZone.SetActive(false);
+        EndAttack();
+    }
+
+    public void DealDamage()
+    {
+        attackZone.SetActive(true);
 
         if (playerHealth != null)
             playerHealth.TakeDamage(stats.damage);
 
-        yield return new WaitForSeconds(0.5f);
+        attackZone.SetActive(false);
+    }
 
-        IsAttacking = false;
+    public void EndAttack()
+    {
+        attackRoutine = null;
+
+        if (player != null)
+            enemy.SetState(EnemyController.State.CHASE);
+        else
+            enemy.SetState(EnemyController.State.IDLE);
+    }
+
+    void OnDisable()
+    {
+        if (attackRoutine != null)
+            StopCoroutine(attackRoutine);
     }
 }
