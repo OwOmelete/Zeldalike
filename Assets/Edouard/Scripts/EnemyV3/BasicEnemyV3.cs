@@ -47,7 +47,7 @@ public class BasicEnemyV3 : MonoBehaviour, IDamagable
 
     void Update()
     {
-        if (currentHealth <= 0)
+        if (HeatSystem.GetCorruptionPercentage() >= 1)
         {
             SetState(State.DEATH);
         }
@@ -105,24 +105,15 @@ public class BasicEnemyV3 : MonoBehaviour, IDamagable
 
         switch (data.currentTemperature)
         {
-            case InvoDataInstance.temperature.veryCold:
-                HeatSystem.reduceHeat(data.veryColdValue);
-                break;
             case InvoDataInstance.temperature.cold:
                 HeatSystem.reduceHeat(data.coldValue);
                 break;
             case InvoDataInstance.temperature.hot:
                 HeatSystem.increaseHeat(data.hotValue);
                 break;
-            case InvoDataInstance.temperature.veryHot:
-                HeatSystem.increaseHeat(data.veryHotValue);
-                break;
         }
 
-        if (currentHealth <= 0)
-        {
-            SetState(State.DEATH);
-        }
+        
 
         UpdateHealthBar();
     }

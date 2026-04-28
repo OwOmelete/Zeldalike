@@ -158,7 +158,7 @@ else
     HealBarre.value = (float)currentHeal / (float)maxHealPoint;
 }
 
-public void TakeDamage(float damage, int attackID)
+public void TakeDamage(float damage, int attackID, InvoDataInstance data)
 {
     if (receivedAttacks.Contains(attackID)) return;
 

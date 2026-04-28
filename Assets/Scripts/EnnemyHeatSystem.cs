@@ -85,5 +85,10 @@ public class EnnemyHeatSystem : MonoBehaviour
             return 0;
         }
     }
+
+    public float GetCorruptionPercentage()
+    {
+        return currentCorruption / maxCorruption;
+    }
     
 }

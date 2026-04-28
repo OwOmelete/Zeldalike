@@ -24,7 +24,7 @@ public class InvoManager : MonoBehaviour
     
     public InputActionReference SouthButton;
 
-    private InvoDataInstance.temperature currentTemperature = InvoDataInstance.temperature.normal;
+    private InvoDataInstance.temperature currentTemperature = InvoDataInstance.temperature.hot;
     
     public static event Action<List<InvoBehaviour>> OnAttackAction;
     public static event Action<List<InvoBehaviour>> OnProtection;
@@ -171,13 +171,9 @@ public class InvoManager : MonoBehaviour
     
     private void OnLeftTrigger()
     {
-        
 
-        if (currentTemperature > 0)
-        {
-            currentTemperature -= 1;
-        }
-        Debug.Log(currentTemperature);
+
+        currentTemperature = InvoDataInstance.temperature.cold;
     }
 
     private void OnLeftShoulder()
@@ -188,11 +184,7 @@ public class InvoManager : MonoBehaviour
     
     private void OnRightTrigger()
     {
-        if (currentTemperature < InvoDataInstance.temperature.veryHot)
-        {
-            currentTemperature += 1;
-        }
-        Debug.Log(currentTemperature);
+        currentTemperature = InvoDataInstance.temperature.hot;
     }
     
     IEnumerator waveTimer()

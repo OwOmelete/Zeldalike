@@ -46,11 +46,8 @@ public class InvoDataInstance
 
     public enum temperature
     {
-        veryCold,
-        cold,
-        normal,
         hot,
-        veryHot
+        cold
         
     }
     
