@@ -14,7 +14,10 @@ public class EnemyRangedAttack : MonoBehaviour
 
     void Awake()
     {
-        enemy = GetComponent<EnemyController>();
+        enemy = GetComponentInParent<EnemyController>();
+
+        if (enemy == null)
+            Debug.LogError("EnemyController not found on " + gameObject.name);
     }
 
     public void TryFire()
@@ -39,9 +42,14 @@ public class EnemyRangedAttack : MonoBehaviour
         );
 
         var p = proj.GetComponent<EnemyProjectile>();
-        var playerHealth = enemy.Player.GetComponent<PlayerHealthComponent>();
 
-        p.Init(enemy.Player, playerHealth);
+        if (p == null)
+        {
+            Debug.LogError("Projectile missing EnemyProjectile script");
+            yield break;
+        }
+
+        p.Init(enemy.Player.position, enemy.Stats.damage);
 
         yield return new WaitForSeconds(0.3f);
 
