@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class EnemyAttack : MonoBehaviour
-{
+{/*
     [Header("Config")]
     public EnemyStatsSO stats;
 
@@ -88,5 +88,5 @@ public class EnemyAttack : MonoBehaviour
     {
         if (attackRoutine != null)
             StopCoroutine(attackRoutine);
-    }
+    }*/
 }

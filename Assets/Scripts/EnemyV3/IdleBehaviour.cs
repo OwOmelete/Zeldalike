@@ -5,6 +5,6 @@ public class IdleBehaviour : EnemyBehaviourSO
 {
     public override void Execute(EnemyController enemy)
     {
-        // Intentionally empty
+        // Do nothing
     }
 }

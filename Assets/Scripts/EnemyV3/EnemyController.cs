@@ -11,6 +11,9 @@ public class EnemyController : MonoBehaviour
         DEATH
     }
 
+    [Header("Config")]
+    public EnemyStatsSO Stats;
+
     [Header("References")]
     public Animator animator;
 
@@ -19,14 +22,11 @@ public class EnemyController : MonoBehaviour
     public EnemyBehaviourSO chaseBehaviour;
     public EnemyBehaviourSO attackBehaviour;
     public EnemyBehaviourSO deathBehaviour;
-    
-    [Header("Config")]
-    public EnemyStatsSO Stats;
 
     private Dictionary<State, EnemyBehaviourSO> behaviourMap;
     private State currentState;
-    public State CurrentState => currentState;
 
+    public State CurrentState => currentState;
     public Transform Player { get; private set; }
 
     void Awake()
@@ -47,7 +47,8 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        //behaviourMap[currentState]?.Execute(this);
+        behaviourMap[currentState]?.Execute(this);
+        Debug.Log(currentState);
     }
 
     public void SetState(State newState)
@@ -56,6 +57,9 @@ public class EnemyController : MonoBehaviour
 
         currentState = newState;
         UpdateAnimator();
+
+        if (currentState == State.DEATH)
+            Destroy(gameObject, 2f);
     }
 
     public void SetPlayer(Transform player)
