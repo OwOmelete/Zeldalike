@@ -25,6 +25,7 @@ public class InvoManager : MonoBehaviour
     public InputActionReference SouthButton;
 
     private InvoDataInstance.temperature currentTemperature = InvoDataInstance.temperature.hot;
+    private Vector3 respawnPos;
     
     public static event Action<List<InvoBehaviour>> OnAttackAction;
     public static event Action<List<InvoBehaviour>> OnProtection;
@@ -70,13 +71,26 @@ public class InvoManager : MonoBehaviour
     
     private void Fall(Transform t)
     {
-        transform.position = t.position;
+        respawnPos = t.position;
         foreach (var invo in InvoList)
         {
             invo.resetPosition();
         }
     }
-    
+
+    private void LateUpdate()
+    {
+        if (respawnPos != Vector3.zero)
+        {
+            transform.position = respawnPos;
+            respawnPos = Vector3.zero;
+            foreach (var invo in InvoList)
+            {
+                invo.resetPosition();
+            }
+        }
+    }
+
     /*private void OnShield(InputValue value)
     {
         List<InvoBehaviour> l = new();
@@ -172,18 +186,24 @@ public class InvoManager : MonoBehaviour
     private void OnLeftTrigger()
     {
 
+        StartCoroutine(waveTimer());
+        FireWaveAction?.Invoke();
 
-        currentTemperature = InvoDataInstance.temperature.cold;
+        
     }
 
     private void OnLeftShoulder()
     {
-        StartCoroutine(waveTimer());
-        FireWaveAction?.Invoke();
+        currentTemperature = InvoDataInstance.temperature.cold;
     }
     
     private void OnRightTrigger()
     {
+    }
+
+    private void OnRightShoulder()
+    {
+        
         currentTemperature = InvoDataInstance.temperature.hot;
     }
     
