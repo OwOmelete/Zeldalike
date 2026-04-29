@@ -6,7 +6,10 @@ public class CinemachineSwitch : MonoBehaviour
     public GameObject camera2;
     void OnTriggerEnter(Collider other)
     {
-        camera1.SetActive(!camera1.activeSelf);
-        camera2.SetActive(!camera2.activeSelf);
+        if (other.CompareTag("Player"))
+        {
+            camera1.SetActive(!camera1.activeSelf);
+            camera2.SetActive(!camera2.activeSelf);
+        }
     }
 }
