@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class EnemyController : MonoBehaviour
 {
@@ -17,28 +16,10 @@ public class EnemyController : MonoBehaviour
     [Header("References")]
     public Animator animator;
 
-    [Header("Behaviours")]
-    public EnemyBehaviourSO idleBehaviour;
-    public EnemyBehaviourSO chaseBehaviour;
-    public EnemyBehaviourSO attackBehaviour;
-    public EnemyBehaviourSO deathBehaviour;
-
-    private Dictionary<State, EnemyBehaviourSO> behaviourMap;
     private State currentState;
-
     public State CurrentState => currentState;
-    public Transform Player { get; private set; }
 
-    void Awake()
-    {
-        behaviourMap = new Dictionary<State, EnemyBehaviourSO>()
-        {
-            { State.IDLE, idleBehaviour },
-            { State.CHASE, chaseBehaviour },
-            { State.ATTACK, attackBehaviour },
-            { State.DEATH, deathBehaviour }
-        };
-    }
+    public Transform Player { get; private set; }
 
     void Start()
     {
@@ -47,8 +28,26 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        behaviourMap[currentState]?.Execute(this);
-        Debug.Log(currentState);
+        HandleMovement();
+    }
+
+    void HandleMovement()
+    {
+        if (currentState != State.CHASE || Player == null) return;
+
+        Vector3 target = Player.position;
+
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            target,
+            Stats.moveSpeed * Time.deltaTime
+        );
+
+        Vector3 dir = target - transform.position;
+        dir.y = 0;
+
+        if (dir != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(dir);
     }
 
     public void SetState(State newState)
@@ -59,7 +58,7 @@ public class EnemyController : MonoBehaviour
         UpdateAnimator();
 
         if (currentState == State.DEATH)
-            Destroy(gameObject, 2f);
+            HandleDeath();
     }
 
     public void SetPlayer(Transform player)
@@ -76,5 +75,10 @@ public class EnemyController : MonoBehaviour
 
         if (currentState == State.ATTACK)
             animator.SetTrigger("Attack");
+    }
+
+    void HandleDeath()
+    {
+        Destroy(gameObject, 2f);
     }
 }

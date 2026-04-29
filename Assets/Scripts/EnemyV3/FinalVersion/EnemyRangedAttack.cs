@@ -30,7 +30,6 @@ public class EnemyRangedAttack : MonoBehaviour
 
     IEnumerator Fire()
     {
-        // optional: trigger animation
         enemy.SetState(EnemyController.State.ATTACK);
 
         GameObject proj = Instantiate(
@@ -47,5 +46,10 @@ public class EnemyRangedAttack : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         _attackRoutine = null;
+
+        if (enemy.Player != null)
+            enemy.SetState(EnemyController.State.CHASE);
+        else
+            enemy.SetState(EnemyController.State.IDLE);
     }
 }
