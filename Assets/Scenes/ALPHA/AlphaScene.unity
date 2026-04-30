@@ -5450,7 +5450,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8492833549898910848, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
       insertIndex: -1
       addedObject: {fileID: 921495844}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1885335188778453300, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 253956836}
+    - targetCorrespondingSourceObject: {fileID: 1885335188778453300, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 253956840}
   m_SourcePrefab: {fileID: 100100000, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
 --- !u!1 &253956833 stripped
 GameObject:
@@ -5468,6 +5474,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0393b24a89c065d419799be96cb3885b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InvoManager
+--- !u!1 &253956835 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1885335188778453300, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
+  m_PrefabInstance: {fileID: 253956832}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &253956836
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253956835}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 77359fc3133153e46b696b298a47a1a9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &253956840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253956835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8827df83d0aa2245aca1a62d64ec302, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  animator: {fileID: 253956836}
 --- !u!1001 &256104464
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42493,6 +42539,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 3313011957748590921, guid: 636398f4de0f11e49b09d719be25b594, type: 3}
+      propertyPath: testFamilliers.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3313011957748590921, guid: 636398f4de0f11e49b09d719be25b594, type: 3}
+      propertyPath: 'testFamilliers.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 9c75584c950ad0c408b03e259c3e9855, type: 2}
+    - target: {fileID: 3313011957748590921, guid: 636398f4de0f11e49b09d719be25b594, type: 3}
+      propertyPath: 'testFamilliers.Array.data[5]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 129e834d702e8d14eab5886c602d793c, type: 2}
     - target: {fileID: 4021500235070266432, guid: 636398f4de0f11e49b09d719be25b594, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5038
