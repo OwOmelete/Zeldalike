@@ -14,7 +14,7 @@ public class AnimatorController : MonoBehaviour
     void Update()
     {
         
-        Vector2 leftStick = Gamepad.current.leftStick.ReadValue();
+        /*Vector2 leftStick = Gamepad.current.leftStick.ReadValue();
         if (leftStick.magnitude > 0.2f)
         {
            animator.SetBool("IsWalking",true);
@@ -23,7 +23,7 @@ public class AnimatorController : MonoBehaviour
          animator.SetFloat("AxesX",-leftStick.x);
          animator.SetFloat("AxesY",-leftStick.y);
         // Stick droit
-       
+       */
 
         // D-pad
         Vector2 dpad = Gamepad.current.dpad.ReadValue();
@@ -33,9 +33,9 @@ public class AnimatorController : MonoBehaviour
         }
 
         // Boutons principaux
-        if (Gamepad.current.buttonSouth.wasPressedThisFrame)
+        /*if (Gamepad.current.buttonSouth.wasPressedThisFrame)
             animator.SetTrigger("AAction");
-
+        */
         if (Gamepad.current.buttonEast.wasPressedThisFrame)
              animator.SetTrigger("BAction");
 

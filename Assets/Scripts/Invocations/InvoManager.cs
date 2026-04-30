@@ -26,6 +26,7 @@ public class InvoManager : MonoBehaviour
 
     private InvoDataInstance.temperature currentTemperature = InvoDataInstance.temperature.hot;
     private Vector3 respawnPos;
+    public Animator _animator;
     
     public static event Action<List<InvoBehaviour>> OnAttackAction;
     public static event Action<List<InvoBehaviour>> OnProtection;
@@ -125,7 +126,22 @@ public class InvoManager : MonoBehaviour
 
     private void OnSouthButton()
     {
-        
+        _animator.SetTrigger("AAction");
+    }
+    
+    private void OnNorthButton()
+    {
+        _animator.SetTrigger("YAction");
+    }
+    
+    private void OnEastButton()
+    {
+        _animator.SetTrigger("BAction");
+    }
+    
+    private void OnWestButton()
+    {
+        _animator.SetTrigger("XAction");
     }
 
     private void basicAttack()
@@ -188,6 +204,8 @@ public class InvoManager : MonoBehaviour
 
         StartCoroutine(waveTimer());
         FireWaveAction?.Invoke();
+        
+        _animator.SetTrigger("HeatWave");
 
         
     }
