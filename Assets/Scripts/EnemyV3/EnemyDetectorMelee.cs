@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyDetector : MonoBehaviour
+public class EnemyDetectorMelee : MonoBehaviour
 {
     [SerializeField] private EnemyController enemy;
     [SerializeField] private float attackRange = 2f;
