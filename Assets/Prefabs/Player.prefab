@@ -167,6 +167,9 @@ MonoBehaviour:
     m_Bits: 256
   target: {fileID: 0}
   wave: {fileID: 4245628959529136858}
+  basicAttackCooldown: 0
+  SouthButton: {fileID: 0}
+  _animator: {fileID: 0}
 --- !u!114 &4366930612459446604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,8 +239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a337de10202fdd14c9654943d72d89fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TopDownPlayerController
-  moveSpeed: 10
-  acceleration: 45
+  moveSpeed: 12
+  acceleration: 50
   deceleration: 20
   rotationSpeed: 15
   inputResponsiveness: 1
@@ -245,9 +248,10 @@ MonoBehaviour:
   stickToGroundForce: 5
   slopeForce: 8
   dashDuration: 0.2
-  dashSpeed: 20
-  dashCooldown: 1.5
+  dashSpeed: 60
+  dashCooldown: 1
   cameraTransform: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!1 &581819563829318607
 GameObject:
   m_ObjectHideFlags: 0
