@@ -1243,7 +1243,7 @@ GameObject:
   - component: {fileID: 2552874245951932134}
   - component: {fileID: 4590246833741790494}
   - component: {fileID: 1920063411334875323}
-  - component: {fileID: 1444736767352388414}
+  - component: {fileID: 1442600741674088415}
   m_Layer: 8
   m_Name: AttackZone
   m_TagString: Untagged
@@ -1344,7 +1344,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1444736767352388414
+--- !u!114 &1442600741674088415
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1353,10 +1353,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8254220631121576528}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6ffc9503e9af247a97c86ca7875caa, type: 3}
+  m_Script: {fileID: 11500000, guid: b0a011fb3cfd93c41abeac516e9150a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttack
-  stats: {fileID: 11400000, guid: b41deb61883d670419f16aeec463484f, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyChargeAttack
+  windupTime: 2
+  chargeSpeed: 10
+  maxChargeDistance: 10
+  previewZone: {fileID: 8254220631121576528}
 --- !u!1 &9035923994668585272
 GameObject:
   m_ObjectHideFlags: 0
