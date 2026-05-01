@@ -26,17 +26,11 @@ public class EnemyHealth : MonoBehaviour, IDamagable
 
         switch (data.currentTemperature)
         {
-            case InvoDataInstance.temperature.veryCold:
-                HeatSystem.reduceHeat(data.veryColdValue);
-                break;
             case InvoDataInstance.temperature.cold:
                 HeatSystem.reduceHeat(data.coldValue);
                 break;
             case InvoDataInstance.temperature.hot:
                 HeatSystem.increaseHeat(data.hotValue);
-                break;
-            case InvoDataInstance.temperature.veryHot:
-                HeatSystem.increaseHeat(data.veryHotValue);
                 break;
         }
 
