@@ -72,7 +72,7 @@ public class InvoManager : MonoBehaviour
     
     private void Fall(Transform t)
     {
-        respawnPos = t.position;
+        //transform.position = t.position;
         foreach (var invo in InvoList)
         {
             invo.resetPosition();

@@ -5,6 +5,12 @@ public class Billboard : MonoBehaviour
 {
     [SerializeField] private Camera mainCam;
 
+
+    private void Start()
+    {
+        mainCam = Camera.main;
+    }
+
     private void LateUpdate()
     {
         Vector3 camPos = mainCam.transform.position;

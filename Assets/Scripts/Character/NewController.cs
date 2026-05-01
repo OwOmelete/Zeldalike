@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -39,7 +40,24 @@ public class TopDownPlayerController : MonoBehaviour
     private float lastY;
     
     private bool isDashing = false;
-    
+
+    private void OnEnable()
+    {
+        DeathZone.OnFall += Fall;
+    }
+
+    private void OnDisable()
+    {
+        DeathZone.OnFall -= Fall;
+    }
+
+    private void Fall(Transform t)
+    {
+        controller.enabled = false;
+        transform.position = t.position;
+        controller.enabled = true;
+    }
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
