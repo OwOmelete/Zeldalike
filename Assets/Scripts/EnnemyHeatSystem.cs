@@ -53,11 +53,13 @@ public class EnnemyHeatSystem : MonoBehaviour
     public void reduceHeat(float value)
     {
         currentHeat += value;
+        Mathf.Clamp(currentHeat, 0, maxHeat);
     }
 
     public void increaseHeat(float value)
     {
         currentHeat -= value;
+        Mathf.Clamp(currentHeat, 0, maxHeat);
     }
 
     public float GetColdPercentage()
