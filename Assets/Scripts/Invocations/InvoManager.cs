@@ -27,6 +27,8 @@ public class InvoManager : MonoBehaviour
     private InvoDataInstance.temperature currentTemperature = InvoDataInstance.temperature.hot;
     private Vector3 respawnPos;
     public Animator _animator;
+
+    public static InvoManager Instance;
     
     public static event Action<List<InvoBehaviour>> OnAttackAction;
     public static event Action<List<InvoBehaviour>> OnProtection;
@@ -53,8 +55,16 @@ public class InvoManager : MonoBehaviour
         ButtonChainManager.OnPattern -= HandlePattern;
     }
 
-    private void Awake()
+    void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
+        Instance = this;
+        
         DontDestroyOnLoad(gameObject);
     }
 

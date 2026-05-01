@@ -58,7 +58,7 @@ public class TopDownPlayerController : MonoBehaviour
     {
         cameraTransform = Camera.main.transform;
         controller.enabled = false;
-        transform.position = Vector3.up * 5;
+        transform.position = new Vector3(-14, 4, -43);
         controller.enabled = true;
     }
 
