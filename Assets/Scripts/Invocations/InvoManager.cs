@@ -53,6 +53,11 @@ public class InvoManager : MonoBehaviour
         ButtonChainManager.OnPattern -= HandlePattern;
     }
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     private void AddInvocation(InvoBehaviour instance)
     {
         InvoList.Add(instance);

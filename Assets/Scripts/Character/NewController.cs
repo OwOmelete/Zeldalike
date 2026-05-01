@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 public class TopDownPlayerController : MonoBehaviour
@@ -44,11 +45,21 @@ public class TopDownPlayerController : MonoBehaviour
     private void OnEnable()
     {
         DeathZone.OnFall += Fall;
+        SceneManager.sceneLoaded += onSceneLoaded;
     }
 
     private void OnDisable()
     {
         DeathZone.OnFall -= Fall;
+        SceneManager.sceneLoaded -= onSceneLoaded;
+    }
+
+    private void onSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        cameraTransform = Camera.main.transform;
+        controller.enabled = false;
+        transform.position = Vector3.up * 5;
+        controller.enabled = true;
     }
 
     private void Fall(Transform t)

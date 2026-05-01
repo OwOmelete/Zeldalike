@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CharacterDirection : MonoBehaviour
 {
@@ -10,6 +11,20 @@ public class CharacterDirection : MonoBehaviour
     [SerializeField] private SpriteRenderer sr;
     
     
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += onSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= onSceneLoaded;
+    }
+
+    private void onSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        cam = Camera.main.transform;
+    }
 
     private void Update()
     {

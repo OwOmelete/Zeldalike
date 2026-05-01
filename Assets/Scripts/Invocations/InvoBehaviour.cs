@@ -30,6 +30,7 @@ public class InvoBehaviour : MonoBehaviour
     {
         InvoManager.OnLock += HandleLock;
         InvoManager.OnDelock += HandleDelock;
+        transform.SetParent(Invo.Instance.transform);
     }
 
     private void OnDisable()
