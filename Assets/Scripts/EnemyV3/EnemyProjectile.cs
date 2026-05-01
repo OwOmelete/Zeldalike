@@ -19,23 +19,33 @@ public class EnemyProjectile : MonoBehaviour
 
         float gravityAbs = Mathf.Abs(gravity);
 
-        Vector3 toTargetXZ = new Vector3(toTarget.x, 0f, toTarget.z);
+        Vector3 toTargetXZ = new Vector3(toTarget.x, 0, toTarget.z);
         float distance = toTargetXZ.magnitude;
 
-        float arcHeight = 2f;
+        float speed = launchForce;
 
-        float timeUp = Mathf.Sqrt(2 * arcHeight / gravityAbs);
+        if (distance < 0.1f)
+        {
+            velocity = transform.forward * speed;
+            velocity.y = speed * 0.5f;
+            return;
+        }
 
-        float timeDown = Mathf.Sqrt(2 * Mathf.Max(0.01f, arcHeight - toTarget.y) / gravityAbs);
+        float time = distance / speed;
 
-        float totalTime = timeUp + timeDown;
+        if (time <= 0.01f)
+        {
+            velocity = transform.forward * speed;
+            velocity.y = speed * 0.5f;
+            return;
+        }
 
-        Vector3 velocityXZ = toTargetXZ / totalTime;
+        float yVelocity = (toTarget.y + 0.5f * gravityAbs * time * time) / time;
 
-        float velocityY = gravityAbs * timeUp;
+        Vector3 velocityXZ = toTargetXZ.normalized * speed;
 
         velocity = velocityXZ;
-        velocity.y = velocityY;
+        velocity.y = yVelocity;
     }
 
     void Start()
