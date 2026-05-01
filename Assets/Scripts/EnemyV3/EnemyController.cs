@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -26,7 +27,7 @@ public class EnemyController : MonoBehaviour
         SetState(State.IDLE);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         HandleMovement();
     }

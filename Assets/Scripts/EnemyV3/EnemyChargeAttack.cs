@@ -81,20 +81,20 @@ public class EnemyChargeAttack : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!isCharging) return;
+        //if (!isCharging) return;
 
-        // 🎯 HIT PLAYER → damage but KEEP GOING
         if (collision.collider.CompareTag("Player"))
         {
             var health = collision.collider.GetComponent<PlayerHealthComponent>();
 
             if (health != null)
-                health.TakeDamage(enemy.Stats.damage);
+            {
+                Debug.Log("giving damage"); 
+                health.TakeDamage(enemy.Stats.damage);}
 
             return;
         }
 
-        // 🧱 HIT WALL / OTHER → STOP IMMEDIATELY
         StopAllCoroutines();
         EndCharge();
     }

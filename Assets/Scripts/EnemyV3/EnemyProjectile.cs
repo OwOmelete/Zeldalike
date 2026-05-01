@@ -4,6 +4,7 @@ public class EnemyProjectile : MonoBehaviour
 {
     public float launchForce = 10f;
     public float gravity = -20f;
+    
 
     private Vector3 velocity;
     private int damage;

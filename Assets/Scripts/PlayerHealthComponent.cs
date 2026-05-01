@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,11 +9,7 @@ public class PlayerHealthComponent : MonoBehaviour
 
     [SerializeField] private float regenRate = 5f;
     [SerializeField] private float regenDelay = 10f;
-
-    //[SerializeField] private Material iceScreenMaterial;
     
-    //public GameObject iceScreen;
-
 
     private Coroutine regenCoroutine;
     private Coroutine regenDelayCoroutine;
@@ -20,18 +17,16 @@ public class PlayerHealthComponent : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
-
-        //iceScreenMaterial = Instantiate(iceScreenMaterial);
     }
-
-    private void Update()
+    
+    private void OnCollisionEnter(Collision collision)
     {
-        
-       
+        Debug.Log("COLLISION WITH: " + collision.collider.name);
     }
 
     public void TakeDamage(float damage)
     {
+        Debug.Log("je prwends des degats");
         currentHealth = Mathf.Max(currentHealth - damage, 0f);
 
         if (regenCoroutine != null)
