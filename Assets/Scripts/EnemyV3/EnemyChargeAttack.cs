@@ -3,10 +3,12 @@ using System.Collections;
 
 public class EnemyChargeAttack : MonoBehaviour
 {
+    [Header("Config")]
     public float windupTime = 2f;
     public float chargeSpeed = 10f;
     public float maxChargeDistance = 10f;
 
+    [Header("Visual")]
     public GameObject previewZone;
 
     private EnemyController enemy;
@@ -14,7 +16,6 @@ public class EnemyChargeAttack : MonoBehaviour
 
     private bool isCharging = false;
     private Vector3 chargeDirection;
-    private Vector3 startPosition;
 
     void Awake()
     {
@@ -25,17 +26,18 @@ public class EnemyChargeAttack : MonoBehaviour
     {
         if (enemy.Player == null || isCharging) return;
 
+        isCharging = true;
         player = enemy.Player;
+
         StartCoroutine(ChargeRoutine());
     }
 
     IEnumerator ChargeRoutine()
     {
-        isCharging = true;
-
+        // 🎯 LOCK direction at START (important)
         chargeDirection = (player.position - transform.position).normalized;
-        startPosition = transform.position;
 
+        // 🟥 SHOW preview in that direction
         if (previewZone != null)
         {
             previewZone.SetActive(true);
@@ -44,14 +46,23 @@ public class EnemyChargeAttack : MonoBehaviour
 
         enemy.SetState(EnemyController.State.ATTACK);
 
+        // ⏳ WINDUP (no tracking anymore)
         yield return new WaitForSeconds(windupTime);
 
+        // 🟥 HIDE preview
         if (previewZone != null)
             previewZone.SetActive(false);
 
-        while (Vector3.Distance(startPosition, transform.position) < maxChargeDistance)
+        // 🚀 CHARGE forward in LOCKED direction
+        float traveled = 0f;
+
+        while (traveled < maxChargeDistance)
         {
-            transform.position += chargeDirection * chargeSpeed * Time.deltaTime;
+            float step = chargeSpeed * Time.deltaTime;
+
+            transform.position += chargeDirection * step;
+            traveled += step;
+
             yield return null;
         }
 
@@ -72,15 +83,18 @@ public class EnemyChargeAttack : MonoBehaviour
     {
         if (!isCharging) return;
 
+        // 🎯 HIT PLAYER → damage but KEEP GOING
         if (collision.collider.CompareTag("Player"))
         {
             var health = collision.collider.GetComponent<PlayerHealthComponent>();
+
             if (health != null)
                 health.TakeDamage(enemy.Stats.damage);
 
             return;
         }
 
+        // 🧱 HIT WALL / OTHER → STOP IMMEDIATELY
         StopAllCoroutines();
         EndCharge();
     }

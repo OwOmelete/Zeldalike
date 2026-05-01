@@ -4083,6 +4083,47 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1432007405}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1722058644 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3134737471405312256, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
+  m_PrefabInstance: {fileID: 7490409314393605181}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1722058647 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2411724826775476465, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
+  m_PrefabInstance: {fileID: 7490409314393605181}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722058644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383fb3c4a6493e042a25ae0e7c6533c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicEnemyV3
+--- !u!114 &1722058653 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2413850737366905618, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
+  m_PrefabInstance: {fileID: 7490409314393605181}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722058644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a011fb3cfd93c41abeac516e9150a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyChargeAttack
+--- !u!114 &1722058654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722058644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb0c90a0638456e4fbd75855677be34e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyChargeTrigger
+  enemy: {fileID: 1722058647}
+  charge: {fileID: 1722058653}
 --- !u!1 &1722595722
 GameObject:
   m_ObjectHideFlags: 0
@@ -5275,7 +5316,6 @@ GameObject:
   - component: {fileID: 2091579499}
   - component: {fileID: 2091579498}
   - component: {fileID: 2091579502}
-  - component: {fileID: 2091579503}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -5404,22 +5444,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2091579503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2091579497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 980e70ee4fe03824db421c7468aab401, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthComponent
-  currentHealth: 0
-  maxHealth: 100
-  regenRate: 5
-  regenDelay: 10
 --- !u!1 &2102635288
 GameObject:
   m_ObjectHideFlags: 0
@@ -5591,23 +5615,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1509800824726904470, guid: 1ab2fcca318e0f847926a9c2e76c6047, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2112272737676802269, guid: 1ab2fcca318e0f847926a9c2e76c6047, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3134737471405312256, guid: 1ab2fcca318e0f847926a9c2e76c6047, type: 3}
       propertyPath: m_Name
       value: EnemyBouclierTEST
       objectReference: {fileID: 0}
+    - target: {fileID: 3134737471405312256, guid: 1ab2fcca318e0f847926a9c2e76c6047, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4755181449767350148, guid: 1ab2fcca318e0f847926a9c2e76c6047, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5397811759961359444, guid: 1ab2fcca318e0f847926a9c2e76c6047, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6524147531651374685, guid: 1ab2fcca318e0f847926a9c2e76c6047, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5651,11 +5679,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8150733512062464731, guid: 1ab2fcca318e0f847926a9c2e76c6047, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8621122961129207363, guid: 1ab2fcca318e0f847926a9c2e76c6047, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5672,27 +5700,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1509800824726904470, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2112272737676802269, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3134737471405312256, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
       propertyPath: m_Name
       value: EnemyFonceurTEST
       objectReference: {fileID: 0}
-    - target: {fileID: 3134737471405312256, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4755181449767350148, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5397811759961359444, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6524147531651374685, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5736,16 +5760,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8150733512062464731, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8621122961129207363, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3134737471405312256, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1722058654}
   m_SourcePrefab: {fileID: 100100000, guid: ba90b7aab2952264ca2f37a88b3a94d8, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

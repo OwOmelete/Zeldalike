@@ -309,6 +309,8 @@ GameObject:
   - component: {fileID: 2411724826775476465}
   - component: {fileID: 2512182079874445405}
   - component: {fileID: 4218596360005017481}
+  - component: {fileID: 5756389465068290975}
+  - component: {fileID: 2413850737366905618}
   m_Layer: 8
   m_Name: EnemyFonceurTest
   m_TagString: Enemy
@@ -461,6 +463,38 @@ MonoBehaviour:
   corruptionIncrement: 0.1
   maxHeat: 100
   maxCorruption: 100
+--- !u!114 &5756389465068290975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3134737471405312256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 980e70ee4fe03824db421c7468aab401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthComponent
+  currentHealth: 0
+  maxHealth: 100
+  regenRate: 5
+  regenDelay: 10
+--- !u!114 &2413850737366905618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3134737471405312256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a011fb3cfd93c41abeac516e9150a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyChargeAttack
+  windupTime: 2
+  chargeSpeed: 10
+  maxChargeDistance: 10
+  previewZone: {fileID: 8254220631121576528}
 --- !u!1 &3172964063197563260
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,7 +988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDetector
   enemy: {fileID: 2411724826775476465}
-  attackRange: 2
+  charge: {fileID: 2413850737366905618}
 --- !u!1 &6832953502111133799
 GameObject:
   m_ObjectHideFlags: 0
@@ -1243,7 +1277,6 @@ GameObject:
   - component: {fileID: 2552874245951932134}
   - component: {fileID: 4590246833741790494}
   - component: {fileID: 1920063411334875323}
-  - component: {fileID: 1442600741674088415}
   m_Layer: 8
   m_Name: AttackZone
   m_TagString: Untagged
@@ -1344,22 +1377,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1442600741674088415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8254220631121576528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0a011fb3cfd93c41abeac516e9150a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyChargeAttack
-  windupTime: 2
-  chargeSpeed: 10
-  maxChargeDistance: 10
-  previewZone: {fileID: 8254220631121576528}
 --- !u!1 &9035923994668585272
 GameObject:
   m_ObjectHideFlags: 0
