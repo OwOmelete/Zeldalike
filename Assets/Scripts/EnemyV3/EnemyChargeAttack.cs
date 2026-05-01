@@ -34,10 +34,14 @@ public class EnemyChargeAttack : MonoBehaviour
 
     IEnumerator ChargeRoutine()
     {
-        // 🎯 LOCK direction at START (important)
         chargeDirection = (player.position - transform.position).normalized;
 
-        // 🟥 SHOW preview in that direction
+        Vector3 lookDir = chargeDirection;
+        lookDir.y = 0;
+
+        if (lookDir != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(lookDir);
+
         if (previewZone != null)
         {
             previewZone.SetActive(true);
@@ -46,14 +50,11 @@ public class EnemyChargeAttack : MonoBehaviour
 
         enemy.SetState(EnemyController.State.ATTACK);
 
-        // ⏳ WINDUP (no tracking anymore)
         yield return new WaitForSeconds(windupTime);
 
-        // 🟥 HIDE preview
         if (previewZone != null)
             previewZone.SetActive(false);
 
-        // 🚀 CHARGE forward in LOCKED direction
         float traveled = 0f;
 
         while (traveled < maxChargeDistance)
@@ -81,7 +82,6 @@ public class EnemyChargeAttack : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //if (!isCharging) return;
 
         if (collision.collider.CompareTag("Player"))
         {
