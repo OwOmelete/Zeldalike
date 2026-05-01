@@ -4,23 +4,43 @@ public class EnemyProjectile : MonoBehaviour
 {
     public float launchForce = 10f;
     public float gravity = -20f;
-    
 
     private Vector3 velocity;
     private int damage;
+
+    private float destructionTime = 5f;
 
     public void Init(Vector3 targetPosition, int dmg)
     {
         damage = dmg;
 
         Vector3 start = transform.position;
-        Vector3 direction = targetPosition - start;
+        Vector3 toTarget = targetPosition - start;
 
-        Vector3 horizontal = new Vector3(direction.x, 0, direction.z);
+        float gravityAbs = Mathf.Abs(gravity);
 
-        velocity = horizontal.normalized * launchForce;
+        Vector3 toTargetXZ = new Vector3(toTarget.x, 0f, toTarget.z);
+        float distance = toTargetXZ.magnitude;
 
-        velocity.y = launchForce * 0.7f;
+        float arcHeight = 2f;
+
+        float timeUp = Mathf.Sqrt(2 * arcHeight / gravityAbs);
+
+        float timeDown = Mathf.Sqrt(2 * Mathf.Max(0.01f, arcHeight - toTarget.y) / gravityAbs);
+
+        float totalTime = timeUp + timeDown;
+
+        Vector3 velocityXZ = toTargetXZ / totalTime;
+
+        float velocityY = gravityAbs * timeUp;
+
+        velocity = velocityXZ;
+        velocity.y = velocityY;
+    }
+
+    void Start()
+    {
+        Destroy(gameObject, destructionTime);
     }
 
     void Update()
@@ -28,13 +48,16 @@ public class EnemyProjectile : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         transform.position += velocity * Time.deltaTime;
+
+        if (velocity != Vector3.zero)
+            transform.forward = velocity.normalized;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (!other.CompareTag("Player")) return;
+        if (!collision.gameObject.CompareTag("Player")) return;
 
-        var health = other.GetComponent<PlayerHealthComponent>();
+        var health = collision.gameObject.GetComponent<PlayerHealthComponent>();
 
         if (health != null)
             health.TakeDamage(damage);

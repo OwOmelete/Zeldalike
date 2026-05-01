@@ -35,6 +35,8 @@ public class EnemyRangedAttack : MonoBehaviour
     {
         enemy.SetState(EnemyController.State.ATTACK);
 
+        Vector3 targetPosition = enemy.Player.position;
+
         GameObject proj = Instantiate(
             projectilePrefab,
             firePoint.position,
@@ -49,7 +51,7 @@ public class EnemyRangedAttack : MonoBehaviour
             yield break;
         }
 
-        p.Init(enemy.Player.position, enemy.Stats.damage);
+        p.Init(targetPosition, enemy.Stats.damage);
 
         yield return new WaitForSeconds(0.3f);
 
