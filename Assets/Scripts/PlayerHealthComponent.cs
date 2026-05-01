@@ -10,7 +10,8 @@ public class PlayerHealthComponent : MonoBehaviour
     [SerializeField] private float regenRate = 5f;
     [SerializeField] private float regenDelay = 10f;
     
-
+    [SerializeField] private ScreenEffectController screenEffect;
+    
     private Coroutine regenCoroutine;
     private Coroutine regenDelayCoroutine;
 
@@ -28,6 +29,9 @@ public class PlayerHealthComponent : MonoBehaviour
     {
         Debug.Log("je prwends des degats");
         currentHealth = Mathf.Max(currentHealth - damage, 0f);
+        
+        if (screenEffect != null) {screenEffect.EnableEffect();}
+
 
         if (regenCoroutine != null)
         {
@@ -46,6 +50,10 @@ public class PlayerHealthComponent : MonoBehaviour
     private IEnumerator RegenDelay()
     {
         yield return new WaitForSeconds(regenDelay);
+
+        if (screenEffect != null)
+            screenEffect.DisableEffect();
+
         regenCoroutine = StartCoroutine(Regen());
     }
 
