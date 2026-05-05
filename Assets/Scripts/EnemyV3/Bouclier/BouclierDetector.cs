@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class EnemyDetectorTurret : MonoBehaviour
+public class BouclierDetector : MonoBehaviour
 {
-    [SerializeField] private EnemyController enemy;
-    [SerializeField] private EnemyRangedAttack rangedAttack;
+    /*[SerializeField] private EnemyController enemy;
+    [SerializeField] private BouclierAttack rangedAttack;
 
     private Transform player;
 
@@ -30,5 +30,5 @@ public class EnemyDetectorTurret : MonoBehaviour
 
         enemy.SetState(EnemyController.State.ATTACK);
         rangedAttack.TryFire(); 
-    }
+    }*/
 }

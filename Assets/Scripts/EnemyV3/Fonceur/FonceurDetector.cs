@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class EnemyDetector : MonoBehaviour
+public class DetectorFonceur : MonoBehaviour
 {
+    /*
     [SerializeField] private EnemyController enemy;
-    [SerializeField] private EnemyChargeAttack charge;
+    [SerializeField] private FonceurAttack charge;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -18,5 +19,5 @@ public class EnemyDetector : MonoBehaviour
         if (!other.CompareTag("Player")) return;
 
         enemy.SetPlayer(null);
-    }
+    }*/
 }

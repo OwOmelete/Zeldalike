@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnemyChargeAttack : MonoBehaviour
+public class FonceurAttack : MonoBehaviour, IAttack
 {
     [Header("Config")]
     public float windupTime = 2f;
@@ -11,7 +11,7 @@ public class EnemyChargeAttack : MonoBehaviour
     [Header("Visual")]
     public GameObject previewZone;
 
-    private EnemyController enemy;
+    private EnemyController enemyControllerReference;
     private Transform player;
 
     private bool isCharging = false;
@@ -19,15 +19,21 @@ public class EnemyChargeAttack : MonoBehaviour
 
     void Awake()
     {
-        enemy = GetComponent<EnemyController>();
+        enemyControllerReference = GetComponent<EnemyController>();
     }
 
-    public void TryCharge()
+    public void TryAttack()
     {
-        if (enemy.Player == null || isCharging) return;
+        Debug.Log("Trying Attack");
+        TryCharge();
+    }
+
+    void TryCharge()
+    {
+        if (enemyControllerReference.Player == null || isCharging) {return;}
 
         isCharging = true;
-        player = enemy.Player;
+        player = enemyControllerReference.Player;
 
         StartCoroutine(ChargeRoutine());
     }
@@ -39,8 +45,7 @@ public class EnemyChargeAttack : MonoBehaviour
         Vector3 lookDir = chargeDirection;
         lookDir.y = 0;
 
-        if (lookDir != Vector3.zero)
-            transform.rotation = Quaternion.LookRotation(lookDir);
+        if (lookDir != Vector3.zero) {transform.rotation = Quaternion.LookRotation(lookDir);}
 
         if (previewZone != null)
         {
@@ -48,12 +53,11 @@ public class EnemyChargeAttack : MonoBehaviour
             previewZone.transform.forward = chargeDirection;
         }
 
-        enemy.SetState(EnemyController.State.ATTACK);
+        enemyControllerReference.SetState(EnemyController.State.ATTACK);
 
         yield return new WaitForSeconds(windupTime);
 
-        if (previewZone != null)
-            previewZone.SetActive(false);
+        if (previewZone != null) {previewZone.SetActive(false);}
 
         float traveled = 0f;
 
@@ -68,16 +72,17 @@ public class EnemyChargeAttack : MonoBehaviour
         }
 
         EndCharge();
+        TryCharge();
     }
 
     void EndCharge()
     {
         isCharging = false;
 
-        if (enemy.Player != null)
-            enemy.SetState(EnemyController.State.CHASE);
-        else
-            enemy.SetState(EnemyController.State.IDLE);
+        if (enemyControllerReference.Player != null)
+        {enemyControllerReference.SetState(EnemyController.State.CHASE);}
+        
+        else {enemyControllerReference.SetState(EnemyController.State.IDLE);}
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -90,7 +95,7 @@ public class EnemyChargeAttack : MonoBehaviour
             if (health != null)
             {
                 Debug.Log("giving damage"); 
-                health.TakeDamage(enemy.Stats.damage);}
+                health.TakeDamage(enemyControllerReference.Stats.damage);}
 
             return;
         }

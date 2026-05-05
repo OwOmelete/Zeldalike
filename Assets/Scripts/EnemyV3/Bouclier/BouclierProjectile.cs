@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyProjectile : MonoBehaviour
+public class BouclierProjectile : MonoBehaviour
 {
     public float launchForce = 10f;
     public float gravity = -20f;
