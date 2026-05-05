@@ -9,13 +9,14 @@ public class CamFollow : MonoBehaviour
 
     private void Start()
     {
-        pos = followed.transform.position - transform.position;
+        followed = InvoManager.Instance.gameObject;
+        pos = transform.position;
     }
     
     
 
     private void LateUpdate()
     {
-        transform.position = Vector3.Lerp(transform.position, followed.transform.position - pos, lerpAmount);
+        transform.position = Vector3.Lerp(transform.position, followed.transform.position + pos, lerpAmount);
     }
 }

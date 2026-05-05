@@ -33,7 +33,6 @@ public class InvoSource : MonoBehaviour
         {
             Transform t = transform.GetChild(i);
             t.gameObject.SetActive(true);
-            t.SetParent(null);
         }
         Destroy(go);
     }

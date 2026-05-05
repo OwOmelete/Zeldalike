@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -28,6 +29,21 @@ public class uiManager : MonoBehaviour
     public float sliderSpeed = 2f;
 
     private bool actionTriggered = false;
+
+    public static uiManager Instance;
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
+        Instance = this;
+        
+        DontDestroyOnLoad(gameObject);
+    }
 
     void Start()
     {

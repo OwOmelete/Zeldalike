@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 public class TopDownPlayerController : MonoBehaviour
@@ -24,6 +26,8 @@ public class TopDownPlayerController : MonoBehaviour
     [Header("References")]
     public Transform cameraTransform;
 
+    public Animator animator;
+
     private CharacterController controller;
     private Vector3 velocity;
     private Vector3 moveDirection;
@@ -32,9 +36,39 @@ public class TopDownPlayerController : MonoBehaviour
     private float dashTimer = 0f;
     private Vector3 dashDirection;
     private float lastDash;
+
+    private float lastX;
+    private float lastY;
     
     private bool isDashing = false;
-    
+
+    private void OnEnable()
+    {
+        DeathZone.OnFall += Fall;
+        SceneManager.sceneLoaded += onSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        DeathZone.OnFall -= Fall;
+        SceneManager.sceneLoaded -= onSceneLoaded;
+    }
+
+    private void onSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        cameraTransform = Camera.main.transform;
+        controller.enabled = false;
+        transform.position = new Vector3(-14, 4, -43);
+        controller.enabled = true;
+    }
+
+    private void Fall(Transform t)
+    {
+        controller.enabled = false;
+        transform.position = t.position;
+        controller.enabled = true;
+    }
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -55,6 +89,7 @@ public class TopDownPlayerController : MonoBehaviour
         isDashing = true;
         dashTimer = dashDuration;
         lastDash = Time.time;
+        animator.SetTrigger("Dash");
 
         dashDirection = moveDirection.normalized;
 
@@ -78,6 +113,8 @@ public class TopDownPlayerController : MonoBehaviour
         Vector3 input = new Vector3(horizontal, 0f, vertical).normalized;
         
         
+        
+        
 
         Vector3 camForward = cameraTransform.forward;
         Vector3 camRight = cameraTransform.right;
@@ -91,6 +128,25 @@ public class TopDownPlayerController : MonoBehaviour
         camRight.Normalize();
 
         Vector3 targetDirection = (camForward * input.z + camRight * input.x).normalized;
+
+
+        if (input.magnitude > 0.2f)
+        {
+            animator.SetBool("IsWalking", true);
+            lastX = -horizontal;
+            lastY = -vertical;
+            animator.SetFloat("AxesX", lastX);
+            animator.SetFloat("AxesY", lastY);
+        }
+        else
+        {
+            
+            animator.SetBool("IsWalking", false);
+            
+            animator.SetFloat("AxesX", lastX);
+            animator.SetFloat("AxesY", lastY);
+        }
+        
 
         if (isDashing)
         {
