@@ -317,7 +317,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6524147531651374685
 Transform:
   m_ObjectHideFlags: 0
@@ -614,7 +614,7 @@ RectTransform:
   m_Father: {fileID: 3185289740243257254}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -779,7 +779,7 @@ RectTransform:
   m_Father: {fileID: 3631878866820276006}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -890,7 +890,7 @@ RectTransform:
   m_Father: {fileID: 7403197103170329819}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -942,8 +942,7 @@ GameObject:
   m_Component:
   - component: {fileID: 472024620248571459}
   - component: {fileID: 777783279402450777}
-  - component: {fileID: 4323525092904502952}
-  - component: {fileID: 1466155918209822153}
+  - component: {fileID: 1304560696229154532}
   m_Layer: 8
   m_Name: Detector
   m_TagString: EnemyZone
@@ -987,7 +986,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 15
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4323525092904502952
+--- !u!114 &1304560696229154532
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -996,21 +995,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6152323490529335981}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f006b51cff8ad40bb3fc2024c20d4a, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ecb26b0ed504f7448bfa2ec207756b2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DetectorFonceur
---- !u!114 &1466155918209822153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6152323490529335981}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f006b51cff8ad40bb3fc2024c20d4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DetectorFonceur
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDetector
+  enemyControllerReference: {fileID: 2411724826775476465}
 --- !u!1 &6832953502111133799
 GameObject:
   m_ObjectHideFlags: 0
@@ -1134,7 +1122,7 @@ RectTransform:
   m_Father: {fileID: 4169795056173018813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1245,7 +1233,7 @@ RectTransform:
   m_Father: {fileID: 6987445233941630002}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1680,7 +1668,7 @@ RectTransform:
   m_Father: {fileID: 8017274925732120818}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

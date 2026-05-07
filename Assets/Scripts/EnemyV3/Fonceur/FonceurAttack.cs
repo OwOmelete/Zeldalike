@@ -12,40 +12,63 @@ public class FonceurAttack : MonoBehaviour, IAttack
     public GameObject previewZone;
 
     private EnemyController enemyControllerReference;
+
+    private Rigidbody rb;
+
     private Transform player;
 
     private bool isCharging = false;
+
     private Vector3 chargeDirection;
+
+    private Coroutine chargeRoutine;
 
     void Awake()
     {
         enemyControllerReference = GetComponent<EnemyController>();
+
+        rb = GetComponent<Rigidbody>();
+
+        if (rb == null)
+        {
+            Debug.LogError("FonceurAttack requires a Rigidbody");
+        }
     }
 
     public void TryAttack()
     {
-        Debug.Log("Trying Attack");
-        TryCharge();
+        if (!isCharging)
+        {
+            TryCharge();
+        }
     }
 
     void TryCharge()
     {
-        if (enemyControllerReference.Player == null || isCharging) {return;}
+        if (enemyControllerReference.Player == null || isCharging)
+        {
+            return;
+        }
 
         isCharging = true;
+
         player = enemyControllerReference.Player;
 
-        StartCoroutine(ChargeRoutine());
+        chargeRoutine = StartCoroutine(ChargeRoutine());
     }
 
     IEnumerator ChargeRoutine()
     {
-        chargeDirection = (player.position - transform.position).normalized;
+        chargeDirection = player.position - transform.position;
 
-        Vector3 lookDir = chargeDirection;
-        lookDir.y = 0;
+        chargeDirection.y = 0f;
 
-        if (lookDir != Vector3.zero) {transform.rotation = Quaternion.LookRotation(lookDir);}
+        chargeDirection.Normalize();
+
+        if (chargeDirection != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(chargeDirection);
+        }
 
         if (previewZone != null)
         {
@@ -57,7 +80,10 @@ public class FonceurAttack : MonoBehaviour, IAttack
 
         yield return new WaitForSeconds(windupTime);
 
-        if (previewZone != null) {previewZone.SetActive(false);}
+        if (previewZone != null)
+        {
+            previewZone.SetActive(false);
+        }
 
         float traveled = 0f;
 
@@ -65,13 +91,15 @@ public class FonceurAttack : MonoBehaviour, IAttack
         {
             float step = chargeSpeed * Time.deltaTime;
 
-            transform.position += chargeDirection * step;
+            rb.MovePosition(rb.position + chargeDirection * step);
+
             traveled += step;
 
             yield return null;
         }
 
         EndCharge();
+
         TryCharge();
     }
 
@@ -79,28 +107,43 @@ public class FonceurAttack : MonoBehaviour, IAttack
     {
         isCharging = false;
 
+        if (chargeRoutine != null)
+        {
+            StopCoroutine(chargeRoutine);
+            chargeRoutine = null;
+        }
+
         if (enemyControllerReference.Player != null)
-        {enemyControllerReference.SetState(EnemyController.State.CHASE);}
-        
-        else {enemyControllerReference.SetState(EnemyController.State.IDLE);}
+        {
+            enemyControllerReference.SetState(EnemyController.State.CHASE);
+        }
+        else
+        {
+            enemyControllerReference.SetState(EnemyController.State.IDLE);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!isCharging) return;
 
         if (collision.collider.CompareTag("Player"))
         {
-            var health = collision.collider.GetComponent<PlayerHealthComponent>();
+            PlayerHealthComponent health =
+                collision.collider.GetComponent<PlayerHealthComponent>();
 
             if (health != null)
             {
-                Debug.Log("giving damage"); 
-                health.TakeDamage(enemyControllerReference.Stats.damage);}
+                Debug.Log("Giving damage");
+
+                health.TakeDamage(enemyControllerReference.Stats.damage);
+            }
+
+            EndCharge();
 
             return;
         }
 
-        StopAllCoroutines();
         EndCharge();
     }
 }
