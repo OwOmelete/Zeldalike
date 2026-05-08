@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Detector : MonoBehaviour
+public partial class AutomateDetector : MonoBehaviour
 {
     [SerializeField] private int necessaryAmount;
     [SerializeField] private int currentAmount;

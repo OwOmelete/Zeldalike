@@ -356,6 +356,7 @@ GameObject:
   - component: {fileID: 2411724826775476465}
   - component: {fileID: 2512182079874445405}
   - component: {fileID: 4218596360005017481}
+  - component: {fileID: 7001680564277550935}
   m_Layer: 8
   m_Name: EnemyBouclierTest
   m_TagString: Enemy
@@ -509,6 +510,33 @@ MonoBehaviour:
   corruptionIncrement: 0.1
   maxHeat: 100
   maxCorruption: 100
+--- !u!54 &7001680564277550935
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3134737471405312256}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3172964063197563260
 GameObject:
   m_ObjectHideFlags: 0
@@ -670,7 +698,7 @@ GameObject:
   - component: {fileID: 1222526392917034132}
   - component: {fileID: 277638319737233073}
   m_Layer: 8
-  m_Name: HealthBar_Slider
+  m_Name: EnemyHealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1057,7 +1085,7 @@ GameObject:
   m_Component:
   - component: {fileID: 472024620248571459}
   - component: {fileID: 777783279402450777}
-  - component: {fileID: 6223092879412842928}
+  - component: {fileID: 7039022127003522321}
   m_Layer: 8
   m_Name: Detector
   m_TagString: EnemyZone
@@ -1101,7 +1129,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 15
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6223092879412842928
+--- !u!114 &7039022127003522321
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1110,11 +1138,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6152323490529335981}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2f952a3adf87164094cd97eec6e8d2b, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ecb26b0ed504f7448bfa2ec207756b2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyDetectorTurret
-  enemy: {fileID: 2411724826775476465}
-  rangedAttack: {fileID: 7315211672828300585}
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDetector
+  enemyControllerReference: {fileID: 2411724826775476465}
 --- !u!1 &6832953502111133799
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,7 +1153,7 @@ GameObject:
   - component: {fileID: 3598381554342782225}
   - component: {fileID: 3045010051043351269}
   m_Layer: 8
-  m_Name: HealthBar_Slider (2)
+  m_Name: EnemyCorruptionBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1582,7 +1609,7 @@ GameObject:
   - component: {fileID: 5288560122037337593}
   - component: {fileID: 7780141090370067471}
   m_Layer: 8
-  m_Name: HealthBar_Slider (1)
+  m_Name: EnemyHeatBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
