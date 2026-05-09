@@ -5,7 +5,7 @@ public class DeathZone : MonoBehaviour
 {
     [SerializeField] private Transform respawnPoint;
 
-    public static event Action<Transform> OnFall;
+    public static event Action OnFall;
 
     public static DeathZone Instance;
 
@@ -33,7 +33,7 @@ public class DeathZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("coucou");
-            OnFall?.Invoke(respawnPoint);
+            OnFall?.Invoke();
         }
     }
     

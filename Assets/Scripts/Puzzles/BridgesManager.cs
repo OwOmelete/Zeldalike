@@ -5,26 +5,26 @@ public class BridgesManager : MonoBehaviour
 {
     [SerializeField] private BridgeButton[] buttons;
 
-    private List<GameObject> currentBridges = new List<GameObject>();
+    private List<Animator> currentBridges = new List<Animator>();
 
-    public void activateBridges(GameObject[] bridges)
+    public void activateBridges(Animator[] bridges)
     {
         Debug.Log(bridges);
-        if (currentBridges != null)
+        /*if (currentBridges != null)
         {
             foreach (var bridge in currentBridges)
             {
-                bridge.SetActive(false);
+                bridge.SetBool("Up", false);
             }
-        }
+        }*/
 
         if (bridges != null)
         {
-            currentBridges = new List<GameObject>(bridges);
+            currentBridges = new List<Animator>(bridges);
         
             foreach (var bridge in bridges)
             {
-                bridge.SetActive(true);
+                bridge.SetBool("Up", !bridge.GetBool("Up"));
             }
         }
         else

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BridgeButton : MonoBehaviour
 {
-    public GameObject[] linkedBridges;
+    public Animator[] linkedBridges;
     public BridgesManager Manager;
     private void OnCollisionEnter(Collision other)
     {
