@@ -44,13 +44,13 @@ public class TopDownPlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        DeathZone.OnFall += Fall;
+        DeathZone.OnFall += Respawn;
         SceneManager.sceneLoaded += onSceneLoaded;
     }
 
     private void OnDisable()
     {
-        DeathZone.OnFall -= Fall;
+        DeathZone.OnFall -= Respawn;
         SceneManager.sceneLoaded -= onSceneLoaded;
     }
 
@@ -62,7 +62,7 @@ public class TopDownPlayerController : MonoBehaviour
         controller.enabled = true;
     }
 
-    private void Fall(Transform t)
+    private void Respawn(Transform t)
     {
         controller.enabled = false;
         transform.position = t.position;
