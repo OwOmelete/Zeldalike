@@ -24,6 +24,7 @@ public class EnemyDetector : MonoBehaviour
         _playerTransform = other.transform;
         enemyControllerReference.SetPlayer(_playerTransform);
         
+        Debug.Log("try attack");
         _attackInterface?.TryAttack();
     }
     

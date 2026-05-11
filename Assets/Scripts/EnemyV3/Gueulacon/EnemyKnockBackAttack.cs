@@ -1,12 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnemyKnockBackAttack : MonoBehaviour
+public class EnemyKnockBackAttack : MonoBehaviour, IAttack
 {
     public EnemyStatsSO stats;
 
+    [HideInInspector]
+    public bool canHit;
+
     private EnemyController enemyControllerReference;
-    private PlayerHealthComponent playerHealth;
 
     private Coroutine attackRoutine;
 
@@ -15,28 +17,34 @@ public class EnemyKnockBackAttack : MonoBehaviour
         enemyControllerReference = GetComponentInParent<EnemyController>();
     }
 
-    void Update()
+    public void TryAttack()
     {
-        if (enemyControllerReference.CurrentState != EnemyController.State.ATTACK) {return;}
-
-        if (attackRoutine == null) {attackRoutine = StartCoroutine(AttackRoutine());}
+        if (attackRoutine == null)
+        {
+            attackRoutine = StartCoroutine(AttackRoutine());
+        }
     }
 
     IEnumerator AttackRoutine()
     {
-        yield return new WaitForSeconds(stats.attackCooldown);
-
-        if (enemyControllerReference.Player == null)
+        while (enemyControllerReference.Player != null)
         {
-            attackRoutine = null;
-            yield break;
+            enemyControllerReference.SetState(EnemyController.State.ATTACK);
+
+            yield return new WaitForSeconds(stats.attackCooldown);
+
+            canHit = true;
+
+            Debug.Log("Hit window active");
+
+            yield return new WaitForSeconds(0.2f);
+
+            canHit = false;
+
+            Debug.Log("Hit window ended");
+
+            yield return new WaitForSeconds(0.1f);
         }
-
-        playerHealth = enemyControllerReference.Player.GetComponent<PlayerHealthComponent>();
-
-        if (playerHealth != null) {playerHealth.TakeDamage(stats.damage);}
-
-        yield return new WaitForSeconds(0.2f);
 
         attackRoutine = null;
     }
