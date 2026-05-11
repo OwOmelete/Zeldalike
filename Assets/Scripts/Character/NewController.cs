@@ -32,6 +32,7 @@ public class TopDownPlayerController : MonoBehaviour
     private Vector3 velocity;
     private Vector3 moveDirection;
     private Vector3 currentHorizontalVelocity;
+    private Transform respawnPoint;
 
     private float dashTimer = 0f;
     private Vector3 dashDirection;
@@ -42,15 +43,30 @@ public class TopDownPlayerController : MonoBehaviour
     
     private bool isDashing = false;
 
+    public static TopDownPlayerController Instance;
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
+        Instance = this;
+    }
+
     private void OnEnable()
     {
-        DeathZone.OnFall += Fall;
+        DeathZone.OnFall += Respawn;
+        PlayerHealth.OnDeath += Respawn;
         SceneManager.sceneLoaded += onSceneLoaded;
     }
 
     private void OnDisable()
     {
-        DeathZone.OnFall -= Fall;
+        DeathZone.OnFall -= Respawn;
+        PlayerHealth.OnDeath -= Respawn;
         SceneManager.sceneLoaded -= onSceneLoaded;
     }
 
@@ -62,10 +78,10 @@ public class TopDownPlayerController : MonoBehaviour
         controller.enabled = true;
     }
 
-    private void Fall(Transform t)
+    private void Respawn()
     {
         controller.enabled = false;
-        transform.position = t.position;
+        transform.position = respawnPoint.position;
         controller.enabled = true;
     }
 
@@ -77,6 +93,11 @@ public class TopDownPlayerController : MonoBehaviour
             cameraTransform = Camera.main.transform;
     }
 
+    public void SetRespawnPoint(Transform t)
+    {
+        respawnPoint = t;
+    }
+    
     void Update()
     {
         HandleMovement();

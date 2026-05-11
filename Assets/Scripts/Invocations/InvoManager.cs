@@ -85,7 +85,7 @@ public class InvoManager : MonoBehaviour
         }
     }
     
-    private void Fall(Transform t)
+    private void Fall()
     {
         //transform.position = t.position;
         foreach (var invo in InvoList)
