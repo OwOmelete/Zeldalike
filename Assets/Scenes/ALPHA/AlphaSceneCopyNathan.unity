@@ -5896,8 +5896,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192398993}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19435298, y: 0.72206724, z: -0.22460225, w: 0.62481976}
-  m_LocalPosition: {x: -41.065765, y: 19.43, z: -77.20001}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6018,11 +6018,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.01
-  far clip plane: 1000
-  field of view: 50
+  near clip plane: 0.1
+  far clip plane: 5000
+  field of view: 40
   orthographic: 0
-  orthographic size: 12.4
+  orthographic size: 10
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -11468,6 +11468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 76599530}
   camera2: {fileID: 570514442}
+  brain: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate: []
   camerasToActivate: []
@@ -13444,6 +13445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 1119306895}
   camera2: {fileID: 570514442}
+  brain: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate: []
   camerasToActivate: []
@@ -19513,7 +19515,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 715111463}
+  m_Father: {fileID: 715111462}
   m_LocalEulerAnglesHint: {x: -87.233, y: -90, z: 90}
 --- !u!65 &645970706
 BoxCollider:
@@ -21053,6 +21055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 76599530}
   camera2: {fileID: 1689679228}
+  brain: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate: []
   camerasToActivate: []
@@ -22047,7 +22050,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7010884053198113932, guid: 760ee1b6009528446a2c483daadbcfc8, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1770343257683924533, guid: 760ee1b6009528446a2c483daadbcfc8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 645970705}
     m_AddedComponents: []
@@ -22055,11 +22058,6 @@ PrefabInstance:
 --- !u!4 &715111462 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1770343257683924533, guid: 760ee1b6009528446a2c483daadbcfc8, type: 3}
-  m_PrefabInstance: {fileID: 715111461}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &715111463 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7010884053198113932, guid: 760ee1b6009528446a2c483daadbcfc8, type: 3}
   m_PrefabInstance: {fileID: 715111461}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &725258253
@@ -24717,8 +24715,6 @@ GameObject:
   - component: {fileID: 780033606}
   - component: {fileID: 780033610}
   - component: {fileID: 780033609}
-  - component: {fileID: 780033608}
-  - component: {fileID: 780033607}
   m_Layer: 0
   m_Name: Sphere (1)
   m_TagString: Untagged
@@ -24743,42 +24739,6 @@ Transform:
   - {fileID: 1187275576}
   m_Father: {fileID: 546620043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &780033607
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 780033605}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &780033608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 780033605}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4821c3597fccd947a00a32cc9c1277d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BridgeButton
-  linkedBridges:
-  - {fileID: 233304779}
-  Manager: {fileID: 2119520121}
 --- !u!23 &780033609
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -26369,6 +26329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 1706638967}
   camera2: {fileID: 618141353}
+  brain: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate: []
   camerasToActivate: []
@@ -29905,7 +29866,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7010884053198113932, guid: 760ee1b6009528446a2c483daadbcfc8, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1770343257683924533, guid: 760ee1b6009528446a2c483daadbcfc8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1861572657}
     m_AddedComponents: []
@@ -29913,11 +29874,6 @@ PrefabInstance:
 --- !u!4 &980082147 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1770343257683924533, guid: 760ee1b6009528446a2c483daadbcfc8, type: 3}
-  m_PrefabInstance: {fileID: 980082146}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &980082148 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7010884053198113932, guid: 760ee1b6009528446a2c483daadbcfc8, type: 3}
   m_PrefabInstance: {fileID: 980082146}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &981790543
@@ -49992,7 +49948,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1802759908}
+  m_Father: {fileID: 1802759907}
   m_LocalEulerAnglesHint: {x: -87.233, y: -90, z: 90}
 --- !u!65 &1622788409
 BoxCollider:
@@ -51637,6 +51593,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 1934773240}
   camera2: {fileID: 1689679228}
+  brain: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate: []
   camerasToActivate: []
@@ -55376,6 +55333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 1425245217}
   camera2: {fileID: 570514442}
+  brain: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate: []
   camerasToActivate: []
@@ -55921,7 +55879,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7010884053198113932, guid: 760ee1b6009528446a2c483daadbcfc8, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1770343257683924533, guid: 760ee1b6009528446a2c483daadbcfc8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1622788408}
     m_AddedComponents: []
@@ -55929,11 +55887,6 @@ PrefabInstance:
 --- !u!4 &1802759907 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1770343257683924533, guid: 760ee1b6009528446a2c483daadbcfc8, type: 3}
-  m_PrefabInstance: {fileID: 1802759906}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1802759908 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7010884053198113932, guid: 760ee1b6009528446a2c483daadbcfc8, type: 3}
   m_PrefabInstance: {fileID: 1802759906}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1803002526
@@ -58771,7 +58724,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 980082148}
+  m_Father: {fileID: 980082147}
   m_LocalEulerAnglesHint: {x: -87.233, y: -90, z: 90}
 --- !u!65 &1861572658
 BoxCollider:
@@ -66827,6 +66780,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 1934773240}
   camera2: {fileID: 618141353}
+  brain: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate: []
   camerasToActivate: []
@@ -67703,7 +67657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BridgesManager
   buttons:
-  - {fileID: 2124845691}
+  - {fileID: 0}
   - {fileID: 0}
 --- !u!4 &2119520122
 Transform:
@@ -67808,8 +67762,6 @@ GameObject:
   - component: {fileID: 2124845690}
   - component: {fileID: 2124845689}
   - component: {fileID: 2124845688}
-  - component: {fileID: 2124845691}
-  - component: {fileID: 2124845692}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -67891,42 +67843,6 @@ Transform:
   - {fileID: 1153655272}
   m_Father: {fileID: 546620043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2124845691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2124845687}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4821c3597fccd947a00a32cc9c1277d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BridgeButton
-  linkedBridges:
-  - {fileID: 5640455974130634677}
-  Manager: {fileID: 2119520121}
---- !u!135 &2124845692
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2124845687}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2127763189
 PrefabInstance:
   m_ObjectHideFlags: 0
