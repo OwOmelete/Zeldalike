@@ -5,11 +5,19 @@ public class BridgeButton : MonoBehaviour
 {
     public Animator[] linkedBridges;
     public BridgesManager Manager;
-    private void OnCollisionEnter(Collision other)
+
+    private float lastButtonPress= -5;
+    private float buttonCooldown = 0.5f;
+    
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.collider.CompareTag("Invo"))
+        if (other.CompareTag("Invo"))
         {
-            Manager.activateBridges(linkedBridges);
+            if (Time.time - lastButtonPress > buttonCooldown)
+            {
+                lastButtonPress = Time.time;
+                Manager.activateBridges(linkedBridges);
+            }
         }
     }
 }

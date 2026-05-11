@@ -24760,7 +24760,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -24771,7 +24771,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 780033605}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4821c3597fccd947a00a32cc9c1277d, type: 3}
   m_Name: 
@@ -34635,6 +34635,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1187275576}
   - component: {fileID: 1187275577}
+  - component: {fileID: 1187275578}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Dummy
@@ -34678,6 +34679,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.38
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1187275578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187275575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4821c3597fccd947a00a32cc9c1277d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BridgeButton
+  linkedBridges:
+  - {fileID: 233304779}
+  Manager: {fileID: 2119520121}
 --- !u!1001 &1188735423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48446,6 +48462,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1577807783}
   - component: {fileID: 1577807784}
+  - component: {fileID: 1577807785}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Dummy
@@ -48489,6 +48506,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.38
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1577807785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577807782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4821c3597fccd947a00a32cc9c1277d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BridgeButton
+  linkedBridges:
+  - {fileID: 5640455974130634677}
+  Manager: {fileID: 2119520121}
 --- !u!1 &1578270569
 GameObject:
   m_ObjectHideFlags: 0
@@ -67855,8 +67887,8 @@ Transform:
   m_LocalScale: {x: 1.822, y: 1.822, z: 1.822}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1153655272}
   - {fileID: 1577807783}
+  - {fileID: 1153655272}
   m_Father: {fileID: 546620043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2124845691
@@ -67866,7 +67898,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2124845687}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4821c3597fccd947a00a32cc9c1277d, type: 3}
   m_Name: 
@@ -67891,7 +67923,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -68755,6 +68787,10 @@ PrefabInstance:
     - target: {fileID: 1052606761232161467, guid: c2313ec0e13d3a341bc384cd08d50ed3, type: 3}
       propertyPath: m_Name
       value: Papa Colliders
+      objectReference: {fileID: 0}
+    - target: {fileID: 1318889215001355068, guid: c2313ec0e13d3a341bc384cd08d50ed3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 44.98
       objectReference: {fileID: 0}
     - target: {fileID: 3531930593872373200, guid: c2313ec0e13d3a341bc384cd08d50ed3, type: 3}
       propertyPath: m_LocalPosition.x

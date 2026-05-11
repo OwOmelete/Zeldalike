@@ -20,11 +20,13 @@ public class BridgesManager : MonoBehaviour
 
         if (bridges != null)
         {
+            
             currentBridges = new List<Animator>(bridges);
         
             foreach (var bridge in bridges)
             {
                 bridge.SetBool("Up", !bridge.GetBool("Up"));
+                Debug.Log(bridge.GetBool("Up"));
             }
         }
         else
