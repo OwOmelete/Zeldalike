@@ -192,7 +192,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8373312872026552728}
-  - component: {fileID: 7315211672828300585}
   m_Layer: 8
   m_Name: EnemyFirePoint
   m_TagString: Enemy
@@ -215,21 +214,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6524147531651374685}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7315211672828300585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2364102885922576815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75cf3e0cb2e55d04a99bffc060d705c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyRangedAttack
-  projectilePrefab: {fileID: 8751874943095856708, guid: 63fa3355ae05a80439932806f62b3f5b, type: 3}
-  firePoint: {fileID: 8373312872026552728}
-  cooldown: 1.5
 --- !u!1 &2706381551933158867
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +340,7 @@ GameObject:
   - component: {fileID: 2411724826775476465}
   - component: {fileID: 2512182079874445405}
   - component: {fileID: 4218596360005017481}
+  - component: {fileID: 6442316143257915944}
   - component: {fileID: 7001680564277550935}
   m_Layer: 8
   m_Name: EnemyBouclierTest
@@ -363,7 +348,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6524147531651374685
 Transform:
   m_ObjectHideFlags: 0
@@ -510,6 +495,21 @@ MonoBehaviour:
   corruptionIncrement: 0.1
   maxHeat: 100
   maxCorruption: 100
+--- !u!114 &6442316143257915944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3134737471405312256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75cf3e0cb2e55d04a99bffc060d705c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyRangedAttack
+  projectilePrefab: {fileID: 8751874943095856708, guid: 63fa3355ae05a80439932806f62b3f5b, type: 3}
+  firePoint: {fileID: 8373312872026552728}
+  cooldown: 1.5
 --- !u!54 &7001680564277550935
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -645,7 +645,7 @@ RectTransform:
   m_Father: {fileID: 3185289740243257254}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -810,7 +810,7 @@ RectTransform:
   m_Father: {fileID: 3631878866820276006}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -921,7 +921,7 @@ RectTransform:
   m_Father: {fileID: 7403197103170329819}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1265,7 +1265,7 @@ RectTransform:
   m_Father: {fileID: 4169795056173018813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1376,7 +1376,7 @@ RectTransform:
   m_Father: {fileID: 6987445233941630002}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1721,7 +1721,7 @@ RectTransform:
   m_Father: {fileID: 8017274925732120818}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

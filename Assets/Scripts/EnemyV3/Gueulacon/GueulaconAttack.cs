@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnemyKnockBackAttack : MonoBehaviour, IAttack
+public class GueulaconAttack : MonoBehaviour, IAttack
 {
     public EnemyStatsSO stats;
+    public MeshRenderer attackmesh;
 
     [HideInInspector]
     public bool canHit;
@@ -29,6 +30,8 @@ public class EnemyKnockBackAttack : MonoBehaviour, IAttack
     {
         while (enemyControllerReference.Player != null)
         {
+            attackmesh.enabled = true;
+            
             enemyControllerReference.SetState(EnemyController.State.ATTACK);
 
             yield return new WaitForSeconds(stats.attackCooldown);
@@ -36,6 +39,8 @@ public class EnemyKnockBackAttack : MonoBehaviour, IAttack
             canHit = true;
 
             Debug.Log("Hit window active");
+            
+            attackmesh.enabled = false;
 
             yield return new WaitForSeconds(0.2f);
 

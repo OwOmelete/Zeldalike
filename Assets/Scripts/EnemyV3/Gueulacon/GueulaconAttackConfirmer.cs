@@ -1,30 +1,29 @@
 using UnityEngine;
 
-public class GueulaconAttackConfirmer : MonoBehaviour
+public class NewGueulaconAttackConfirmer : MonoBehaviour
 {
-    private EnemyKnockBackAttack attack;
+    private NewGueulaconAttack attack;
 
     private void Awake()
     {
-        attack = GetComponentInParent<EnemyKnockBackAttack>();
+        attack = GetComponentInParent<NewGueulaconAttack>();
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (!attack.canHit) return;
+        if (!attack.CanHit) return;
 
         if (!other.CompareTag("Player")) return;
 
         PlayerHealthComponent health =
             other.GetComponent<PlayerHealthComponent>();
 
-        if (health != null)
-        {
-            Debug.Log("Confirmed melee hit");
+        if (health == null) return;
 
-            health.TakeDamage(attack.stats.damage);
+        Debug.Log("Confirmed melee hit");
 
-            attack.canHit = false;
-        }
+        health.TakeDamage(attack.GetDamage());
+
+        attack.StopAttack();
     }
 }
