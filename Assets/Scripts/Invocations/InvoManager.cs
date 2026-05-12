@@ -85,7 +85,7 @@ public class InvoManager : MonoBehaviour
         }
     }
     
-    private void Fall(Transform t)
+    private void Fall()
     {
         //transform.position = t.position;
         foreach (var invo in InvoList)
@@ -132,31 +132,34 @@ public class InvoManager : MonoBehaviour
     {
         if (SouthButton.action.IsPressed())
         {
-            if (Time.time - lastBasicAttack > basicAttackCooldown)
+            if (InvoList.Count > 0)
             {
-                basicAttack();
+                if (Time.time - lastBasicAttack > basicAttackCooldown)
+                {
+                    basicAttack();
+                }
             }
         }
     }
 
     private void OnSouthButton()
     {
-        _animator.SetTrigger("AAction");
+        if(InvoList.Count > 0) _animator.SetTrigger("AAction");
     }
     
     private void OnNorthButton()
     {
-        _animator.SetTrigger("YAction");
+        if(InvoList.Count > 0)_animator.SetTrigger("YAction");
     }
     
     private void OnEastButton()
     {
-        _animator.SetTrigger("BAction");
+        if(InvoList.Count > 0)_animator.SetTrigger("BAction");
     }
     
     private void OnWestButton()
     {
-        _animator.SetTrigger("XAction");
+        if(InvoList.Count > 0)_animator.SetTrigger("XAction");
     }
 
     private void basicAttack()
@@ -255,7 +258,7 @@ public class InvoManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("EnemyZone"))
+        if (other.CompareTag("EnemyZone") && InvoList.Count > 0)
         {
             Transform enemy = other.gameObject.transform;
 
