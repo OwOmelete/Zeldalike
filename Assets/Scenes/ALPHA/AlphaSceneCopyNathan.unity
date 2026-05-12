@@ -5896,8 +5896,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192398993}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19435298, y: 0.72206724, z: -0.22460225, w: 0.62481976}
-  m_LocalPosition: {x: -41.065765, y: 19.43, z: -77.20001}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6018,11 +6018,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.01
-  far clip plane: 1000
-  field of view: 50
+  near clip plane: 0.1
+  far clip plane: 5000
+  field of view: 40
   orthographic: 0
-  orthographic size: 12.4
+  orthographic size: 10
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -7859,6 +7859,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 296223003020906809, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
       insertIndex: -1
       addedObject: {fileID: 253956835}
+    - targetCorrespondingSourceObject: {fileID: 296223003020906809, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 253956836}
   m_SourcePrefab: {fileID: 100100000, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
 --- !u!1 &253956833 stripped
 GameObject:
@@ -7892,6 +7895,22 @@ MonoBehaviour:
   regen: 0.2
   maxShaderOpacity: 10
   _material: {fileID: 2100000, guid: 6c9a4cfdb1bc85b46a8ec0a47024b323, type: 2}
+--- !u!114 &253956836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253956833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d84a43afe26614b4eaeab86cb912d2e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 100
+  regen: 0
+  maxShaderOpacity: 10
+  _material: {fileID: 2100000, guid: 6d902c374a20c8b4e99a80c418059704, type: 2}
 --- !u!1 &254316368
 GameObject:
   m_ObjectHideFlags: 0
@@ -60723,7 +60742,7 @@ MonoBehaviour:
         z: 19.38924
       Rotation:
         value:
-          x: -0.021056062
+          x: -0.021056052
           y: 0.5708538
           z: 0.05796198
           w: 0.81873256
