@@ -69,6 +69,7 @@ GameObject:
   - component: {fileID: 4983104941721621871}
   - component: {fileID: 3503408809389679458}
   - component: {fileID: 7757381535292343697}
+  - component: {fileID: 4102237646496274074}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -258,6 +259,23 @@ MonoBehaviour:
   dashCooldown: 1
   cameraTransform: {fileID: 0}
   animator: {fileID: 861100393213392697}
+--- !u!114 &4102237646496274074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296223003020906809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 980e70ee4fe03824db421c7468aab401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthComponent
+  currentHealth: 0
+  maxHealth: 100
+  regenRate: 5
+  regenDelay: 10
+  screenEffect: {fileID: 4583381427388702867, guid: 20244353736e6864e94e1003698015b0, type: 3}
 --- !u!1 &581819563829318607
 GameObject:
   m_ObjectHideFlags: 0
