@@ -42,7 +42,7 @@ public class uiManager : MonoBehaviour
         
         Instance = this;
         
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(transform.parent);
     }
 
     void Start()
