@@ -46,8 +46,17 @@ public class CinemachineSwitch : MonoBehaviour
                 camera1.SetActive(!camera1.activeSelf);
                 camera2.SetActive(!camera2.activeSelf);
             }
+
+            if (respawnPoint != null)
+            {
+                TopDownPlayerController.Instance.SetRespawnPoint(respawnPoint);
+            }
+            else
+            {
+                TopDownPlayerController.Instance.SetRespawnPoint(transform);
+                Debug.Log("Pas de respawn point sur ce camera switch trigger");
+            }
             
-            TopDownPlayerController.Instance.SetRespawnPoint(respawnPoint);
             
             foreach (GameObject c in camerasToActivateOrDeactivate)
             {
