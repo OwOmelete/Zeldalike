@@ -1,19 +1,42 @@
-using JetBrains.Annotations;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Splines;
 
 public class CinemachineSwitch : MonoBehaviour
 {
     public GameObject camera1;
     public GameObject camera2;
-    public CinemachineBrain brain;
+    [SerializeField] private GameObject camerasParent;
     public GameObject[] camerasToActivateOrDeactivate;
     public GameObject[] camerasToDeactivate;
     public GameObject[] camerasToActivate;
     public CinemachineCamera[] camerasToGivePriority;
     public CinemachineCamera[] camerasToRemovePriority;
-    
+    public Transform respawnPoint;
+
+    private void OnEnable()
+    {
+        PlayerHealth.OnDeath += ResetCamera ;
+    }
+
+    private void OnDisable()
+    {
+        PlayerHealth.OnDeath -= ResetCamera ;
+    }
+
+    void ResetCamera()
+    {
+        Debug.Log("c'est censé marcher");
+        if (camerasParent)
+        {
+            Debug.Log("c'est censé marcher cette fois");
+            foreach (Transform cameras in camerasParent.transform)
+            {
+                cameras.gameObject.SetActive(false);
+                
+            }
+        }
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -23,6 +46,8 @@ public class CinemachineSwitch : MonoBehaviour
                 camera1.SetActive(!camera1.activeSelf);
                 camera2.SetActive(!camera2.activeSelf);
             }
+            
+            TopDownPlayerController.Instance.SetRespawnPoint(respawnPoint);
             
             foreach (GameObject c in camerasToActivateOrDeactivate)
             {
@@ -49,5 +74,7 @@ public class CinemachineSwitch : MonoBehaviour
                 c.Priority = 0;
             }
         }
+        
+        
     }
 }
