@@ -5,7 +5,10 @@ public class NewGueulaconAttack : MonoBehaviour, IAttack
 {
     [Header("Attack Settings")]
     [SerializeField] private float damage = 10f;
-    [SerializeField] private float attackCooldown = 1f;
+
+    [SerializeField] private float warningDuration = 1f;
+
+    [SerializeField] private float hitDuration = 0.2f;
 
     [Header("References")]
     [SerializeField] private MeshRenderer attackMesh;
@@ -27,15 +30,15 @@ public class NewGueulaconAttack : MonoBehaviour, IAttack
         {
             attackMesh.enabled = true;
 
-            yield return new WaitForSeconds(attackCooldown);
+            yield return new WaitForSeconds(warningDuration);
+
+            attackMesh.enabled = false;
 
             CanHit = true;
 
             Debug.Log("Hit window active");
 
-            attackMesh.enabled = false;
-
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(hitDuration);
 
             CanHit = false;
 
@@ -45,11 +48,17 @@ public class NewGueulaconAttack : MonoBehaviour, IAttack
         }
     }
 
+    public void DisableHit()
+    {
+        CanHit = false;
+    }
+
     public void StopAttack()
     {
         if (attackRoutine != null)
         {
             StopCoroutine(attackRoutine);
+
             attackRoutine = null;
         }
 

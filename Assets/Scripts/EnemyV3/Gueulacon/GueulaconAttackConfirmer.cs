@@ -24,6 +24,6 @@ public class NewGueulaconAttackConfirmer : MonoBehaviour
 
         health.TakeDamage(attack.GetDamage());
 
-        attack.StopAttack();
+        attack.DisableHit();
     }
 }
