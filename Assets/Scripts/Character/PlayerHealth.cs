@@ -62,7 +62,6 @@ public class PlayerHealth : MonoBehaviour
     void updateShader()
     {
         _material.SetFloat("_Opacity", (1 - currentHealth / maxHealth) * maxShaderOpacity);
-        Debug.Log((1 - currentHealth / maxHealth) * maxShaderOpacity);
     }
     
     

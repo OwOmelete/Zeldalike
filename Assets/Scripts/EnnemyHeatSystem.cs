@@ -31,6 +31,8 @@ public class EnnemyHeatSystem : MonoBehaviour
 
     private float weakPointTime;
 
+    public bool isAlive = true;
+
     
     
     private void Start()
@@ -106,6 +108,7 @@ public class EnnemyHeatSystem : MonoBehaviour
         {
             //Die
             Debug.Log("gagné :D");
+            isAlive = true;
         }
         else
         {
