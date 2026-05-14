@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DetectionAttack : MonoBehaviour
 {
-    [SerializeField] PlayerHealthComponent playerHealth;
+    [SerializeField] PlayerHealth playerHealth;
     public bool canAttack ;
 
     void Start()
@@ -14,7 +14,7 @@ public class DetectionAttack : MonoBehaviour
     {
           if (canAttack)
         {
-        playerHealth.TakeDamage(5);
+        playerHealth.takeDamage(5);
         Debug.Log("joueur touché");
         canAttack=false;
         }

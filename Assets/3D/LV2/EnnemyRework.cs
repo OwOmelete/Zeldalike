@@ -28,6 +28,7 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
     [SerializeField] bool IsAttacking;
     [SerializeField] bool IsPatrol;
     [SerializeField] Vector3 distanceToPlayer;
+    private float distanceToPlayerActual;
 
 
     [Header("Previsualization")]
@@ -49,7 +50,7 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
         if (fightStart && !IsAttacking)
         {
             StartCoroutine(DistanceToPlayer());
-            if(distanceToPlayer.magnitude> 4)
+            if(distanceToPlayerActual> 4)
             {
                  Move(player);
             }
@@ -100,6 +101,7 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
    IEnumerator DistanceToPlayer()
 {
     distanceToPlayer = player.position - transform.position;
+    distanceToPlayerActual = distanceToPlayer.magnitude ;
     yield return new WaitForSeconds(0.2f);
 }
     IEnumerator Attack1()
