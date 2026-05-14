@@ -11,7 +11,7 @@ public class ennemyDummy : MonoBehaviour, IDamagable
 
     private void Update()
     {
-        if(HeatSystem.isAlive) Destroy(gameObject);
+        if(!HeatSystem.isAlive) Destroy(gameObject);
     }
 
     public void TakeDamage(float damage, int attackID, InvoDataInstance data)

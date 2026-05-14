@@ -108,7 +108,7 @@ public class EnnemyHeatSystem : MonoBehaviour
         {
             //Die
             Debug.Log("gagné :D");
-            isAlive = true;
+            isAlive = false;
         }
         else
         {
