@@ -7,53 +7,50 @@ using System;
 public class EnnemyRework :  MonoBehaviour, IDamagable
 {
         [Header("StatsEnnemi")]
-    [SerializeField] float speed;
+    [SerializeField] public float speed;
     [SerializeField] float patrolSpeed;
     [SerializeField] float dammage;
     [SerializeField] float corruptLife;
     [SerializeField] float CurentHeat;
-    [SerializeField] float attackSpeed;
+    [SerializeField] public float attackSpeed;
 
         [Header("Target")]
     public List<Transform> patrol = new List<Transform>();
-    [SerializeField] int nextDestination;
-    [SerializeField] Transform player;
+    [SerializeField] public int nextDestination;
+    [SerializeField] public Transform player;
 
         [Header("Action")]
     public Action OnDeath;
     public Action OnRange;
 
        [Header("Contexte")]
-    [SerializeField] bool fightStart;
-    [SerializeField] bool IsAttacking;
-    [SerializeField] bool IsPatrol;
+    [SerializeField] public bool fightStart;
+    [SerializeField] public bool IsAttacking;
+    [SerializeField] public bool IsPatrol;
     [SerializeField] Vector3 distanceToPlayer;
-    private float distanceToPlayerActual;
+    public float distanceToPlayerActual;
 
 
     [Header("Previsualization")]
-    [SerializeField] GameObject zoneAttack;
+    [SerializeField] public GameObject zoneAttack;
 
     [SerializeField] EnnemyHeatSystem HeatSystem;
     private HashSet<int> receivedAttacks = new HashSet<int>();
 
-    void Start()
+     void Start()
     {
         fightStart = false;
     // Pour eviter de mettre le test de range dans l'update on va faire un scipt secondaire qui invoque les action avec un sphereCollider en trigger
         OnRange+=PrepareAttack;
         NewDestination();
     }
-    void Update()
+    public virtual void Update()
     {
         
         if (fightStart && !IsAttacking)
         {
-            StartCoroutine(DistanceToPlayer());
-            if(distanceToPlayerActual> 4)
-            {
-                 Move(player);
-            }
+            
+            BeforeMove();
         }
         else if (!fightStart && !IsPatrol)
         {
@@ -73,13 +70,21 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
             GetComponent<SphereCollider>().enabled=false;
         }
     }
-    void Move(Transform target)
+    public virtual void BeforeMove()
+    {
+        StartCoroutine(DistanceToPlayer());
+        if(distanceToPlayerActual> 4)
+            {
+                 Move(player);
+            }
+    }
+    public virtual void Move(Transform target)
     {
         Vector3 dir = target.position - transform.position;
         dir.Normalize();
         transform.position += dir*speed*Time.deltaTime;
     }
-    void NewDestination()
+    public void NewDestination()
     {
         System.Random rnd = new System.Random();
         nextDestination  = rnd.Next(0, patrol.Count);
@@ -90,7 +95,7 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
         IsAttacking = true;
         StartCoroutine(Attack1());
     }
-    void updateZonneAttack()
+     public virtual void updateZonneAttack()
 {
     Vector3 dir = (distanceToPlayer).normalized;
 
@@ -98,13 +103,13 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
 
     zoneAttack.transform.position = transform.position + dir * distance;
 }
-   IEnumerator DistanceToPlayer()
+  public virtual IEnumerator DistanceToPlayer()
 {
     distanceToPlayer = player.position - transform.position;
     distanceToPlayerActual = distanceToPlayer.magnitude ;
     yield return new WaitForSeconds(0.2f);
 }
-    IEnumerator Attack1()
+   public virtual IEnumerator Attack1()
 {
     zoneAttack.SetActive(true); 
     updateZonneAttack();

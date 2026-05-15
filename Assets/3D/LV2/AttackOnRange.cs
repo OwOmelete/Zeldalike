@@ -6,6 +6,7 @@ public class AttackOnRange : MonoBehaviour
 {
      [SerializeField] EnnemyRework ennemi;
      [SerializeField] bool canAttack;
+     public float cooldown;
 
     void Start()
     {
@@ -22,7 +23,7 @@ public class AttackOnRange : MonoBehaviour
     IEnumerator Cooldown()
     {
         canAttack=false;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(cooldown);
         canAttack=true;
         yield return new WaitForEndOfFrame();
     }
