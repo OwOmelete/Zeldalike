@@ -302,6 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   ennemi: {fileID: 4222967959673581493}
   canAttack: 0
+  cooldown: 3
 --- !u!1 &3076498192933469039
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,6 +390,7 @@ MonoBehaviour:
   IsAttacking: 0
   IsPatrol: 0
   distanceToPlayer: {x: 0, y: 0, z: 0}
+  distanceToPlayerActual: 0
   zoneAttack: {fileID: 2912483550533061210}
   HeatSystem: {fileID: 866848527590522865}
 --- !u!114 &866848527590522865
@@ -398,7 +400,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3076498192933469039}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa22ac11599dc3d4ea782aaa7f549915, type: 3}
   m_Name: 
