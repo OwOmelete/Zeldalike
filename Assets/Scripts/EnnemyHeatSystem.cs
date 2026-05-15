@@ -45,10 +45,16 @@ public class EnnemyHeatSystem : MonoBehaviour
     {
         heatSlider.value = currentHeat/maxHeat;
         corruptionSlider.value = currentCorruption/maxCorruption;
-        currentWeakPointPos = Mathf.Lerp(weakPointSlider.value, weakpointList[currentIndex], 0.1f);
-        weakPointSlider.value = currentWeakPointPos;
 
-        if (Input.GetKeyDown(KeyCode.H))
+        if (weakpointList.Length > 0)
+        {
+            currentWeakPointPos = Mathf.Lerp(weakPointSlider.value, weakpointList[currentIndex], 0.1f);
+            weakPointSlider.value = currentWeakPointPos;
+
+        }
+        
+        
+        /*if (Input.GetKeyDown(KeyCode.H))
         {
             increaseHeat(5);
         }
@@ -56,7 +62,7 @@ public class EnnemyHeatSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.J))
         {
             reduceHeat(5);
-        }
+        }*/
     }
 
     private void FixedUpdate()
