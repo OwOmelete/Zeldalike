@@ -12,4 +12,125 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36baaa8bdcb9d8b49b9199833965d2c3, type: 3}
   m_Name: Camera Custom Blends 2
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBlenderSettings
-  CustomBlends: []
+  CustomBlends:
+  - From: '**ANY CAMERA**'
+    To: CinemachineCamera (2)
+    Blend:
+      Style: 1
+      Time: 3
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CinemachineCamera (2.1)
+    To: CinemachineCamera (1)
+    Blend:
+      Style: 2
+      Time: 4
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CinemachineCamera (3.1)
+    To: CinemachineCamera (2.1)
+    Blend:
+      Style: 2
+      Time: 4.5
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CinemachineCamera
+    To: CinemachineCamera (4)
+    Blend:
+      Style: 5
+      Time: 1
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CinemachineCamera (4)
+    To: CinemachineCamera
+    Blend:
+      Style: 5
+      Time: 2
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CinemachineCamera (9)
+    To: CinemachineCamera (9.1)
+    Blend:
+      Style: 1
+      Time: 1.5
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CinemachineCamera (9.1)
+    To: CinemachineCamera (9)
+    Blend:
+      Style: 1
+      Time: 1.5
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CinemachineCamera
+    To: CinemachineCamera (10)
+    Blend:
+      Style: 1
+      Time: 1
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CinemachineCamera (10)
+    To: CinemachineCamera (9)
+    Blend:
+      Style: 5
+      Time: 1
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CinemachineCamera (9)
+    To: CinemachineCamera (10)
+    Blend:
+      Style: 5
+      Time: 1
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: CinemachineCamera (10)
+    To: CinemachineCamera (11)
+    Blend:
+      Style: 1
+      Time: 1
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
