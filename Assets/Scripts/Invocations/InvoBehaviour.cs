@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InvoBehaviour : MonoBehaviour
 {
@@ -30,15 +31,25 @@ public class InvoBehaviour : MonoBehaviour
     {
         InvoManager.OnLock += HandleLock;
         InvoManager.OnDelock += HandleDelock;
+        SceneManager.sceneLoaded += OnSceneLoaded;
         transform.SetParent(Invo.Instance.transform);
     }
+
+   
 
     private void OnDisable()
     {
         InvoManager.OnLock -= HandleLock;
         InvoManager.OnDelock -= HandleDelock;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+    {
+        
+        player = InvoManager.Instance.transform;
+    }
+    
     public void InvoActivate()
     {
         Data.isActivated = true;
