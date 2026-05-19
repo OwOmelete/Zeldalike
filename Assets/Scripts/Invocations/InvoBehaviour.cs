@@ -120,8 +120,9 @@ public class InvoBehaviour : MonoBehaviour
                      boss.TakeDamage(Data.damage, attackID);
                 }
         }*/
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy") && Data.currentState == stateAttack)
         {
+            
             IDamagable damagable = other.GetComponent<IDamagable>();
 
             if (damagable != null && Data.currentState == stateAttack)
