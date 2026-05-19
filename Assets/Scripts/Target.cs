@@ -7,6 +7,12 @@ public class Target : MonoBehaviour
     public Transform target;
     public Image sprite;
 
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     private void Update()
     {
         if (target) transform.position = target.transform.position;
