@@ -43,7 +43,7 @@ public class InvoSource : MonoBehaviour
     IEnumerator TurnOnPipe()
     {
         
-        while (vitesseDePropagation > 0)
+        while (vitesseDePropagation > -2)
         {
             vitesseDePropagation-=Time.deltaTime;
             instanceMaterial.SetFloat("_Ice_Progression",vitesseDePropagation/ratio);
