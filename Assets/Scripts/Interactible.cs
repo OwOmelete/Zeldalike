@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Interactible : MonoBehaviour, IDamagable
 {
+    public static event Action<int> OnBreak;
+    
     [SerializeField] private int hitToBreak;
 
     [SerializeField] private GameObject[] objectsToEnable;
@@ -30,7 +32,7 @@ public class Interactible : MonoBehaviour, IDamagable
         {
             obj.SetActive(true);
         }
-        
+        OnBreak?.Invoke(0);
         gameObject.SetActive(false);
     }
 }
