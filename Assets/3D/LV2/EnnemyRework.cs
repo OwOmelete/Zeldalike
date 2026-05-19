@@ -46,6 +46,11 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
     }
     public virtual void Update()
     {
+        if (!HeatSystem.isAlive)
+        {
+            Destroy(gameObject);
+        }
+        
         
         if (fightStart && !IsAttacking)
         {

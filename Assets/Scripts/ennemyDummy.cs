@@ -18,16 +18,19 @@ public class ennemyDummy : MonoBehaviour, IDamagable
     {
         if (receivedAttacks.Contains(attackID)) return;
         receivedAttacks.Add(attackID);
-        
 
-        switch (data.currentTemperature)
+
+        if (data.currentState is StateAttack)
         {
-            case InvoDataInstance.temperature.cold:
-                HeatSystem.reduceHeat(data.coldValue);
-                break;
-            case InvoDataInstance.temperature.hot:
-                HeatSystem.increaseHeat(data.hotValue);
-                break;
+            switch (data.currentTemperature)
+            {
+                case InvoDataInstance.temperature.cold:
+                    HeatSystem.reduceHeat(data.coldValue);
+                    break;
+                case InvoDataInstance.temperature.hot:
+                    HeatSystem.increaseHeat(data.hotValue);
+                    break;
+            }
         }
     }
 }

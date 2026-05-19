@@ -280,15 +280,23 @@ public class InvoManager : MonoBehaviour
 
         Transform enemy = other.gameObject.transform;
 
-        
-        
-        enemiesInRange.Remove(enemy);
+        removeTarget(enemy);
+        UpdateTarget();
+    }
+
+    public void removeTarget(Transform transform)
+    {
+        enemiesInRange.Remove(transform);
 
         UpdateTarget();
     }
     
     private void UpdateTarget()
     {
+        enemiesInRange.RemoveAll(enemy =>
+            enemy == null ||
+            !enemy.gameObject.activeInHierarchy);
+        
         if (enemiesInRange.Count > 0)
         {
             TargetLock(enemiesInRange[0]);
