@@ -8,6 +8,8 @@ public class EnnemyHeatSystem : MonoBehaviour
     public Slider corruptionSlider;
     public Slider weakPointSlider;
 
+    public bool training;
+
     public float autoHeatIncrement;
     public float corruptionIncrement;
     
@@ -30,6 +32,9 @@ public class EnnemyHeatSystem : MonoBehaviour
     private int currentIndex;
 
     private float weakPointTime;
+    private bool cooling = true;
+
+    public bool isAlive = true;
 
     
     
@@ -43,10 +48,16 @@ public class EnnemyHeatSystem : MonoBehaviour
     {
         heatSlider.value = currentHeat/maxHeat;
         corruptionSlider.value = currentCorruption/maxCorruption;
-        currentWeakPointPos = Mathf.Lerp(weakPointSlider.value, weakpointList[currentIndex], 0.1f);
-        weakPointSlider.value = currentWeakPointPos;
 
-        if (Input.GetKeyDown(KeyCode.H))
+        if (weakpointList.Length > 0)
+        {
+            currentWeakPointPos = Mathf.Lerp(weakPointSlider.value, weakpointList[currentIndex], 0.1f);
+            weakPointSlider.value = currentWeakPointPos;
+
+        }
+        
+        
+        /*if (Input.GetKeyDown(KeyCode.H))
         {
             increaseHeat(5);
         }
@@ -54,20 +65,37 @@ public class EnnemyHeatSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.J))
         {
             reduceHeat(5);
-        }
+        }*/
     }
 
     private void FixedUpdate()
     {
-        if (currentHeat > 0)
+        if (cooling)
         {
-            if (currentHeat - autoHeatIncrement < 0)
+            if (currentHeat > 0)
             {
-                currentHeat = 0;
+                if (currentHeat - autoHeatIncrement < 0)
+                {
+                    currentHeat = 0;
+                }
+                else
+                {
+                    currentHeat -= autoHeatIncrement;
+                }
             }
-            else
+        }
+        else
+        {
+            if (currentHeat < maxHeat)
             {
-                currentHeat -= autoHeatIncrement;
+                if (currentHeat + autoHeatIncrement > maxHeat)
+                {
+                    currentHeat = maxHeat;
+                }
+                else
+                {
+                    currentHeat += autoHeatIncrement;
+                }
             }
         }
         /*if (currentHeat > (maxHeat-weakPointSize)*currentWeakPointPos && currentHeat < (maxHeat-weakPointSize)*currentWeakPointPos+weakPointSize)
@@ -104,8 +132,17 @@ public class EnnemyHeatSystem : MonoBehaviour
     {
         if (currentIndex + 1 >= weakpointList.Length)
         {
-            //Die
-            Debug.Log("gagné :D");
+            if (training)
+            {
+                currentIndex = 0;
+                weakPointTime = 0;
+            }
+            else
+            {
+                //Die
+                Debug.Log("gagné :D");
+                isAlive = false;
+            }
         }
         else
         {
@@ -118,13 +155,15 @@ public class EnnemyHeatSystem : MonoBehaviour
     {
         currentHeat -= value;
         if (currentHeat < 0) currentHeat = 0;
-        
+        cooling = true;
+
     }
 
     public void increaseHeat(float value)
     {
         currentHeat += value;
         if (currentHeat > maxHeat) currentHeat = maxHeat;
+        cooling = false;
     }
 
     /*public float GetColdPercentage()

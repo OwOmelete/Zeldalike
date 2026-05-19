@@ -26,14 +26,24 @@ public class InvoSource : MonoBehaviour
     private void releaseInvos()
     {
         col.enabled = false;
+
+        Collider parentCol = transform.parent != null 
+            ? transform.parent.GetComponent<Collider>() 
+            : null;
+
+        if (parentCol != null)
+        {
+            parentCol.enabled = false;
+        }
+
         int childCount = transform.childCount;
-        
-        
-        for (int i = childCount-1; i > -1; i--)
+
+        for (int i = childCount - 1; i > -1; i--)
         {
             Transform t = transform.GetChild(i);
             t.gameObject.SetActive(true);
         }
+
         Destroy(go);
     }
     

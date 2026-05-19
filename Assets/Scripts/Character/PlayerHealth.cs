@@ -9,7 +9,18 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private Material _material;
     public static event Action OnDeath; 
     
-    private float currentHealth;
+    public float currentHealth;
+
+
+    private void Awake()
+    {
+        _material.SetFloat("_Opacity", 0);
+    }
+
+    private void Start()
+    {
+        currentHealth = maxHealth;
+    }
 
     private void FixedUpdate()
     {
@@ -24,6 +35,8 @@ public class PlayerHealth : MonoBehaviour
                 currentHealth += regen;
             }
         }
+
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
     }
 
     private void Update()
@@ -48,7 +61,7 @@ public class PlayerHealth : MonoBehaviour
     
     void updateShader()
     {
-        _material.SetFloat("Opacity", (maxHealth / currentHealth) * maxShaderOpacity);
+        _material.SetFloat("_Opacity", (1 - currentHealth / maxHealth) * maxShaderOpacity);
     }
     
     

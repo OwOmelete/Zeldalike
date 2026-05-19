@@ -6,6 +6,6 @@ public class sceneLoader : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        SceneManager.LoadScene("Level_2 infostext");
+        SceneManager.LoadScene("Level_2GAUpdates");
     }
 }
