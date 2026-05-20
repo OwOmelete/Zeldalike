@@ -9,9 +9,8 @@ public class Didacticiel : MonoBehaviour
     [SerializeField]
     private List<GameObject> popupsTuto;
     [SerializeField] GameObject popUpKillEnemy;
-    
-    /*Le but est d'activer la popuk KillEnemy quand l'objet interactible est brisé.
-     Même système pour le popup de dégelage qu'il faut retirer une fois qu'un glacon a été dégelé.*/
+    [SerializeField] GameObject meltPopup;
+    [SerializeField] GameObject meltTrigger;
     
     private void Awake()
     {
@@ -27,11 +26,13 @@ public class Didacticiel : MonoBehaviour
     private void OnEnable()
     {
         Interactible.OnBreak += DisplayKillEnemyPopup;
+        InvoSource.ReleaseInvos += DisableMeltPopup;
     }
 
     private void OnDisable()
     {
-        throw new NotImplementedException();
+        Interactible.OnBreak -= DisplayKillEnemyPopup;
+        InvoSource.ReleaseInvos -= DisableMeltPopup;
     }
 
     private void Start()
@@ -42,6 +43,12 @@ public class Didacticiel : MonoBehaviour
     public void DisplayKillEnemyPopup(int lol)
     {
         popUpKillEnemy.SetActive(true);
+    }
+
+    public void DisableMeltPopup()
+    {
+        meltPopup.SetActive(false);
+        meltTrigger.SetActive(false);
     }
 
     public void DisplayPopup(int index)
