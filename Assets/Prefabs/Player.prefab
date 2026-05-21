@@ -273,7 +273,8 @@ MonoBehaviour:
   maxHealth: 100
   regen: 0.3
   maxShaderOpacity: 10
-  _material: {fileID: 2100000, guid: 6d902c374a20c8b4e99a80c418059704, type: 2}
+  _material: {fileID: 2100000, guid: da27312c4ace00d479d130fb2d418cc5, type: 2}
+  currentHealth: 0
 --- !u!1 &581819563829318607
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,7 +425,7 @@ Transform:
   m_GameObject: {fileID: 1885335188778453300}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.44, z: 0}
+  m_LocalPosition: {x: 0, y: 3.2, z: 0}
   m_LocalScale: {x: 1.50502, y: 1.50502, z: 1.50502}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1509,6 +1510,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8492833549898910848}
     m_Modifications:
+    - target: {fileID: 157391732319547859, guid: 6b7a8e78ffed85f4cbe08704f174605f, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 576636522437723538, guid: 6b7a8e78ffed85f4cbe08704f174605f, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.48980796
@@ -1612,6 +1617,10 @@ PrefabInstance:
     - target: {fileID: 5746846201737012282, guid: 6b7a8e78ffed85f4cbe08704f174605f, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6776388178676063133, guid: 6b7a8e78ffed85f4cbe08704f174605f, type: 3}
+      propertyPath: m_text
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6856218056147444822, guid: 6b7a8e78ffed85f4cbe08704f174605f, type: 3}
       propertyPath: m_LocalScale.x

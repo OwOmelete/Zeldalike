@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,9 +7,17 @@ public class SimonManager : MonoBehaviour, IDamagable
 {
 
     [SerializeField] private SimonDisplay _simonDisplay;
+
+    [SerializeField] private float afkDelay;
+
+    [SerializeField] private float throwForce;
     
     private HashSet<int> receivedAttacks = new HashSet<int>();
 
+    private List<Rigidbody> rbList = new List<Rigidbody>(16);    
+
+    
+    
 
     private int currentIndex;
     
@@ -16,6 +25,11 @@ public class SimonManager : MonoBehaviour, IDamagable
 
     public bool isTrying;
     public bool hasWon;
+
+    private float timer;
+    
+    
+    
     
     public void TakeDamage(float damage, int attackID, InvoDataInstance data)
     {
@@ -34,6 +48,10 @@ public class SimonManager : MonoBehaviour, IDamagable
             cold();
         }
         
+        rbList.Add(data.rb);
+        StartCoroutine(deactivate(data.rb));
+        data.rb.linearVelocity = Vector3.zero;
+
     }
 
     private void Update()
@@ -47,11 +65,20 @@ public class SimonManager : MonoBehaviour, IDamagable
         {
             cold();
         }
+
+        if (Time.time - timer >= afkDelay && isTrying)
+        {
+            Dommage();
+        }
+        
     }
 
 
     private void hot()
     {
+        timer = Time.time;
+        
+        
         if (sequence[currentIndex] == SimonDisplay.color.red)
         {
             currentIndex += 1;
@@ -71,6 +98,8 @@ public class SimonManager : MonoBehaviour, IDamagable
 
     private void cold()
     {
+        timer = Time.time;
+        
         if (sequence[currentIndex] == SimonDisplay.color.blue)
         {
             currentIndex += 1;
@@ -87,10 +116,20 @@ public class SimonManager : MonoBehaviour, IDamagable
             Dommage();
         }
     }
+    
+    IEnumerator deactivate(Rigidbody rb)
+    {
+        yield return new WaitForEndOfFrame();
+        if (isTrying)
+        {
+            rb.isKinematic = true;
+        }
+    }
 
     private void Bravo()
     {
         hasWon = true;
+        ReleaseInvos();
         Debug.Log("bravo");
     }
 
@@ -98,6 +137,19 @@ public class SimonManager : MonoBehaviour, IDamagable
     {
         isTrying = false;
         _simonDisplay.ResetSequence();
+        ReleaseInvos();
+    }
+
+
+    private void ReleaseInvos()
+    {
+        foreach (var rb in rbList)
+        {
+            rb.isKinematic = false;   
+            rb.linearVelocity = Vector3.zero;
+            rb.AddForce((Vector3.left + Vector3.up)*throwForce, ForceMode.Impulse);
+        }
+        rbList.Clear();
     }
     
     
