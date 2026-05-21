@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Didacticiel : MonoBehaviour
@@ -11,6 +12,7 @@ public class Didacticiel : MonoBehaviour
     [SerializeField] GameObject popUpKillEnemy;
     [SerializeField] GameObject meltPopup;
     [SerializeField] GameObject meltTrigger;
+    [SerializeField] TextMeshProUGUI lancerText;
     
     private void Awake()
     {
@@ -43,6 +45,7 @@ public class Didacticiel : MonoBehaviour
     public void DisplayKillEnemyPopup(int lol)
     {
         popUpKillEnemy.SetActive(true);
+        lancerText.text = "Alternez la température de vos familiers avec RB / LB\nBattez les ennemis en maintenant leur température dans la zone critique.";//triche
     }
 
     public void DisableMeltPopup()
