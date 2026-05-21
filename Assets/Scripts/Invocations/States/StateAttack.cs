@@ -78,6 +78,9 @@ public class StateAttack : IState
 
         rb.MovePosition(rb.position + move);
     }
+
+
+  
     public override void Exit()
     {
         owner.Data.rb.MovePosition(owner.transform.position);
