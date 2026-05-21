@@ -3,9 +3,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using System;
-using UnityEditor.Experimental.GraphView;
-using Unity.Mathematics;
-
 public class EnnemyRework :  MonoBehaviour, IDamagable
 {
         [Header("StatsEnnemi")]
