@@ -10717,11 +10717,11 @@ Transform:
   m_GameObject: {fileID: 328159221}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -232.186, y: -232.1, z: -638.3}
+  m_LocalPosition: {x: -171.38297, y: 23.292252, z: -753.26294}
   m_LocalScale: {x: 1.4508, y: 1.4508, z: 1.4508}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 727563589}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &330831004
 PrefabInstance:
@@ -23409,9 +23409,6 @@ Transform:
   - {fileID: 1879617909}
   - {fileID: 2112867043}
   - {fileID: 335424085}
-  - {fileID: 978517259}
-  - {fileID: 328159225}
-  - {fileID: 1945791647}
   - {fileID: 949555064}
   - {fileID: 1357527158}
   - {fileID: 1893705382}
@@ -30841,11 +30838,11 @@ Transform:
   m_GameObject: {fileID: 978517255}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -234.3, y: -232.1, z: -638.3}
+  m_LocalPosition: {x: -173.49696, y: 23.292252, z: -753.26294}
   m_LocalScale: {x: 1.4508, y: 1.4508, z: 1.4508}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 727563589}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &978523757
 GameObject:
@@ -63779,12 +63776,12 @@ Transform:
   m_GameObject: {fileID: 1945791646}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -233.64, y: -234.17, z: -635.26}
+  m_LocalPosition: {x: -172.83696, y: 21.22226, z: -750.22296}
   m_LocalScale: {x: 1.4508, y: 1.4508, z: 1.4508}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2044144146}
-  m_Father: {fileID: 727563589}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1945791648
 SphereCollider:
@@ -63820,6 +63817,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimonManager
   _simonDisplay: {fileID: 1945791650}
+  afkDelay: 8
+  throwForce: 6
   sequence: 0000000001000000000000000100000001000000
   isTrying: 0
   hasWon: 0
@@ -66913,7 +66912,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10.917, y: 10.917, z: 10.917}
+  m_LocalScale: {x: 23.653862, y: 23.653862, z: 23.653862}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1945791647}
@@ -66933,7 +66932,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -73468,6 +73467,9 @@ SceneRoots:
   - {fileID: 1408887169}
   - {fileID: 1680522334}
   - {fileID: 253956832}
+  - {fileID: 978517259}
+  - {fileID: 328159225}
+  - {fileID: 1945791647}
   - {fileID: 1500848931}
   - {fileID: 698223528859569336}
   - {fileID: 4664857686387848620}
