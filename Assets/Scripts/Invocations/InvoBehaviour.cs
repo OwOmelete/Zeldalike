@@ -44,6 +44,11 @@ public class InvoBehaviour : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    private void Awake()
+    {
+        player = InvoManager.Instance.transform;
+    }
+
     private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
         
