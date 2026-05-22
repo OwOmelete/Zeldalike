@@ -35,7 +35,7 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
     [Header("Previsualization")]
     [SerializeField] public GameObject zoneAttack;
 
-    [SerializeField] EnnemyHeatSystem HeatSystem;
+    public EnnemyHeatSystem HeatSystem;
     private HashSet<int> receivedAttacks = new HashSet<int>();
     public Animator animator;
     public Camera MainCamera;
@@ -54,8 +54,12 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
         MiseAngle();
         if (!HeatSystem.isAlive)
         {
-            MortGeulGlacon.SetActive(true);
-            MortGeulGlacon.transform.position = transform.position + new Vector3(0,1.5f,0);
+            if (MortGeulGlacon != null)
+            {
+                MortGeulGlacon.SetActive(true);
+                MortGeulGlacon.transform.position = transform.position + new Vector3(0,1.5f,0); 
+            }
+            
             Destroy(gameObject);
         }
         
