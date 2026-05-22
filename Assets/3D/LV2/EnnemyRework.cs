@@ -3,9 +3,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using System;
-using UnityEditor.Experimental.GraphView;
-using Unity.Mathematics;
-
 public class EnnemyRework :  MonoBehaviour, IDamagable
 {
         [Header("StatsEnnemi")]
@@ -108,7 +105,9 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
         Vector3 dir = target.position - transform.position;
         dir.Normalize();
         transform.position += dir*speed*Time.deltaTime;
-        transform.LookAt(target);
+        
+        
+        if (!IsAttacking) transform.LookAt(target);
     }
       private void MiseAngle()
     {

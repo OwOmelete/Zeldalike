@@ -12,6 +12,9 @@ public class InvoSource : MonoBehaviour
     [SerializeField] private Material instanceMaterial;
     public float vitesseDePropagation;
     float ratio ;
+    
+    public static event Action ReleaseInvos;
+    
     void Start()
     {
         ratio=vitesseDePropagation;
@@ -71,7 +74,8 @@ public class InvoSource : MonoBehaviour
             Transform t = transform.GetChild(i);
             t.gameObject.SetActive(true);
         }
-
+        
+        ReleaseInvos?.Invoke();
         Destroy(go);
     }
     

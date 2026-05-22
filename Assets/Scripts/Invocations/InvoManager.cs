@@ -231,6 +231,7 @@ public class InvoManager : MonoBehaviour
     private void OnLeftShoulder()
     {
         currentTemperature = InvoDataInstance.temperature.cold;
+        target.isHot = false;
     }
     
     private void OnRightTrigger()
@@ -241,6 +242,7 @@ public class InvoManager : MonoBehaviour
     {
         
         currentTemperature = InvoDataInstance.temperature.hot;
+        target.isHot = true;
     }
     
     IEnumerator waveTimer()
