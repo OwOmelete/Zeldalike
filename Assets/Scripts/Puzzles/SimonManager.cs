@@ -11,6 +11,10 @@ public class SimonManager : MonoBehaviour, IDamagable
     [SerializeField] private float afkDelay;
 
     [SerializeField] private float throwForce;
+    [SerializeField] private float releaseDelay;
+
+    [SerializeField] private Transform objectRef;
+    [SerializeField] private Transform ThrowingDirection;
     
     private HashSet<int> receivedAttacks = new HashSet<int>();
 
@@ -51,6 +55,7 @@ public class SimonManager : MonoBehaviour, IDamagable
         rbList.Add(data.rb);
         StartCoroutine(deactivate(data.rb));
         data.rb.linearVelocity = Vector3.zero;
+        data.rb.transform.position = objectRef.transform.position;
 
     }
 
@@ -137,20 +142,35 @@ public class SimonManager : MonoBehaviour, IDamagable
     {
         isTrying = false;
         _simonDisplay.ResetSequence();
+        currentIndex = 0;
         ReleaseInvos();
     }
 
 
     private void ReleaseInvos()
     {
-        foreach (var rb in rbList)
+        /*foreach (var rb in rbList)
         {
             rb.isKinematic = false;   
             rb.linearVelocity = Vector3.zero;
-            rb.AddForce((Vector3.left + Vector3.up)*throwForce, ForceMode.Impulse);
+            rb.AddForce(ThrowingDirection.position - objectRef.position, ForceMode.Impulse);
         }
-        rbList.Clear();
+        rbList.Clear();*/
+
+        StartCoroutine(Release());
     }
-    
+
+    IEnumerator Release()
+    {
+        while (rbList.Count >= 1)
+        {
+            Rigidbody rb = rbList[^1];
+            rb.isKinematic = false;   
+            rb.linearVelocity = Vector3.zero;
+            rb.AddForce((ThrowingDirection.position - objectRef.position) * throwForce, ForceMode.Impulse);
+            rbList.RemoveAt(rbList.Count-1);
+            yield return new WaitForSeconds(releaseDelay);
+        }
+    }
     
 }
