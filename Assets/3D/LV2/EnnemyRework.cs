@@ -184,8 +184,9 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
     yield return new WaitForSeconds(0.1f);
     zoneAttack.GetComponent<DetectionAttack>().canAttack = true;
     col.enabled = false;
-    IsAttacking = false;
     zoneAttack.SetActive(false);
+    IsAttacking = false;
+    
 }
 
     

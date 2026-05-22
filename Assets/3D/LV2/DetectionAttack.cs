@@ -13,7 +13,7 @@ public class DetectionAttack : MonoBehaviour
     }
     void OnTriggerStay(Collider hit)
     {
-          if (canAttack)
+          if (canAttack && hit.CompareTag("Player"))
         {
         playerHealth.takeDamage(damage);
         canAttack=false;
