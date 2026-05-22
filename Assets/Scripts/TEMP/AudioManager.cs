@@ -23,21 +23,14 @@ public class AudioManager : MonoBehaviour
             Debug.Log("avec musique detecte");
            musiqueActuelle++; 
            audioSource.clip = audioClips[musiqueActuelle];
-           StartCoroutine(Boucle());
+           audioSource.Play();
            other.enabled=false;
-        }
-       if (musiqueActuelle == 2)
-    {
-    StartCoroutine(DebutMusique());
-    }
-    }
-    IEnumerator Boucle()
-    {
-        while (true)
+            if (musiqueActuelle == 2)
         {
-            audioSource.Play();
-            yield return new WaitForSeconds(audioClips[musiqueActuelle].length);
+         StartCoroutine(DebutMusique());
+         }
         }
+      
     }
     IEnumerator DebutMusique()
 {
@@ -46,7 +39,7 @@ public class AudioManager : MonoBehaviour
     musiqueActuelle++;
 
     audioSource.clip = audioClips[musiqueActuelle];
-    StartCoroutine(Boucle());
+    audioSource.Play();
 }
 
     private void OnEnable()
