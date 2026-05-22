@@ -6,6 +6,9 @@ public class Target : MonoBehaviour
 {
     public Transform target;
     public Image sprite;
+    public Sprite targetHot;
+    public Sprite targetCold;
+    public bool isHot;
 
 
     private void Awake()
@@ -15,8 +18,21 @@ public class Target : MonoBehaviour
 
     private void Update()
     {
+        updateTarget();
+
+    }
+
+    void updateTarget()
+    {
+        if (isHot)
+        {
+            sprite.sprite = targetHot;
+        }
+        else
+        {
+            sprite.sprite = targetCold;
+        }
         if (target) transform.position = target.transform.position;
         else sprite.enabled = false;
-
     }
 }
