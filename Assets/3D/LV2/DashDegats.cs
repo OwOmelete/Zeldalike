@@ -9,10 +9,11 @@ public class DashDegats : MonoBehaviour
   void OnTriggerEnter(Collider other)
     {
         
-        if (fonceur.IsAttacking)
+        if (fonceur.IsAttacking && !fonceur.asAttack && other.CompareTag("Player"))
         {
         Debug.Log("Il a attaquer !!!");
-        playerHealth.takeDamage(20);
+        fonceur.playerHealth.takeDamage(20);
+        fonceur.asAttack = true;
         }
     }
 }

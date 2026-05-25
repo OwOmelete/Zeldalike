@@ -1,9 +1,46 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-   
+   public List<AudioClip> audioClips = new List<AudioClip>();
+   public AudioSource audioSource;
+   int musiqueActuelle;
+    void Start()
+    {
+        musiqueActuelle=0;
+        audioSource.clip = audioClips[musiqueActuelle];
+        audioSource.Play();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("CollisionDetectionMode2D");
+        if (other.CompareTag("Musique"))
+        {
+            Debug.Log("avec musique detecte");
+           musiqueActuelle++; 
+           audioSource.clip = audioClips[musiqueActuelle];
+           audioSource.Play();
+           other.enabled=false;
+            if (musiqueActuelle == 2)
+        {
+         StartCoroutine(DebutMusique());
+         }
+        }
+      
+    }
+    IEnumerator DebutMusique()
+{
+    yield return new WaitForSeconds(audioClips[musiqueActuelle].length);
+
+    musiqueActuelle++;
+
+    audioSource.clip = audioClips[musiqueActuelle];
+    audioSource.Play();
+}
 
     private void OnEnable()
     {

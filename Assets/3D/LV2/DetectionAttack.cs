@@ -4,6 +4,7 @@ using System.Collections;
 public class DetectionAttack : MonoBehaviour
 {
     [SerializeField] PlayerHealth playerHealth;
+    [SerializeField] float damage;
     public bool canAttack ;
 
     void Start()
@@ -12,10 +13,9 @@ public class DetectionAttack : MonoBehaviour
     }
     void OnTriggerStay(Collider hit)
     {
-          if (canAttack)
+          if (canAttack && hit.CompareTag("Player"))
         {
-        playerHealth.takeDamage(5);
-        Debug.Log("joueur touché");
+        playerHealth.takeDamage(damage);
         canAttack=false;
         }
     }

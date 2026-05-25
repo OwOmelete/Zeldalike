@@ -13,6 +13,7 @@ public class InvoManager : MonoBehaviour
     private int currentDeactivated = 0;
 
     [SerializeField]private Target target;
+    public PlayerHealth _playerHealth;
     
     private List<Transform> enemiesInRange = new List<Transform>();
     private float lastBasicAttack;
@@ -231,6 +232,7 @@ public class InvoManager : MonoBehaviour
     private void OnLeftShoulder()
     {
         currentTemperature = InvoDataInstance.temperature.cold;
+        target.isHot = false;
     }
     
     private void OnRightTrigger()
@@ -241,6 +243,7 @@ public class InvoManager : MonoBehaviour
     {
         
         currentTemperature = InvoDataInstance.temperature.hot;
+        target.isHot = true;
     }
     
     IEnumerator waveTimer()

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class InvoSource : MonoBehaviour
@@ -6,6 +7,24 @@ public class InvoSource : MonoBehaviour
     private bool canInteract;
     [SerializeField] private Collider col;
     [SerializeField] private GameObject go;
+    [SerializeField] private GameObject Tuyaux;
+    [SerializeField] private Material baseMaterial;
+    [SerializeField] private Material instanceMaterial;
+    public float vitesseDePropagation;
+    float ratio ;
+    
+    public static event Action ReleaseInvos;
+    
+    void Start()
+    {
+        if (Tuyaux != null)
+        {
+            ratio=vitesseDePropagation;
+            instanceMaterial = new Material(baseMaterial);
+            Tuyaux.GetComponent<Renderer>().material = instanceMaterial;
+            instanceMaterial.SetFloat("_Ice_Progression",1); 
+        }
+    }
 
     private void OnEnable()
     {
@@ -20,9 +39,24 @@ public class InvoSource : MonoBehaviour
 
     private void Interact()
     {
-        if(canInteract) releaseInvos();
+        if(canInteract) 
+        {
+            releaseInvos();
+            if (Tuyaux != null) StartCoroutine(TurnOnPipe());
+        }
+        
     }
-
+    IEnumerator TurnOnPipe()
+    {
+        
+        while (vitesseDePropagation > -2)
+        {
+            vitesseDePropagation-=Time.deltaTime;
+            instanceMaterial.SetFloat("_Ice_Progression",vitesseDePropagation/ratio);
+            yield return null;
+        }
+        yield return null;
+    }
     private void releaseInvos()
     {
         col.enabled = false;
@@ -43,7 +77,8 @@ public class InvoSource : MonoBehaviour
             Transform t = transform.GetChild(i);
             t.gameObject.SetActive(true);
         }
-
+        
+        ReleaseInvos?.Invoke();
         Destroy(go);
     }
     

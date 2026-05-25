@@ -17792,7 +17792,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 0}
   camera2: {fileID: 0}
-  brain: {fileID: 2049938458}
+  camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
   - {fileID: 2122064736}
@@ -17800,6 +17800,7 @@ MonoBehaviour:
   - {fileID: 235959601}
   camerasToGivePriority: []
   camerasToRemovePriority: []
+  respawnPoint: {fileID: 0}
 --- !u!65 &574664031
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20673,7 +20674,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 0}
   camera2: {fileID: 0}
-  brain: {fileID: 2049938458}
+  camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
   - {fileID: 805504338}
@@ -20682,6 +20683,7 @@ MonoBehaviour:
   - {fileID: 978523757}
   camerasToGivePriority: []
   camerasToRemovePriority: []
+  respawnPoint: {fileID: 0}
 --- !u!65 &673871293
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -28472,7 +28474,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 0}
   camera2: {fileID: 0}
-  brain: {fileID: 2049938458}
+  camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
   - {fileID: 978523757}
@@ -28481,6 +28483,7 @@ MonoBehaviour:
   - {fileID: 449524458}
   camerasToGivePriority: []
   camerasToRemovePriority: []
+  respawnPoint: {fileID: 0}
 --- !u!65 &898113096
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -29129,7 +29132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 0}
   camera2: {fileID: 0}
-  brain: {fileID: 2049938458}
+  camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
   - {fileID: 1026420371}
@@ -29137,6 +29140,7 @@ MonoBehaviour:
   - {fileID: 1104742325}
   camerasToGivePriority: []
   camerasToRemovePriority: []
+  respawnPoint: {fileID: 0}
 --- !u!65 &930036183
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30310,7 +30314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 0}
   camera2: {fileID: 0}
-  brain: {fileID: 2049938458}
+  camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
   - {fileID: 978523757}
@@ -30321,6 +30325,7 @@ MonoBehaviour:
   - {fileID: 1733216644}
   camerasToRemovePriority:
   - {fileID: 978523760}
+  respawnPoint: {fileID: 0}
 --- !u!65 &968467440
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31955,7 +31960,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 0}
   camera2: {fileID: 0}
-  brain: {fileID: 2049938458}
+  camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
   - {fileID: 449524458}
@@ -31966,6 +31971,7 @@ MonoBehaviour:
   - {fileID: 235959602}
   camerasToRemovePriority:
   - {fileID: 1174426666}
+  respawnPoint: {fileID: 0}
 --- !u!65 &1028018774
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34613,6 +34619,127 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 20.65, z: 18.26}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &1151961774
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 439855966891189564, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 439855966891189564, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 941115759976124140, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 941115759976124140, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3076498192933469039, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_Name
+      value: PrefabEnnemi 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3477627006472666363, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3477627006472666363, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3477627006472666363, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961577845319317603, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961577845319317603, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961577845319317603, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4222967959673581493, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 22163918}
+    - target: {fileID: 5942874996176253921, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -166.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 5942874996176253921, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 20.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 5942874996176253921, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -741.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 5942874996176253921, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5942874996176253921, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5942874996176253921, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5942874996176253921, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5942874996176253921, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5942874996176253921, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5942874996176253921, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5986551811576304686, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5986551811576304686, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536744113436226149, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536744113436226149, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536744113436226149, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 450dc2b0b2b5b8d40ac5d4179057d0f6, type: 3}
 --- !u!1001 &1158162294
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39228,7 +39355,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 0}
   camera2: {fileID: 0}
-  brain: {fileID: 2049938458}
+  camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
   - {fileID: 235959601}
@@ -39241,6 +39368,7 @@ MonoBehaviour:
   - {fileID: 1174426666}
   camerasToRemovePriority:
   - {fileID: 235959602}
+  respawnPoint: {fileID: 0}
 --- !u!65 &1267344413
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -54413,7 +54541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 0}
   camera2: {fileID: 0}
-  brain: {fileID: 2049938458}
+  camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
   - {fileID: 1026420371}
@@ -54422,6 +54550,7 @@ MonoBehaviour:
   - {fileID: 1292107311}
   camerasToGivePriority: []
   camerasToRemovePriority: []
+  respawnPoint: {fileID: 0}
 --- !u!65 &1722092736
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -65554,7 +65683,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 0}
   camera2: {fileID: 0}
-  brain: {fileID: 2049938458}
+  camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
   - {fileID: 805504338}
@@ -65566,6 +65695,7 @@ MonoBehaviour:
   - {fileID: 978523760}
   camerasToRemovePriority:
   - {fileID: 1733216644}
+  respawnPoint: {fileID: 0}
 --- !u!65 &2043428786
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -67523,7 +67653,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
   camera1: {fileID: 0}
   camera2: {fileID: 0}
-  brain: {fileID: 2049938458}
+  camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
   - {fileID: 1267344411}
@@ -67531,6 +67661,7 @@ MonoBehaviour:
   - {fileID: 782655933}
   camerasToGivePriority: []
   camerasToRemovePriority: []
+  respawnPoint: {fileID: 0}
 --- !u!65 &2091729360
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71830,3 +71961,4 @@ SceneRoots:
   - {fileID: 8205261810149361682}
   - {fileID: 8355265396845444096}
   - {fileID: 803324928}
+  - {fileID: 1151961774}

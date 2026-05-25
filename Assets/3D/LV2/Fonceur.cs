@@ -3,13 +3,15 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Fonceur : EnnemyRework
 {
     public Transform Cible ;
     public bool dash=false;
     public bool canAttack=true;
-    [SerializeField] PlayerHealth playerHealth;
+    public PlayerHealth playerHealth;
+    public bool asAttack;
 
     void Awake()
     {
@@ -17,6 +19,16 @@ public class Fonceur : EnnemyRework
     }
     public override void Update()
     {
+        if (!HeatSystem.isAlive)
+        {
+            if (MortGeulGlacon != null)
+            {
+                MortGeulGlacon.SetActive(true);
+                MortGeulGlacon.transform.position = transform.position + new Vector3(0,1.5f,0); 
+            }
+            
+            Destroy(gameObject);
+        }
         if (dash)
         {
             Debug.Log("Move");
@@ -37,6 +49,31 @@ public class Fonceur : EnnemyRework
             Move(patrol[nextDestination]);
         }
     }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+    {
+        player = InvoManager.Instance.transform;
+        playerHealth = InvoManager.Instance._playerHealth;
+        
+
+    }
+
+
+    void OnSceneLoaded()
+    {
+        
+    }
+
     public override void BeforeMove()
     {
         StartCoroutine(DistanceToPlayer());
@@ -73,7 +110,7 @@ public class Fonceur : EnnemyRework
         Vector3 dir = target.position - transform.position;
         dir = new Vector3 (dir.z,0,-dir.x);
         dir.Normalize();
-        transform.position += dir*speed*Time.deltaTime;
+        transform.position += dir * (speed * Time.deltaTime);
         yield return new WaitForSeconds(3f);
         
     }
@@ -102,6 +139,7 @@ public class Fonceur : EnnemyRework
     col.enabled = false;
     zoneAttack.SetActive(false);
     IsAttacking = false;
+    asAttack = false;
     StartCoroutine(Cooldown());
     }
      public override void Move(Transform target)

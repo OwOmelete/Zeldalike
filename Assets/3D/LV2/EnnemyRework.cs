@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using System;
-
 public class EnnemyRework :  MonoBehaviour, IDamagable
 {
         [Header("StatsEnnemi")]
@@ -27,15 +26,21 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
     [SerializeField] public bool fightStart;
     [SerializeField] public bool IsAttacking;
     [SerializeField] public bool IsPatrol;
+    [SerializeField] public bool isIdle;
     [SerializeField] Vector3 distanceToPlayer;
+
     public float distanceToPlayerActual;
 
 
     [Header("Previsualization")]
     [SerializeField] public GameObject zoneAttack;
 
-    [SerializeField] EnnemyHeatSystem HeatSystem;
+    public EnnemyHeatSystem HeatSystem;
     private HashSet<int> receivedAttacks = new HashSet<int>();
+    public Animator animator;
+    public Camera MainCamera;
+    public GameObject MortGeulGlacon;
+    
 
      void Start()
     {
@@ -46,8 +51,15 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
     }
     public virtual void Update()
     {
+        MiseAngle();
         if (!HeatSystem.isAlive)
         {
+            if (MortGeulGlacon != null)
+            {
+                MortGeulGlacon.SetActive(true);
+                MortGeulGlacon.transform.position = transform.position + new Vector3(0,1.5f,0); 
+            }
+            
             Destroy(gameObject);
         }
         
@@ -60,13 +72,20 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
         else if (!fightStart && !IsPatrol)
         {
             Vector3 distance = patrol[nextDestination].position - transform.position;
-            if (Math.Abs(distance.magnitude) < 1)
+            if (Math.Abs(distance.magnitude) < 1 && !isIdle)
             {
-                NewDestination();
+              StartCoroutine(NewDestination());
+                
             }
-            Move(patrol[nextDestination]);
+            else if (!isIdle)
+            {
+                Move(patrol[nextDestination]);
+            }
+            
         }
     }
+   
+    
     void OnTriggerEnter(Collider collider)
     {
         if (collider.CompareTag("Player"))
@@ -85,14 +104,40 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
     }
     public virtual void Move(Transform target)
     {
+
+        animator.SetBool("IsMoving",true);
         Vector3 dir = target.position - transform.position;
         dir.Normalize();
         transform.position += dir*speed*Time.deltaTime;
+        
+        
+        if (!IsAttacking) transform.LookAt(target);
     }
-    public void NewDestination()
+      private void MiseAngle()
     {
+        float currentRotation = (transform.rotation * Quaternion.Inverse(MainCamera.transform.rotation) ).eulerAngles.y;
+        animator.SetFloat("x",angleToInt(currentRotation));
+    }
+
+    private int angleToInt(float angle)
+    {
+        float curAngle = 360 / 4; 
+        angle -= curAngle/2;
+        if (angle < 0) angle += 360;
+
+        return Mathf.FloorToInt(angle / curAngle);
+
+    }
+    public IEnumerator NewDestination()
+    {
+        isIdle=true;
+        animator.SetBool("IsMoving",false);
+        yield return new WaitForSeconds(4f);
         System.Random rnd = new System.Random();
         nextDestination  = rnd.Next(0, patrol.Count);
+        isIdle=false;
+        yield return null;
+        
     }
        void PrepareAttack()
     {
@@ -108,6 +153,8 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
 
     zoneAttack.transform.position = transform.position + dir * distance;
 }
+
+
   public virtual IEnumerator DistanceToPlayer()
 {
     distanceToPlayer = player.position - transform.position;
@@ -116,19 +163,23 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
 }
    public virtual IEnumerator Attack1()
 {
+    
     zoneAttack.SetActive(true); 
     updateZonneAttack();
+    animator.SetTrigger("Attack");
     yield return new WaitForEndOfFrame();
 
     yield return new WaitForSeconds(attackSpeed*0.5f);
 
-    IsAttacking = false;
-    speed = 15;
-    Move(player);
     
-
-    yield return new WaitForSeconds(0.2f);
-    IsAttacking = true;
+    speed = 15;
+    float i = 0.2f;
+        while (i > 0)
+        {
+            i-=Time.deltaTime;
+            Move(player);
+            yield return null;
+        }
     speed = 5;
     yield return new WaitForSeconds(attackSpeed*0.2f);
     var col = zoneAttack.GetComponent<Collider>();
@@ -137,8 +188,9 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
     yield return new WaitForSeconds(0.1f);
     zoneAttack.GetComponent<DetectionAttack>().canAttack = true;
     col.enabled = false;
-    IsAttacking = false;
     zoneAttack.SetActive(false);
+    IsAttacking = false;
+    
 }
 
     
