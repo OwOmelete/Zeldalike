@@ -22,6 +22,7 @@ public class uiManager : MonoBehaviour
     public GameObject ParentFamillier;
     public GameObject ParentOption;
     public GameObject ParentQuiter;
+    public GameObject ParentPause;
     public Animator Joystick;
     public Animator fond;
     public NavigationMenuStart navigationMenuStart;
@@ -57,6 +58,14 @@ public class uiManager : MonoBehaviour
 
     void Update()
     {
+        if (ParentFamillier.activeSelf || ParentOption.activeSelf || ParentQuiter.activeSelf || ParentPause.activeSelf)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
       
              if (Gamepad.current == null) return;
 
