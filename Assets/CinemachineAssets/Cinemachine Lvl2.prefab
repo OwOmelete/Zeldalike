@@ -689,8 +689,8 @@ Transform:
   m_GameObject: {fileID: 965223111212095142}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: -0.70710677}
-  m_LocalPosition: {x: 78.3, y: 1.6, z: 643.6}
-  m_LocalScale: {x: 58.57323, y: 37.25538, z: 74.64642}
+  m_LocalPosition: {x: 78.3, y: 1.6, z: 651.8}
+  m_LocalScale: {x: 42.090954, y: 37.25538, z: 74.64642}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2334942923829100822}
@@ -2094,7 +2094,7 @@ MonoBehaviour:
   - {fileID: 2410103465197941681}
   camerasToGivePriority: []
   camerasToRemovePriority: []
-  respawnPoint: {fileID: 0}
+  respawnPoint: {fileID: 50765045306877927}
 --- !u!1 &3460830272966858609
 GameObject:
   m_ObjectHideFlags: 0
@@ -3164,6 +3164,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineSplineSmoother
   AutoSmooth: 1
+--- !u!1 &4742848389917395199
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 50765045306877927}
+  m_Layer: 0
+  m_Name: RespawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &50765045306877927
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4742848389917395199}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 101.84326, y: -14.416544, z: 577.0083}
+  m_LocalScale: {x: 0.64524317, y: 0.64524317, z: 0.64524317}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1144109633133981192}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4803217173776898369
 GameObject:
   m_ObjectHideFlags: 0
@@ -3947,7 +3978,7 @@ MonoBehaviour:
   - {fileID: 7775549635576873296}
   camerasToGivePriority: []
   camerasToRemovePriority: []
-  respawnPoint: {fileID: 0}
+  respawnPoint: {fileID: 50765045306877927}
 --- !u!1 &6208664982880011321
 GameObject:
   m_ObjectHideFlags: 0
@@ -4478,7 +4509,7 @@ MonoBehaviour:
   - {fileID: 5335568284650954390}
   camerasToGivePriority: []
   camerasToRemovePriority: []
-  respawnPoint: {fileID: 0}
+  respawnPoint: {fileID: 50765045306877927}
 --- !u!1 &6686880921634928138
 GameObject:
   m_ObjectHideFlags: 0
@@ -5635,6 +5666,7 @@ Transform:
   - {fileID: 4539934067572507133}
   - {fileID: 2401952649632570123}
   - {fileID: 2334942923829100822}
+  - {fileID: 50765045306877927}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8437496140633887647
@@ -5945,7 +5977,7 @@ MonoBehaviour:
   - {fileID: 7484816100752953595}
   camerasToGivePriority: []
   camerasToRemovePriority: []
-  respawnPoint: {fileID: 0}
+  respawnPoint: {fileID: 50765045306877927}
 --- !u!1 &8929779514876296585
 GameObject:
   m_ObjectHideFlags: 0
