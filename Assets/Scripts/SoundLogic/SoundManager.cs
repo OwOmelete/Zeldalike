@@ -12,12 +12,17 @@ public class SoundManager : MonoBehaviour
         public AudioClip clip;
     }
 
-    [Tooltip("Add sound.mp3 or whatever and give it a name")]
-    public List<Sound> sounds;
+    [Tooltip("Add sounds here")]
+    [SerializeField]
+    private List<Sound> sounds;
 
     private Dictionary<string, AudioClip> soundDictionary;
 
     private AudioSource sfxSource;
+
+    [SerializeField]
+    [Range(0f, 1f)]
+    private float sfxVolume = 1f;
 
     private void Awake()
     {
@@ -36,7 +41,25 @@ public class SoundManager : MonoBehaviour
 
         foreach (var sound in sounds)
         {
-            soundDictionary[sound.id] = sound.clip;
+            if (string.IsNullOrWhiteSpace(sound.id))
+            {
+                Debug.LogWarning("Empty sound ID.");
+                continue;
+            }
+
+            if (sound.clip == null)
+            {
+                Debug.LogWarning($"Missing clip for {sound.id}");
+                continue;
+            }
+
+            if (soundDictionary.ContainsKey(sound.id))
+            {
+                Debug.LogWarning($"Duplicate sound ID: {sound.id}");
+                continue;
+            }
+
+            soundDictionary.Add(sound.id, sound.clip);
         }
 
         sfxSource = gameObject.AddComponent<AudioSource>();
@@ -46,7 +69,7 @@ public class SoundManager : MonoBehaviour
     {
         if (soundDictionary.TryGetValue(id, out AudioClip clip))
         {
-            sfxSource.PlayOneShot(clip);
+            sfxSource.PlayOneShot(clip, sfxVolume);
         }
         else
         {

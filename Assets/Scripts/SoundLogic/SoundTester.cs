@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SoundTest : MonoBehaviour
+public class SoundTester : MonoBehaviour
 {
     public Button button;
 
@@ -12,7 +12,7 @@ public class SoundTest : MonoBehaviour
 
         button.onClick.AddListener(() =>
         {
-            SoundEvents.PlayJump();
+            SoundEvents.PlaySFX("SoundExampleName");
         });
 
         #endregion
