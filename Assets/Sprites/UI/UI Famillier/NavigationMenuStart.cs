@@ -67,9 +67,9 @@ public class NavigationMenuStart : MonoBehaviour
     IEnumerator waitforSeconde(int i)
     {
         changing=true;
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSecondsRealtime(0.25f);
         Enter.SetTrigger(i.ToString());
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSecondsRealtime(0.15f);
         image.enabled=true;
         image.sprite = sprites[result];
         images[result].enabled=true;
