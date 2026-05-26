@@ -12,7 +12,7 @@ public class SoundTest : MonoBehaviour
 
         button.onClick.AddListener(() =>
         {
-            SoundEvents.MenuButtonPress();
+            SoundEvents.PlayJump();
         });
 
         #endregion

@@ -1,27 +1,56 @@
-using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip[] sounds;
-    
-    #region ButtonPressed
+    public static SoundManager Instance;
 
-    private void OnEnable() {SoundEvents.OnButtonPress += PlayButtonPressSound;}
-    private void OnDisable() {SoundEvents.OnButtonPress -= PlayButtonPressSound;}
-
-    public void PlayButtonPressSound()
+    [System.Serializable]
+    public class Sound
     {
-        Debug.Log("Playing button press Sound");
-        audioSource.PlayOneShot(sounds[0]);
+        public string id;
+        public AudioClip clip;
     }
 
-    #endregion
+    [Tooltip("Add sound.mp3 or whatever and give it a name")]
+    public List<Sound> sounds;
 
-    #region Other
-    
-    
+    private Dictionary<string, AudioClip> soundDictionary;
 
-    #endregion
+    private AudioSource sfxSource;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        soundDictionary = new Dictionary<string, AudioClip>();
+
+        foreach (var sound in sounds)
+        {
+            soundDictionary[sound.id] = sound.clip;
+        }
+
+        sfxSource = gameObject.AddComponent<AudioSource>();
+    }
+
+    public void Play(string id)
+    {
+        if (soundDictionary.TryGetValue(id, out AudioClip clip))
+        {
+            sfxSource.PlayOneShot(clip);
+        }
+        else
+        {
+            Debug.LogWarning($"Sound '{id}' not found.");
+        }
+    }
 }

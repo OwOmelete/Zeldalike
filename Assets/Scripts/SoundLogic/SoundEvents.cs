@@ -1,10 +1,18 @@
 using System;
 public static class SoundEvents
 {
-    public static event Action OnButtonPress;
-
-    public static void MenuButtonPress()
+    public static void PlayJump()
     {
-        OnButtonPress?.Invoke();
+        SoundManager.Instance.Play("jump");
+    }
+
+    public static void PlayExplosion()
+    {
+        SoundManager.Instance.Play("explosion");
+    }
+
+    public static void PlayButtonClick()
+    {
+        SoundManager.Instance.Play("button_click");
     }
 }
