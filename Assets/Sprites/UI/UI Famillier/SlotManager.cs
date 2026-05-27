@@ -127,7 +127,7 @@ public FamillierData CreateRuntimeFamillier(FamillierData baseData)
         inventory.anchoredPosition = Vector2.Lerp(
             inventory.anchoredPosition,
             targetPosition,
-            Time.deltaTime * moveSpeed
+           Time.unscaledDeltaTime * moveSpeed
         );
 
         if (Vector2.Distance(inventory.anchoredPosition, targetPosition) < 0.1f)
