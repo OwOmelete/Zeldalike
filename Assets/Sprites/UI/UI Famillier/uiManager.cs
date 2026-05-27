@@ -51,6 +51,10 @@ public class uiManager : MonoBehaviour
         animators = UiPauseMenu.GetComponentsInChildren<Animator>(true);
         stickImage = SelectStick.GetComponent<Image>();
     }
+    public void Quit()
+    {
+        Application.Quit();
+    }
 
     void Update()
     {
@@ -199,7 +203,7 @@ public class uiManager : MonoBehaviour
          if (actionName=="Quitter")
         {
             ParentQuiter.SetActive(true);
-            navigationMenuStart.OnSetActive();
+            //navigationMenuStart.OnSetActive();
             Joystick.Play("JoystickQuiter");
         }
          if (actionName=="Famillier")
