@@ -13,6 +13,7 @@ public class InvoManager : MonoBehaviour
     private int currentDeactivated = 0;
 
     [SerializeField]private Target target;
+    public PlayerHealth _playerHealth;
     
     private List<Transform> enemiesInRange = new List<Transform>();
     private float lastBasicAttack;

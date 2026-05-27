@@ -17,10 +17,13 @@ public class InvoSource : MonoBehaviour
     
     void Start()
     {
-        ratio=vitesseDePropagation;
-        instanceMaterial = new Material(baseMaterial);
-        Tuyaux.GetComponent<Renderer>().material = instanceMaterial;
-        instanceMaterial.SetFloat("_Ice_Progression",1);
+        if (Tuyaux != null)
+        {
+            ratio=vitesseDePropagation;
+            instanceMaterial = new Material(baseMaterial);
+            Tuyaux.GetComponent<Renderer>().material = instanceMaterial;
+            instanceMaterial.SetFloat("_Ice_Progression",1); 
+        }
     }
 
     private void OnEnable()
@@ -39,7 +42,7 @@ public class InvoSource : MonoBehaviour
         if(canInteract) 
         {
             releaseInvos();
-            StartCoroutine(TurnOnPipe());
+            if (Tuyaux != null) StartCoroutine(TurnOnPipe());
         }
         
     }

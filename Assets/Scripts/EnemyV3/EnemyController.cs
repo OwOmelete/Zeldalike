@@ -34,8 +34,8 @@ public class EnemyController : MonoBehaviour
 
     void HandleMovement()
     {
-        if (currentState != State.CHASE || Player == null) return;
 
+        
         Vector3 target = Player.position;
 
         transform.position = Vector3.MoveTowards(

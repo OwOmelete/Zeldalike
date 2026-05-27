@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class ecrantitreScipt : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class ecrantitreScipt : MonoBehaviour
     public int etat;
     public int spriteactulle;
     public Image Flame;
+    bool isBreaking;
+    public GameObject Menu;
+    public GameObject rechauffer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,10 +27,12 @@ public class ecrantitreScipt : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
+         if (Gamepad.current.leftTrigger.ReadValue() > 0.2f&& !isBreaking)
         {
+            isBreaking=true;
             BreakIce();
         }
+        else if(Gamepad.current.leftTrigger.ReadValue() < 0.2f) isBreaking=false;
     }
     void BreakIce()
     {
@@ -43,6 +49,8 @@ public class ecrantitreScipt : MonoBehaviour
         {
             glacon.enabled=false;
             Flame.enabled=true;
+            Menu.SetActive(true);
+            rechauffer.SetActive(false);
         }
     }
 }
