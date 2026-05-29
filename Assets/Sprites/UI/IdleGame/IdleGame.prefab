@@ -227,7 +227,6 @@ RectTransform:
   - {fileID: 6469906090131122762}
   - {fileID: 6854517179140211322}
   - {fileID: 7416951951947467160}
-  - {fileID: 1660632915970451095}
   - {fileID: 959912388662834347}
   - {fileID: 6201835890466594920}
   - {fileID: 6280520904024620344}
@@ -1727,6 +1726,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dabfa0812b4d4d48860c8cd1fbff303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  uiManagerp: {fileID: 0}
+  IdleGame: {fileID: 0}
   Score: 0
   Click: 0
   Button: {fileID: 6327632679263679146}
@@ -1757,6 +1758,7 @@ MonoBehaviour:
   - {fileID: 8013026275681190479}
   - {fileID: 989430522749166051}
   - {fileID: 1346353745801249961}
+  ScoreAnim: []
   scoreText: {fileID: 228699849484401785}
   clickText: {fileID: 1672987999447075374}
 --- !u!1 &4533171011574777105
@@ -2773,7 +2775,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1660632915970451095}
   m_Father: {fileID: 4398683746014149264}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3615,7 +3618,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4398683746014149264}
+    m_TransformParent: {fileID: 959912388662834347}
     m_Modifications:
     - target: {fileID: 3091783161505247280, guid: 06fb8e67f153c70438c04bf14a65c5bb, type: 3}
       propertyPath: m_Name
@@ -3671,19 +3674,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5006742019344306901, guid: 06fb8e67f153c70438c04bf14a65c5bb, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5006742019344306901, guid: 06fb8e67f153c70438c04bf14a65c5bb, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5006742019344306901, guid: 06fb8e67f153c70438c04bf14a65c5bb, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5006742019344306901, guid: 06fb8e67f153c70438c04bf14a65c5bb, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 124.7
+      value: 64.7
       objectReference: {fileID: 0}
     - target: {fileID: 5006742019344306901, guid: 06fb8e67f153c70438c04bf14a65c5bb, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3701,6 +3704,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5419596547681404320, guid: 06fb8e67f153c70438c04bf14a65c5bb, type: 3}
+      propertyPath: scoreManager
+      value: 
+      objectReference: {fileID: 2949050545626000745}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

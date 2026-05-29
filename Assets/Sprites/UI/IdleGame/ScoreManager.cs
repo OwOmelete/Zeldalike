@@ -18,7 +18,6 @@ public class ScoreManager : MonoBehaviour
     public List<Slider> slider = new List<Slider>();
     public TextMeshProUGUI ScoreEffect;
     public TextMeshProUGUI CritScore;
-    public GameObject Famillier;
     public Vector3 Decalage;
     public Vector3 Spawn;
     private Vector3 Scale;
@@ -28,12 +27,18 @@ public class ScoreManager : MonoBehaviour
 
     public List<TextMeshProUGUI> priceDPSTextList = new List<TextMeshProUGUI>();
     public List<TextMeshProUGUI> RankTexte = new List<TextMeshProUGUI>();
+    public List<GameObject> ScoreAnim = new List<GameObject>();
+    public List<GameObject> Famillier = new List<GameObject>();
 
     public TextMeshProUGUI scoreText;
 
     public TextMeshProUGUI clickText;
+    public int NBRInstantiate;
+    int NBRfamillier;
+    int ScoreAnimI;
     void Start()
     {
+        ScoreAnimI=0;
         Click = 1 ;
         UpdateTexte();
         for(int i = 0; i < priceClickTextList.Count; i++)
@@ -71,7 +76,7 @@ public class ScoreManager : MonoBehaviour
             
         }
         
-        Score+=DPS*Time.deltaTime;
+        Score+=DPS*Time.unscaledDeltaTime;
         UpdateTexte();
     }
     public void AddScore()
@@ -91,7 +96,7 @@ public class ScoreManager : MonoBehaviour
     {
         
         
-        yield return new WaitForSeconds(10/(Rank[1]+1));
+        yield return new WaitForSecondsRealtime(10/(Rank[1]+1));
         StartCoroutine(AutoClick());
         if (Rank[1] > 0)
         { 
@@ -111,20 +116,48 @@ public class ScoreManager : MonoBehaviour
             if (Crit > 100 - Rank[2] * 5)
             {
                 Score += Click*2;
-        TextMeshProUGUI childObject = Instantiate(CritScore, Decalage, Quaternion.identity); 
-        childObject.rectTransform.parent = positionEffetScore.transform;
-        childObject.rectTransform.localScale= new Vector3(2,2,2);
+                if (NBRInstantiate < 20)
+                {
+                TextMeshProUGUI childObject = Instantiate(CritScore, Decalage, Quaternion.identity); 
+                childObject.rectTransform.parent = positionEffetScore.transform;
+                childObject.rectTransform.localScale= new Vector3(2,2,2);
+                ScoreAnim.Add(childObject.gameObject);
         
-        yield return new WaitForSeconds(0.05f);
-        yield return null; 
+                yield return new WaitForSecondsRealtime(0.05f);
+                NBRInstantiate++;
+                yield return null; 
+                }
+                else
+                {
+                    ScoreAnim[ScoreAnimI].SetActive(true);
+                    ScoreAnimI++;
+                    if(ScoreAnimI>=ScoreAnim.Count) ScoreAnimI=0;
+                     yield return new WaitForSecondsRealtime(0.05f);
+                }
+        
             }
+            //Test
+
             else
             {
                  Score += Click;
-        TextMeshProUGUI childObject = Instantiate(ScoreEffect, Decalage, Quaternion.identity); 
-        childObject.rectTransform.parent = positionEffetScore.transform;
-        yield return new WaitForSeconds(0.05f);
-        yield return null; 
+                 if (NBRInstantiate < 20)
+                {
+                    TextMeshProUGUI childObject = Instantiate(ScoreEffect, Decalage, Quaternion.identity); 
+                    childObject.rectTransform.parent = positionEffetScore.transform;
+                    yield return new WaitForSecondsRealtime(0.05f);
+                    NBRInstantiate++;
+                    ScoreAnim.Add(childObject.gameObject);
+                    yield return null; 
+                }
+                else
+                {
+                    ScoreAnim[ScoreAnimI].SetActive(true);
+                    ScoreAnimI++;
+                    if(ScoreAnimI>=ScoreAnim.Count) ScoreAnimI=0;
+                    yield return new WaitForSecondsRealtime(0.05f);
+                }
+        
             }
        
         }
@@ -153,10 +186,12 @@ public class ScoreManager : MonoBehaviour
         if (Score >= PriceDPSList[upgradeNo])
         {
             DPS+=50;
-            float randomZ = UnityEngine.Random.Range(0f, 360f);
-            Quaternion rotation = Quaternion.Euler(0, 0, randomZ);
-            GameObject childObject = Instantiate(Famillier, Spawn, rotation); 
-            childObject.transform.parent = positionEffetScore.transform;
+            if (NBRfamillier < Famillier.Count)
+            {
+              Famillier[NBRfamillier].SetActive(true);
+            NBRfamillier++;  
+            }
+            
             Score-= PriceDPSList[upgradeNo];
              PriceDPSList[upgradeNo]+=Mathf.Round( PriceDPSList[upgradeNo]*2.5f);
             UpdatePriceTexte(upgradeNo);
