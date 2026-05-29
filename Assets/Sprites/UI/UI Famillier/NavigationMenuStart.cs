@@ -90,13 +90,9 @@ public class NavigationMenuStart : MonoBehaviour
 
             Navigation nav = new Navigation();
             nav.mode = Navigation.Mode.Explicit;
-
-            // 🔼 Bouton du haut
             if (i > 0)
                 nav.selectOnUp = boutons[i - 1].GetComponent<Button>();
                 
-
-            // 🔽 Bouton du bas
             if (i < boutons.Count - 1)
                 nav.selectOnDown = boutons[i + 1].GetComponent<Button>();
                 Enter.SetTrigger(i+1);
