@@ -33,6 +33,7 @@ Transform:
   - {fileID: 4823761085620921148}
   - {fileID: 8656702939034014451}
   - {fileID: 449765926264322670}
+  - {fileID: 4990567260617017561}
   - {fileID: 3893315652109338506}
   - {fileID: 3774067921413541304}
   - {fileID: 7811806784970218878}
@@ -645,8 +646,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f23657319b718b42a63e3bf0e670f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
-  camera1: {fileID: 0}
-  camera2: {fileID: 0}
   camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
@@ -1121,8 +1120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f23657319b718b42a63e3bf0e670f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
-  camera1: {fileID: 0}
-  camera2: {fileID: 0}
   camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
@@ -1489,8 +1486,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f23657319b718b42a63e3bf0e670f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
-  camera1: {fileID: 0}
-  camera2: {fileID: 0}
   camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
@@ -1502,6 +1497,82 @@ MonoBehaviour:
   - {fileID: 3203365243164286643}
   camerasToRemovePriority:
   - {fileID: 152231183212499160}
+  respawnPoint: {fileID: 0}
+--- !u!1 &3223580536800972094
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4990567260617017561}
+  - component: {fileID: 3683307911909629223}
+  - component: {fileID: 3613758761228133295}
+  m_Layer: 0
+  m_Name: CinemachineSwitch (2.1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4990567260617017561
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3223580536800972094}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 79.83, y: 7.33, z: 28.56}
+  m_LocalScale: {x: 19.15425, y: 15.178728, z: 12.34024}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4077300950503269205}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3683307911909629223
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3223580536800972094}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3613758761228133295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3223580536800972094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f23657319b718b42a63e3bf0e670f6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
+  camerasParent: {fileID: 0}
+  camerasToActivateOrDeactivate: []
+  camerasToDeactivate:
+  - {fileID: 1358272431819219621}
+  - {fileID: 1743195802780236813}
+  camerasToActivate:
+  - {fileID: 7969297927988755471}
+  camerasToGivePriority: []
+  camerasToRemovePriority: []
   respawnPoint: {fileID: 0}
 --- !u!1 &3749723132409688737
 GameObject:
@@ -1857,8 +1928,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f23657319b718b42a63e3bf0e670f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
-  camera1: {fileID: 0}
-  camera2: {fileID: 0}
   camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
@@ -1938,8 +2007,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f23657319b718b42a63e3bf0e670f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
-  camera1: {fileID: 0}
-  camera2: {fileID: 0}
   camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
@@ -1949,6 +2016,111 @@ MonoBehaviour:
   camerasToGivePriority: []
   camerasToRemovePriority: []
   respawnPoint: {fileID: 0}
+--- !u!1 &4349948872248809146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5661707313706403496}
+  - component: {fileID: 5465862147821276909}
+  - component: {fileID: 6741297361652329956}
+  m_Layer: 0
+  m_Name: CinemachineCamera (2.1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5661707313706403496
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4349948872248809146}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.020622546, y: 0.9528205, z: -0.066509694, w: -0.29543924}
+  m_LocalPosition: {x: 60.19, y: 22.62, z: -37.77}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 341247076744084251}
+  m_LocalEulerAnglesHint: {x: 32.002, y: 52.929, z: -1.205}
+--- !u!114 &5465862147821276909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4349948872248809146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
+  Priority:
+    Enabled: 0
+    m_Value: 0
+  OutputChannel: 1
+  StandbyUpdate: 2
+  m_StreamingVersion: 20241001
+  m_LegacyPriority: 0
+  Target:
+    TrackingTarget: {fileID: 0}
+    LookAtTarget: {fileID: 0}
+    CustomLookAtTarget: 0
+  Lens:
+    FieldOfView: 50
+    OrthographicSize: 12.4
+    NearClipPlane: 0.01
+    FarClipPlane: 1000
+    Dutch: 0
+    ModeOverride: 0
+    PhysicalProperties:
+      GateFit: 2
+      SensorSize: {x: 21.946, y: 16.002}
+      LensShift: {x: 0, y: 0}
+      FocusDistance: 10
+      Iso: 200
+      ShutterSpeed: 0.005
+      Aperture: 16
+      BladeCount: 5
+      Curvature: {x: 2, y: 11}
+      BarrelClipping: 0.25
+      Anamorphism: 0
+  BlendHint: 0
+--- !u!114 &6741297361652329956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4349948872248809146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f38bda98361e1de48a4ca2bd86ea3c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineRotationComposer
+  Composition:
+    ScreenPosition: {x: 0, y: 0}
+    DeadZone:
+      Enabled: 1
+      Size: {x: 0.09, y: 0.25}
+    HardLimits:
+      Enabled: 0
+      Size: {x: 1.77, y: 2}
+      Offset: {x: 0, y: 0}
+  CenterOnActivate: 1
+  TargetOffset: {x: 0, y: 0, z: 0}
+  Damping: {x: 0.5, y: 0.5}
+  Lookahead:
+    Enabled: 0
+    Time: 0
+    Smoothing: 0
+    IgnoreY: 0
 --- !u!1 &4565955993673949660
 GameObject:
   m_ObjectHideFlags: 0
@@ -2015,8 +2187,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f23657319b718b42a63e3bf0e670f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
-  camera1: {fileID: 0}
-  camera2: {fileID: 0}
   camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
@@ -2093,8 +2263,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f23657319b718b42a63e3bf0e670f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
-  camera1: {fileID: 0}
-  camera2: {fileID: 0}
   camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
@@ -2280,8 +2448,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f23657319b718b42a63e3bf0e670f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
-  camera1: {fileID: 0}
-  camera2: {fileID: 0}
   camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
@@ -2357,8 +2523,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f23657319b718b42a63e3bf0e670f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
-  camera1: {fileID: 0}
-  camera2: {fileID: 0}
   camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
@@ -2434,8 +2598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f23657319b718b42a63e3bf0e670f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
-  camera1: {fileID: 0}
-  camera2: {fileID: 0}
   camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
@@ -3015,8 +3177,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f23657319b718b42a63e3bf0e670f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinemachineSwitch
-  camera1: {fileID: 0}
-  camera2: {fileID: 0}
   camerasParent: {fileID: 0}
   camerasToActivateOrDeactivate: []
   camerasToDeactivate:
@@ -3456,6 +3616,7 @@ Transform:
   - {fileID: 8428062612105378812}
   - {fileID: 1793326124562339411}
   - {fileID: 1448242004426801026}
+  - {fileID: 5661707313706403496}
   - {fileID: 5063052084829313765}
   - {fileID: 5068826778238553351}
   - {fileID: 2212603095859762664}
