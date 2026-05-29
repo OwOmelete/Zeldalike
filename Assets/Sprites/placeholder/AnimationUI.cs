@@ -11,20 +11,18 @@ public class AnimationUI : MonoBehaviour
         Switch = false;
     }
 
-    // Update is called once per frame
-    void Update()
+     private void OnLeftTrigger()
     {
-        if (Gamepad.current.rightShoulder.wasPressedThisFrame && Switch==false)
-        {
             Left.SetTrigger("Close");
             Right.SetTrigger("Open");
             Switch=true;
-        }
-         if (Gamepad.current.leftShoulder.wasPressedThisFrame && Switch==true)
-        {
-            Left.SetTrigger("Open");
-            Right.SetTrigger("Close");
-             Switch=false;
-        }
     }
+
+    private void OnLeftShoulder()
+    {
+        Left.SetTrigger("Open");
+        Right.SetTrigger("Close");
+        Switch=false;
+    }
+    
 }

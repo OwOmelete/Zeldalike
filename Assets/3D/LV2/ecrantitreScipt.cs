@@ -38,14 +38,15 @@ public class ecrantitreScipt : MonoBehaviour
     {
         if (spriteactulle <= 3)
         {
-           etat++;
+            
         animator.SetTrigger("break");
         animatorglobal.SetTrigger("break");
+        etat++;
         if (etat >= 4)
         {
             etat=0;
-            spriteactulle++;
             glacon.sprite = sprites[spriteactulle];
+            spriteactulle++;
         }
         if (spriteactulle >= 3)
         {

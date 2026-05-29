@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class Projectile : MonoBehaviour
 {
     public int damage = 10;
+    public BossManager bossManager;
 
    void Start()
 {
@@ -20,6 +21,7 @@ public class Projectile : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("Player touché");
+            bossManager.DealDammage();
 
             gameObject.SetActive(false);
         }

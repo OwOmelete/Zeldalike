@@ -35,7 +35,7 @@ public class BossManager : MonoBehaviour, IDamagable
 
     [Header("Références")]
     public SphereCollider zoneChasse;
-    public GameObject player;
+    private GameObject player;
     public GameObject conePrefab;
     public GameObject zoneRougePrefab;
     public List<GameObject> stalactitePrefab = new List<GameObject>();
@@ -43,6 +43,7 @@ public class BossManager : MonoBehaviour, IDamagable
     public List<GameObject> projectilePrefab = new List<GameObject>();
     public List<Vector3> positions = new List<Vector3>();
     public List<GameObject> zones = new List<GameObject>();
+    [SerializeField] PlayerHealth playerHealth;
 
     [Header("Compteurs")]
     public int StalactiteCount;
@@ -188,12 +189,12 @@ public class BossManager : MonoBehaviour, IDamagable
             {
                 if (cooldownDashPilier <= 0 && Random.value < 0.4f)
                 {
-                    Debug.Log("[MOVE] DashVersPilier");
+                    //Debug.Log("[MOVE] DashVersPilier");
                     AttaqueSpe5();
                 }
                 else
                 {
-                    Debug.Log("[MOVE] AttaqueSpe4");
+                    //Debug.Log("[MOVE] AttaqueSpe4");
                     AttaqueSpe4(closestStalactite);
                 }
                 return;
@@ -232,6 +233,8 @@ public class BossManager : MonoBehaviour, IDamagable
             FightStarted = true;
             cible.enabled = true;
             Debug.Log("Combat commencé !");
+            player = other.gameObject;
+            playerHealth = other.GetComponent<PlayerHealth>();
             GetComponent<SphereCollider>().enabled=false;
         }
     }
@@ -281,10 +284,10 @@ public class BossManager : MonoBehaviour, IDamagable
         targetPos.y = transform.position.y;
         Vector3 dir = (targetPos - transform.position).normalized;
 
-        Quaternion rot = Quaternion.LookRotation(dir);
+        Quaternion rot = Quaternion.LookRotation(dir)*Quaternion.Euler(0,-90,0);
         conePrefab.SetActive(true);
         conePrefab.transform.localRotation = rot;
-        conePrefab.transform.position = transform.position + dir;
+        conePrefab.transform.position = transform.position + dir*3;
 
         float distanceToPlayer = Vector3.Distance(transform.position, targetPos);
         float targetDistance = Mathf.Min(distanceToPlayer, porteeAttaqueBase * 0.5f);
@@ -306,7 +309,11 @@ public class BossManager : MonoBehaviour, IDamagable
         foreach (Collider hit in hits)
         {
             if (hit.CompareTag("Player"))
-                Debug.Log("Player touché par AttaqueBase");
+            {
+                 Debug.Log("Player touché par AttaqueBase");
+                 DealDammage();
+            }
+               
         }
 
         conePrefab.SetActive(false);
@@ -355,7 +362,12 @@ public class BossManager : MonoBehaviour, IDamagable
                 foreach (Collider hit in hits)
                 {
                     if (hit.CompareTag("Player"))
+                    {
                         Debug.Log("Player touché Spe1");
+                        DealDammage();
+                        
+                    }
+                        
                 }
 
                 StalactiteCount++;
@@ -606,7 +618,11 @@ public class BossManager : MonoBehaviour, IDamagable
             foreach (Collider hit in hits)
             {
                 if (hit.CompareTag("Player"))
+                {
                     Debug.Log("Player touché par ChuteStalactite");
+                    DealDammage();
+                }
+                    
             }
 
             StalactiteCount++;
@@ -616,5 +632,9 @@ public class BossManager : MonoBehaviour, IDamagable
 
         cooldownTimerStalactite = cooldownEntreAttaqueStalactite;
         isAttacking = false;
+    }
+    public void DealDammage()
+    {
+        playerHealth.takeDamage(attaque);
     }
 }
