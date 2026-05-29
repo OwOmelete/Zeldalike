@@ -36,7 +36,9 @@ public class ecrantitreScipt : MonoBehaviour
     }
     void BreakIce()
     {
-        etat++;
+        if (spriteactulle <= 3)
+        {
+           etat++;
         animator.SetTrigger("break");
         animatorglobal.SetTrigger("break");
         if (etat >= 4)
@@ -51,6 +53,9 @@ public class ecrantitreScipt : MonoBehaviour
             Flame.enabled=true;
             Menu.SetActive(true);
             rechauffer.SetActive(false);
+            spriteactulle++;
+        }  
         }
+       
     }
 }

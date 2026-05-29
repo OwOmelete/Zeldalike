@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class BossManager : MonoBehaviour, IDamagable
 {
-    public float currentHeal;
-    public float maxHealPoint;
-    public Slider HealBarre;
+    [Header("Santé")]
+    public EnnemyHeatSystem HeatSystem;
     public Image cible;
 
+    [Header("Attaque")]
     public float vitesseAttaque;
     public int attaque;
 
@@ -17,216 +17,204 @@ public class BossManager : MonoBehaviour, IDamagable
     public int porteeAttaqueSpe1;
     public Vector2 porteeAttaqueSpe2;
 
+    [Header("Cooldowns")]
     public float cooldownEntreAttaque;
     private float cooldownTimer;
-    private float cooldownTimerStalactite=10;
-     private float cooldownEntreAttaqueStalactite;
+    private float cooldownEntreAttaqueStalactite = 10f;
+    private float cooldownTimerStalactite;
+    public float cooldownAttaqueSpe3 = 0f;
+    public float cooldownEntreDashPilier = 8f;
+    private float cooldownDashPilier = 0f;
 
+    [Header("Déplacement")]
     public float speed;
 
+    [Header("État")]
     public bool FightStarted;
     private bool isAttacking;
-    private int StalactiteCount;
-    public float cooldownAttaqueSpe3=0;
 
+    [Header("Références")]
     public SphereCollider zoneChasse;
     public GameObject player;
     public GameObject conePrefab;
-public GameObject zoneRougePrefab;
-public GameObject stalactitePrefab;
-public GameObject projectilePrefab;
-public GameObject murGlacePrefab;
+    public GameObject zoneRougePrefab;
+    public List<GameObject> stalactitePrefab = new List<GameObject>();
+    public GameObject murGlacePrefab;
+    public List<GameObject> projectilePrefab = new List<GameObject>();
+    public List<Vector3> positions = new List<Vector3>();
+    public List<GameObject> zones = new List<GameObject>();
 
-public LayerMask playerLayer;
+    [Header("Compteurs")]
+    public int StalactiteCount;
+    public int zoneCount;
+    public int projectileCount;
+
+    public LayerMask playerLayer;
     private HashSet<int> receivedAttacks = new HashSet<int>();
-
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        currentHeal = maxHealPoint;
     }
 
-   void Update()
+    void Update()
     {
         if (!FightStarted || player == null) return;
+
+        // Décrémentation de tous les cooldowns — toujours, même pendant une attaque
+        if (cooldownTimer > 0)          cooldownTimer          = Mathf.Max(0f, cooldownTimer          - Time.deltaTime);
+        if (cooldownAttaqueSpe3 > 0)    cooldownAttaqueSpe3    = Mathf.Max(0f, cooldownAttaqueSpe3    - Time.deltaTime);
+        if (cooldownTimerStalactite > 0) cooldownTimerStalactite = Mathf.Max(0f, cooldownTimerStalactite - Time.deltaTime);
+        if (cooldownDashPilier > 0)     cooldownDashPilier     = Mathf.Max(0f, cooldownDashPilier     - Time.deltaTime);
+
         if (isAttacking) return;
 
         float distance = Vector3.Distance(transform.position, player.transform.position);
- if (cooldownAttaqueSpe3 > 0)
-{
-    cooldownAttaqueSpe3 -= Time.deltaTime;
-}
-if (cooldownEntreAttaqueStalactite > 0)
-{
-    cooldownEntreAttaqueStalactite -= Time.deltaTime;
-}
-        // COOLDOWN + MOVEMENT
-       if (cooldownTimer > 0)
-{
-    cooldownTimer -= Time.deltaTime;
 
-    // 👉 Priorité dash SI vraiment loin
-    if (distance > porteeAttaqueSpe2.x * 1.5f)
-    {
-        if (!isAttacking)
-            StartCoroutine(Dash());
-    }
-    else
-    {
-        // 👉 Toujours bouger sinon
-        HandleMovement();
-    }
-
-    return;
-}
-if (cooldownEntreAttaqueStalactite <= 0)
+        // Pendant le cooldown entre attaques : se déplacer seulement
+        if (cooldownTimer > 0)
         {
-            ChuteStalactite();
+            if (distance > porteeAttaqueSpe2.x * 1.5f)
+                StartCoroutine(Dash());
+            else
+                HandleMovement();
+            return;
         }
 
-        // DASH PRIORITY
+        // Stalactite passive désactivé pour l'instant
+        // if (cooldownTimerStalactite <= 0)
+        //     ChuteStalactite();
+
         if (distance > porteeAttaqueSpe2.x)
         {
             StartCoroutine(Dash());
             return;
         }
-        int StalactiteCount = GameObject.FindGameObjectsWithTag("Stalactite").Length;
 
-        // ATTACK LIST
+        // Construction des attaques pondérées
         List<(System.Action action, float weight)> attaquesPonderees = new List<(System.Action, float)>();
 
-float distNorm = Mathf.InverseLerp(porteeAttaqueSpe2.x, porteeAttaqueBase, distance);
-// distNorm = 0 → loin
-// distNorm = 1 → proche
+        float distNorm = Mathf.InverseLerp(porteeAttaqueSpe2.x, porteeAttaqueBase, distance);
 
-// 👉 Attaque Base (50% → 75%)
-if (distance <= porteeAttaqueBase)
-{
-    float weightBase = Mathf.Lerp(0.5f, 0.75f, distNorm);
-    attaquesPonderees.Add((AttaqueBase, weightBase));
-}
-
-// 👉 Spe1 (poids fixe)
-if (distance <= porteeAttaqueSpe1)
-{
-    attaquesPonderees.Add((AttaqueSpe1, 0.4f));
-}
-
-// 👉 Spe2 (poids fixe)
-if (porteeAttaqueSpe2.y <= distance && distance <= porteeAttaqueSpe2.x)
-{
-    attaquesPonderees.Add((AttaqueSpe2, 0.5f));
-}
-// 👉 Spe3 dépend du nombre de stalactites
-if (StalactiteCount > 0 && cooldownAttaqueSpe3 <= 0 )
-{
-    float weightSpe3 = Mathf.Clamp(StalactiteCount * 0.3f, 0.3f, 2f);
-    attaquesPonderees.Add((AttaqueSpe3, weightSpe3));
-}
-
-// 👉 Spe3 dépend du nombre de stalactites
-float attackChance = 0.8f; // 80% attaque, 20% move
-
-if (attaquesPonderees.Count > 0 && Random.value < attackChance)
-{
-    float totalWeight = 0f;
-
-    foreach (var atk in attaquesPonderees)
-        totalWeight += atk.weight;
-
-    float rand = Random.value * totalWeight;
-
-    foreach (var atk in attaquesPonderees)
-    {
-        if (rand < atk.weight)
+        if (distance <= porteeAttaqueBase)
         {
-            atk.action.Invoke();
-            return;
+            float weightBase = Mathf.Lerp(0.5f, 0.75f, distNorm);
+            attaquesPonderees.Add((AttaqueBase, weightBase));
+        }
+        if (distance <= porteeAttaqueSpe1)
+            attaquesPonderees.Add((AttaqueSpe1, 0.3f));
+
+        if (porteeAttaqueSpe2.y <= distance && distance <= porteeAttaqueSpe2.x)
+            attaquesPonderees.Add((AttaqueSpe2, 0.2f));
+
+        if (StalactiteCount > 0 && cooldownAttaqueSpe3 <= 0)
+        {
+            float weightSpe3 = Mathf.Clamp(StalactiteCount * 0.3f, 0.3f, 2f);
+            attaquesPonderees.Add((AttaqueSpe3, weightSpe3));
         }
 
-        rand -= atk.weight;
+        // Dash vers un pilier — plus probable s'il y a beaucoup de piliers
+        if (StalactiteCount > 0 && cooldownDashPilier <= 0)
+        {
+            float weightDashPilier = Mathf.Clamp(StalactiteCount * 0.4f, 0.2f, 2f);
+            attaquesPonderees.Add((AttaqueSpe5, weightDashPilier));
+        }
+
+        if (attaquesPonderees.Count > 0 && Random.value < 0.8f)
+        {
+            float totalWeight = 0f;
+            foreach (var atk in attaquesPonderees)
+                totalWeight += atk.weight;
+
+            float rand = Random.value * totalWeight;
+            foreach (var atk in attaquesPonderees)
+            {
+                if (rand < atk.weight)
+                {
+                    atk.action.Invoke();
+                    return;
+                }
+                rand -= atk.weight;
+            }
+        }
+        else
+        {
+            HandleMovement();
+        }
     }
-}
-else
-{
-    HandleMovement();
-}
-}
-      private void UpdateHealthBar()
-{
-    HealBarre.value = (float)currentHeal / (float)maxHealPoint;
-}
 
-public void TakeDamage(float damage, int attackID, InvoDataInstance data)
-{
-    if (receivedAttacks.Contains(attackID)) return;
 
-    receivedAttacks.Add(attackID);
-    StartCoroutine(ClearAttackID(attackID));
-
-    currentHeal -= damage;
-
-    if (currentHeal <= 0)
+    public void TakeDamage(float damage, int attackID, InvoDataInstance data)
     {
-        Die();
+        if (receivedAttacks.Contains(attackID)) return;
+        receivedAttacks.Add(attackID);
+
+        switch (data.currentTemperature)
+        {
+            case InvoDataInstance.temperature.cold:
+                HeatSystem.reduceHeat(data.coldValue);
+                break;
+            case InvoDataInstance.temperature.hot:
+                HeatSystem.increaseHeat(data.hotValue);
+                break;
+        }
     }
-    else
+
+    IEnumerator ClearAttackID(int id)
     {
-        UpdateHealthBar();
+        yield return new WaitForSeconds(0.5f);
+        receivedAttacks.Remove(id);
     }
 
-    Debug.Log($"Enemy took {damage} damage");
-}
-
-IEnumerator ClearAttackID(int id)
-{
-    yield return new WaitForSeconds(0.5f);
-    receivedAttacks.Remove(id);
-}
-
-private void Die()
-{
-    Destroy(gameObject);
-}
-    // ---------------- MOVEMENT LOGIC ----------------
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
 
     void HandleMovement()
-{
-    GameObject closestStalactite = GetClosestStalactite();
-
-    float playerDist = Vector3.Distance(transform.position, player.transform.position);
-
-    float stalDist = closestStalactite != null
-        ? Vector3.Distance(transform.position, closestStalactite.transform.position)
-        : Mathf.Infinity;
-
-    float influence = 0.5f + (StalactiteCount * 0.2f);
-
-    if (closestStalactite != null && stalDist < playerDist * influence)
     {
-        Debug.Log("[MOVE] Spe4");
-        AttaqueSpe4(closestStalactite);
-    }
-    else
-    {
+        if (StalactiteCount > 0 && stalactitePrefab[StalactiteCount - 1].activeSelf)
+        {
+            GameObject closestStalactite = GetClosestStalactite();
+            float playerDist = Vector3.Distance(transform.position, player.transform.position);
+
+            float stalDist = closestStalactite != null
+                ? Vector3.Distance(transform.position, closestStalactite.transform.position)
+                : Mathf.Infinity;
+
+            float influence = 0.5f + (StalactiteCount * 0.2f);
+
+            if (closestStalactite != null && stalDist < playerDist * influence)
+            {
+                if (cooldownDashPilier <= 0 && Random.value < 0.4f)
+                {
+                    Debug.Log("[MOVE] DashVersPilier");
+                    AttaqueSpe5();
+                }
+                else
+                {
+                    Debug.Log("[MOVE] AttaqueSpe4");
+                    AttaqueSpe4(closestStalactite);
+                }
+                return;
+            }
+        }
+
         DeplacementVersJoueur();
     }
-}
 
     GameObject GetClosestStalactite()
     {
-        GameObject[] stals = GameObject.FindGameObjectsWithTag("Stalactite");
+        if (stalactitePrefab.Count == 0) return null;
 
-        if (stals.Length == 0) return null;
+        GameObject closest = null;
+        float minDist = Mathf.Infinity;
 
-        GameObject closest = stals[0];
-        float minDist = Vector3.Distance(transform.position, closest.transform.position);
-
-        foreach (GameObject s in stals)
+        foreach (GameObject s in stalactitePrefab)
         {
-            float d = Vector3.Distance(transform.position, s.transform.position);
+            if (!s.activeSelf) continue;
 
+            float d = Vector3.Distance(transform.position, s.transform.position);
             if (d < minDist)
             {
                 minDist = d;
@@ -242,45 +230,36 @@ private void Die()
         if (other.CompareTag("Player"))
         {
             FightStarted = true;
-            cible.enabled=true;
+            cible.enabled = true;
             Debug.Log("Combat commencé !");
+            GetComponent<SphereCollider>().enabled=false;
         }
     }
 
     void DeplacementVersJoueur()
-{
-    // Direction SANS Y
-    Vector3 direction = player.transform.position - transform.position;
-    direction.y = 0f;
-    direction.Normalize();
-
-    float distance = Vector3.Distance(transform.position, player.transform.position);
-
-    // ✔ Stop si trop proche
-    if (distance <= 5f)
     {
-        // ✔ Bonus : cooldown accéléré
-        cooldownTimer -= Time.deltaTime * 2f; // tweak si besoin
-        return;
+        Vector3 direction = player.transform.position - transform.position;
+        direction.y = 0f;
+        direction.Normalize();
+
+        float distance = Vector3.Distance(transform.position, player.transform.position);
+
+        if (distance <= 5f) return;
+
+        transform.position += direction * speed * Time.deltaTime;
     }
-
-    // Déplacement normal
-    transform.position += direction * speed * Time.deltaTime;
-}
-
 
     IEnumerator Dash()
     {
         isAttacking = true;
 
         Vector3 direction = (player.transform.position - transform.position).normalized;
-
         float dashTime = 0.5f;
-        float timer = 0;
+        float timer = 0f;
 
         while (timer < dashTime)
         {
-            transform.position += direction * speed * 3 * Time.deltaTime;
+            transform.position += direction * speed * 3f * Time.deltaTime;
             timer += Time.deltaTime;
             yield return null;
         }
@@ -289,299 +268,353 @@ private void Die()
         isAttacking = false;
     }
 
-public void AttaqueBase()
-{
-    StartCoroutine(AttaqueBaseRoutine());
-}
+    // ─────────────────────────────────────────────
+    // ATTAQUE DE BASE
+    // ─────────────────────────────────────────────
+    public void AttaqueBase() => StartCoroutine(AttaqueBaseRoutine());
 
-IEnumerator AttaqueBaseRoutine()
-{
-    isAttacking = true;
-
-  Vector3 targetPos = player.transform.position;
-targetPos.y = transform.position.y;
-
-Vector3 dir = (targetPos - transform.position).normalized;
-
-Quaternion rot = Quaternion.LookRotation(dir) * Quaternion.Euler(0, -90, 0);
-
-GameObject cone = Instantiate(conePrefab, transform.position, rot, transform);
-
-    // 3. Distance à plat
-    float distanceToPlayer = Vector3.Distance(transform.position, targetPos);
-
-    float targetDistance = Mathf.Min(distanceToPlayer, porteeAttaqueBase * 0.5f);
-
-    float movedDistance = 0f;
-
- yield return new WaitForSeconds(vitesseAttaque/2);
-    // 4. Dash contrôlé
-    while (movedDistance < targetDistance)
+    IEnumerator AttaqueBaseRoutine()
     {
-        float step = speed * 3f * Time.deltaTime;
+        isAttacking = true;
 
-        if (movedDistance + step > targetDistance)
-            step = targetDistance - movedDistance;
+        Vector3 targetPos = player.transform.position;
+        targetPos.y = transform.position.y;
+        Vector3 dir = (targetPos - transform.position).normalized;
 
-        transform.position += dir * step;
-        movedDistance += step;
+        Quaternion rot = Quaternion.LookRotation(dir);
+        conePrefab.SetActive(true);
+        conePrefab.transform.localRotation = rot;
+        conePrefab.transform.position = transform.position + dir;
 
-        yield return null;
-    }
+        float distanceToPlayer = Vector3.Distance(transform.position, targetPos);
+        float targetDistance = Mathf.Min(distanceToPlayer, porteeAttaqueBase * 0.5f);
+        float movedDistance = 0f;
 
-    // 5. Télégraphe
-    yield return new WaitForSeconds(vitesseAttaque/2);
+        yield return new WaitForSeconds(vitesseAttaque / 2f);
 
-    // 6. Hit detection
-    Collider[] hits = Physics.OverlapSphere(cone.transform.position, porteeAttaqueBase, playerLayer);
-
-    foreach (Collider hit in hits)
-    {
-        if (hit.CompareTag("Player"))
+        while (movedDistance < targetDistance)
         {
-            Debug.Log("Player touché par AttaqueBase");
+            float step = Mathf.Min(speed * 3f * Time.deltaTime, targetDistance - movedDistance);
+            transform.position += dir * step;
+            movedDistance += step;
+            yield return null;
         }
-    }
 
-    Destroy(cone);
+        yield return new WaitForSeconds(vitesseAttaque / 2f);
 
-    cooldownTimer = cooldownEntreAttaque;
-    isAttacking = false;
-}
-    public void AttaqueSpe1()
-{
-    StartCoroutine(AttaqueSpe1Routine());
-}
-
-IEnumerator AttaqueSpe1Routine()
-{
-    
-    isAttacking = true;
-    
-
-    List<Vector3> positions = new List<Vector3>();
-    List<GameObject> zones = new List<GameObject>();
-
-    // 1. Générer 4 zones aléatoires
-    for (int i = 0; i < 4; i++)
-    {
-        Vector3 randomPos = transform.position + new Vector3(
-            Random.Range(-10f, 10f),
-            0,
-            Random.Range(-10f, 10f)
-        );
-
-        positions.Add(randomPos);
-        zones.Add(Instantiate(zoneRougePrefab, randomPos, Quaternion.identity));
-    }
-
-    yield return new WaitForSeconds(vitesseAttaque);
-
-    // 2. Dégâts + spawn stalactites
-    foreach (Vector3 pos in positions)
-    {
-        Collider[] hits = Physics.OverlapSphere(pos, 1.5f, playerLayer);
-
+        Collider[] hits = Physics.OverlapSphere(conePrefab.transform.position, porteeAttaqueBase, playerLayer);
         foreach (Collider hit in hits)
         {
             if (hit.CompareTag("Player"))
+                Debug.Log("Player touché par AttaqueBase");
+        }
+
+        conePrefab.SetActive(false);
+        cooldownTimer = cooldownEntreAttaque;
+        isAttacking = false;
+    }
+
+    // ─────────────────────────────────────────────
+    // ATTAQUE SPÉ 1 — Zones + Stalactites
+    // ─────────────────────────────────────────────
+    public void AttaqueSpe1() => StartCoroutine(AttaqueSpe1Routine());
+
+    IEnumerator AttaqueSpe1Routine()
+    {
+        isAttacking = true;
+
+        List<int> zonesActivees = new List<int>();
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (zoneCount >= zones.Count) zoneCount = 0;
+
+            if (!zones[zoneCount].activeSelf)
             {
-                Debug.Log("Player touché Spe1");
-                // TODO dégâts
+                Vector3 randomPos = transform.position + new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
+                positions[zoneCount] = randomPos;
+                zones[zoneCount].SetActive(true);
+                zones[zoneCount].transform.position = randomPos;
+                zonesActivees.Add(zoneCount);
+                zoneCount++;
             }
         }
 
-        Instantiate(stalactitePrefab, pos, Quaternion.identity);
-    }
+        yield return new WaitForSeconds(vitesseAttaque);
 
-    // Clean zones
-    foreach (GameObject z in zones)
-        Destroy(z);
+        foreach (int idx in zonesActivees)
+        {
+            if (StalactiteCount >= stalactitePrefab.Count) StalactiteCount = 0;
 
-    cooldownTimer = cooldownEntreAttaque;
-    isAttacking = false;
-}
-public void AttaqueSpe2()
-{
-    StartCoroutine(AttaqueSpe2Routine());
-}
+            if (!stalactitePrefab[StalactiteCount].activeSelf)
+            {
+                stalactitePrefab[StalactiteCount].SetActive(true);
+                stalactitePrefab[StalactiteCount].transform.position = positions[idx];
 
-IEnumerator AttaqueSpe2Routine() 
-{
-    isAttacking = true;
+                Collider[] hits = Physics.OverlapSphere(positions[idx], 1.5f, playerLayer);
+                foreach (Collider hit in hits)
+                {
+                    if (hit.CompareTag("Player"))
+                        Debug.Log("Player touché Spe1");
+                }
 
-    Vector3 dir = (player.transform.position - transform.position).normalized;
+                StalactiteCount++;
+            }
+        }
 
-    // 1. Spawn mur
-    GameObject mur = Instantiate(
-        murGlacePrefab,
-        transform.position + dir * 2f,
-        Quaternion.LookRotation(dir)
-    );
+        foreach (GameObject z in zones) z.SetActive(false);
 
-    yield return new WaitForSeconds(vitesseAttaque);
-
-    // 2. Tir depuis 4 points du mur
-    for (int i = 0; i < 4; i++)
-    {
-        Vector3 offset = new Vector3(i - 1.5f, 0, 0);
-        Vector3 spawnPos = mur.transform.position + mur.transform.right * offset.x;
-
-        Vector3 shootDir = (spawnPos - transform.position).normalized;
-
-        GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
-
-        // 👉 ORIENTATION VISUELLE = direction du tir
-        proj.transform.forward = shootDir;
-
-        // 👉 PHYSIQUE
-        proj.GetComponent<Rigidbody>().linearVelocity = shootDir * 10f;
-    }
-
-    Destroy(mur);
-
-    cooldownTimer = cooldownEntreAttaque;
-    isAttacking = false;
-}
-public void AttaqueSpe3()
-{
-    StartCoroutine(AttaqueSpe3Routine());
-}
-
-IEnumerator AttaqueSpe3Routine()
-{
-    isAttacking = true;
-
-    int nbProjectiles = 24;
-    float delay = 0.5f;
-
-    yield return new WaitForSeconds(delay);
-
-    float radius = 1.5f; // petit décalage autour du boss
-
-    for (int i = 0; i < nbProjectiles; i++)
-    {
-        float angle = i * Mathf.PI * 2f / nbProjectiles;
-
-        // 👉 position autour du boss
-        Vector3 offset = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
-
-        Vector3 spawnPos = transform.position + offset;
-
-        // 👉 direction vers l'extérieur
-        Vector3 dir = offset.normalized;
-
-        GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
-
-         proj.transform.forward = dir;
-
-        // 👉 PHYSIQUE
-        proj.GetComponent<Rigidbody>().linearVelocity = dir * 0.0f;
-    }
-
-    cooldownAttaqueSpe3 = 30f;
-    isAttacking = false;
-}
-public void AttaqueSpe4(GameObject target)
-{
-    StartCoroutine(AttaqueSpe4Routine(target));
-}
-
-IEnumerator AttaqueSpe4Routine(GameObject closest)
-{
-    isAttacking = true;
-
-    if (closest == null)
-    {
+        cooldownTimer = cooldownEntreAttaque;
         isAttacking = false;
-        yield break;
     }
-if (!closest) yield break;
-   while (true)
-{
-    if (closest == null)
+
+    // ─────────────────────────────────────────────
+    // ATTAQUE SPÉ 2 — Mur de glace + Projectiles
+    // ─────────────────────────────────────────────
+    public void AttaqueSpe2() => StartCoroutine(AttaqueSpe2Routine());
+
+    IEnumerator AttaqueSpe2Routine()
     {
+        isAttacking = true;
+
+        Vector3 dir = (player.transform.position - transform.position).normalized;
+
+        murGlacePrefab.SetActive(true);
+        murGlacePrefab.transform.position = transform.position + dir;
+        murGlacePrefab.transform.LookAt(transform.position + dir * 2f);
+
+        yield return new WaitForSeconds(vitesseAttaque);
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (projectileCount >= projectilePrefab.Count) projectileCount = 0;
+
+            Vector3 offset = new Vector3(i - 1.5f, 0, 0);
+            Vector3 spawnPos = murGlacePrefab.transform.position + murGlacePrefab.transform.right * offset.x;
+            Vector3 shootDir = (spawnPos - transform.position).normalized;
+
+            if (!projectilePrefab[projectileCount].activeSelf)
+            {
+                GameObject proj = projectilePrefab[projectileCount];
+                proj.SetActive(true);
+                proj.transform.position = spawnPos;
+                proj.transform.rotation = Quaternion.identity;
+                proj.transform.forward = shootDir;
+                proj.GetComponent<Rigidbody>().linearVelocity = shootDir * 10f;
+                projectileCount++;
+            }
+        }
+
+        murGlacePrefab.SetActive(false);
+        cooldownTimer = cooldownEntreAttaque;
         isAttacking = false;
-        yield break;
     }
 
-    Vector3 targetPos = closest.transform.position;
+    // ─────────────────────────────────────────────
+    // ATTAQUE SPÉ 3 — Tir radial
+    // ─────────────────────────────────────────────
+    public void AttaqueSpe3() => StartCoroutine(AttaqueSpe3Routine());
 
-    float distance = Vector3.Distance(transform.position, targetPos);
+    IEnumerator AttaqueSpe3Routine()
+    {
+        isAttacking = true;
 
-    if (distance <= 1f)
-        break;
+        yield return new WaitForSeconds(0.5f);
 
-    Vector3 dir = (targetPos - transform.position).normalized;
-    transform.position += dir * speed * Time.deltaTime;
+        int nbProjectiles = 24;
+        float radius = 1.5f;
 
-    yield return null;
+        for (int i = 0; i < nbProjectiles; i++)
+        {
+            if (projectileCount >= projectilePrefab.Count) projectileCount = 0;
 
-}
+            float angle = i * Mathf.PI * 2f / nbProjectiles;
+            Vector3 offset = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
+            Vector3 spawnPos = transform.position + offset;
+            Vector3 dir = offset.normalized;
 
-    Destroy(closest);
+            if (!projectilePrefab[projectileCount].activeSelf)
+            {
+                GameObject proj = projectilePrefab[projectileCount];
+                proj.SetActive(true);
+                proj.transform.position = spawnPos;
+                proj.transform.rotation = Quaternion.identity;
+                proj.transform.forward = dir;
+                proj.GetComponent<Rigidbody>().linearVelocity = dir * 10f;
+                projectileCount++;
+            }
+        }
 
-    Vector3 cible = player.transform.position;
+        cooldownAttaqueSpe3 = 30f;
+        cooldownTimer = cooldownEntreAttaque;
+        isAttacking = false;
+    }
 
-    GameObject proj = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+    // ─────────────────────────────────────────────
+    // ATTAQUE SPÉ 4 — Marcher vers une stalactite
+    // ─────────────────────────────────────────────
+    public void AttaqueSpe4(GameObject target) => StartCoroutine(AttaqueSpe4Routine(target));
 
-    Vector3 dirShot = (cible - transform.position).normalized;
-    proj.transform.forward = dirShot;
-    proj.GetComponent<Rigidbody>().linearVelocity = dirShot * 12f;
+    IEnumerator AttaqueSpe4Routine(GameObject closest)
+    {
+        isAttacking = true;
 
-    yield return new WaitForSeconds(0.5f);
+        if (closest == null)
+        {
+            isAttacking = false;
+            yield break;
+        }
 
-    cooldownTimer = cooldownEntreAttaque;
-    isAttacking = false;
-}
+        while (closest != null && closest.activeSelf)
+        {
+            float distance = Vector3.Distance(transform.position, closest.transform.position);
+            if (distance <= 1f) break;
+
+            Vector3 dir = (closest.transform.position - transform.position).normalized;
+            transform.position += dir * speed * Time.deltaTime;
+            yield return null;
+        }
+
+        if (closest != null)
+            closest.SetActive(false);
+
+        if (player != null)
+        {
+            Vector3 dirShot = (player.transform.position - transform.position).normalized;
+
+            if (projectileCount >= projectilePrefab.Count) projectileCount = 0;
+
+            if (!projectilePrefab[projectileCount].activeSelf)
+            {
+                GameObject proj = projectilePrefab[projectileCount];
+                proj.SetActive(true);
+                proj.transform.position = transform.position;
+                proj.transform.rotation = Quaternion.identity;
+                proj.transform.forward = dirShot;
+                proj.GetComponent<Rigidbody>().linearVelocity = dirShot * 10f;
+                projectileCount++;
+            }
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        cooldownTimer = cooldownEntreAttaque;
+        isAttacking = false;
+    }
+
+    // ─────────────────────────────────────────────
+    // ATTAQUE SPÉ 5 — Dash rapide vers un pilier
+    // ─────────────────────────────────────────────
+    public void AttaqueSpe5()
+    {
+        GameObject cible = GetClosestStalactite();
+        if (cible == null) return;
+        StartCoroutine(AttaqueSpe5Routine(cible));
+    }
+
+    IEnumerator AttaqueSpe5Routine(GameObject cible)
+    {
+        isAttacking = true;
+
+        if (cible == null)
+        {
+            isAttacking = false;
+            yield break;
+        }
+
+        Vector3 dir = (cible.transform.position - transform.position).normalized;
+        float dashSpeed = speed * 4f;
+        float maxDashTime = 2f;
+        float timer = 0f;
+
+        while (timer < maxDashTime)
+        {
+            if (cible == null || !cible.activeSelf) break;
+
+            float dist = Vector3.Distance(transform.position, cible.transform.position);
+            if (dist <= 1f) break;
+
+            transform.position += dir * dashSpeed * Time.deltaTime;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        if (cible != null)
+            cible.SetActive(false);
+
+        if (player != null)
+        {
+            Vector3 dirShot = (player.transform.position - transform.position).normalized;
+
+            if (projectileCount >= projectilePrefab.Count) projectileCount = 0;
+
+            if (!projectilePrefab[projectileCount].activeSelf)
+            {
+                GameObject proj = projectilePrefab[projectileCount];
+                proj.SetActive(true);
+                proj.transform.position = transform.position;
+                proj.transform.rotation = Quaternion.identity;
+                proj.transform.forward = dirShot;
+                proj.GetComponent<Rigidbody>().linearVelocity = dirShot * 10f;
+                projectileCount++;
+            }
+        }
+
+        cooldownDashPilier = cooldownEntreDashPilier;
+        yield return new WaitForSeconds(0.3f);
+        cooldownTimer = cooldownEntreAttaque;
+        isAttacking = false;
+    }
+
+    // ─────────────────────────────────────────────
+    // CHUTE STALACTITE PASSIVE
+    // ─────────────────────────────────────────────
     public void ChuteStalactite()
-{
-    StartCoroutine(ChuteStalactiteRoutine());
-}
-
-IEnumerator ChuteStalactiteRoutine()
-{
-    
-    isAttacking = true;
-    
-
-    List<Vector3> positions = new List<Vector3>();
-    List<GameObject> zones = new List<GameObject>();
-
-        Vector3 randomPos = transform.position + new Vector3(
-            Random.Range(-10f, 10f),
-            0,
-            Random.Range(-10f, 10f)
-        );
-
-        positions.Add(randomPos);
-        zones.Add(Instantiate(zoneRougePrefab, randomPos, Quaternion.identity));
-    
-
-    yield return new WaitForSeconds(vitesseAttaque);
-
-    // 2. Dégâts + spawn stalactites
-    foreach (Vector3 pos in positions)
     {
-        Collider[] hits = Physics.OverlapSphere(pos, 1.5f, playerLayer);
-
-        foreach (Collider hit in hits)
-        {
-            if (hit.CompareTag("Player"))
-            {
-                Debug.Log("Player touché Spe1");
-                // TODO dégâts
-            }
-        }
-
-        Instantiate(stalactitePrefab, pos, Quaternion.identity);
+        if (isAttacking) return;
+        StartCoroutine(ChuteStalactiteRoutine());
     }
 
-    // Clean zones
-    foreach (GameObject z in zones)
-        Destroy(z);
+    IEnumerator ChuteStalactiteRoutine()
+    {
+        isAttacking = true;
 
-    cooldownTimerStalactite = cooldownEntreAttaqueStalactite;
-    isAttacking = false;
-}
+        if (zoneCount >= zones.Count) zoneCount = 0;
+
+        Vector3 randomPos = transform.position + new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
+
+        if (!zones[zoneCount].activeSelf)
+        {
+            positions[zoneCount] = randomPos;
+            zones[zoneCount].SetActive(true);
+            zones[zoneCount].transform.position = randomPos;
+        }
+
+        int usedZone = zoneCount;
+        zoneCount++;
+        if (zoneCount >= zones.Count) zoneCount = 0;
+
+        yield return new WaitForSeconds(vitesseAttaque);
+
+        if (StalactiteCount >= stalactitePrefab.Count) StalactiteCount = 0;
+
+        if (!stalactitePrefab[StalactiteCount].activeSelf)
+        {
+            stalactitePrefab[StalactiteCount].SetActive(true);
+            stalactitePrefab[StalactiteCount].transform.position = positions[usedZone];
+
+            Collider[] hits = Physics.OverlapSphere(positions[usedZone], 1.5f, playerLayer);
+            foreach (Collider hit in hits)
+            {
+                if (hit.CompareTag("Player"))
+                    Debug.Log("Player touché par ChuteStalactite");
+            }
+
+            StalactiteCount++;
+        }
+
+        zones[usedZone].SetActive(false);
+
+        cooldownTimerStalactite = cooldownEntreAttaqueStalactite;
+        isAttacking = false;
+    }
 }

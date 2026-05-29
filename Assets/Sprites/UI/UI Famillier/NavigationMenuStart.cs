@@ -20,6 +20,8 @@ public class NavigationMenuStart : MonoBehaviour
     public List<Sprite> sprites = new List<Sprite>();
     public List<Image> images = new List<Image>();
     bool changing;
+    public GameObject quitter;
+    public GameObject Menu;
 
 
     void Start()
@@ -101,5 +103,13 @@ public class NavigationMenuStart : MonoBehaviour
                 Quit.SetTrigger(i+1);
             b.navigation = nav;
         }
+    }
+    public void Quitter()
+    {
+        if (Menu.activeSelf)
+        {
+           quitter.SetActive(false); 
+        }
+        
     }
 }
