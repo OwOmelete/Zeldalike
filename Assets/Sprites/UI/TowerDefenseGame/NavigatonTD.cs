@@ -1,39 +1,199 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
-public class NavigatonTD : MonoBehaviour
+public class NavigationTD : MonoBehaviour
 {
-     public List<GameObject> boutons = new List<GameObject>();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Boutons")]
+    public List<GameObject> boutons = new List<GameObject>();
+
+    [Header("Sélecteur de tour")]
+    public GameObject chooseTower;
+    public List<Image> cibles = new List<Image>();
+    public List<Sprite> spriteSelectionne = new List<Sprite>();
+    public List<Sprite> spriteNotSelectionne = new List<Sprite>();
+
+    [Header("Tour Prefab")]
+    public List<GameObject> tourBase = new List<GameObject>();
+
+    [Header("Curseur")]
+    public GameObject curseur;
+    [Header("Reference")]
+    public GameManagerTD gameManagerTD;
+
+    // Privées
+    Vector2 curseurInitialPos;
+    Vector2 currentButtonPosition;
+    int currentSecteur = -1;
+    int tourBaseInt;
+    bool isChoosing;
+    bool asChoose;
+    bool asSelected;
+
+    // ─────────────────────────────────────────
     void Start()
     {
-       SetupNavigation();
+        SetNavigation(Navigation.Mode.Automatic);
         if (boutons.Count > 0)
-        {
             EventSystem.current.SetSelectedGameObject(boutons[0]);
-        } 
     }
 
-    void SetupNavigation()
+    // ─────────────────────────────────────────
+    // Navigation des boutons
+    // ─────────────────────────────────────────
+
+    void SetNavigation(Navigation.Mode mode)
     {
-        for (int i = 0; i < boutons.Count; i++)
+        foreach (GameObject go in boutons)
         {
-            Button b = boutons[i].GetComponent<Button>();
+            Button b = go.GetComponent<Button>();
             if (b == null) continue;
-
-            Navigation nav = new Navigation();
-            nav.mode = Navigation.Mode.Automatic;
-
-            
-            if (i > 0)
-                nav.selectOnUp = boutons[i - 1].GetComponent<Button>();
-                
-
-            if (i < boutons.Count - 1)
-                nav.selectOnDown = boutons[i + 1].GetComponent<Button>();
-            b.navigation = nav;
+            b.navigation = new Navigation { mode = mode };
         }
+    }
+
+    // ─────────────────────────────────────────
+    // Sélecteur de tour
+    // ─────────────────────────────────────────
+
+    public void ChooseTower(Transform other)
+    {
+        if (isChoosing) return;
+
+        chooseTower.SetActive(true);
+        currentButtonPosition = other.position;
+        chooseTower.transform.position = other.position;
+        curseurInitialPos = curseur.transform.position;
+        asChoose = false;
+
+        SetNavigation(Navigation.Mode.None);
+        StartCoroutine(WaitForChoosing());
+    }
+
+    IEnumerator WaitForChoosing()
+    {
+        isChoosing = true;
+
+        while (!asChoose)
+        {
+            if (Gamepad.current.buttonEast.wasPressedThisFrame)
+            {
+                ExitChoosing();
+                break;
+            }
+
+            UpdateCurseur();
+            UpdateSelection();
+            if (Gamepad.current.buttonSouth.wasPressedThisFrame)CheckConfirmation();
+            
+
+            yield return null;
+        }
+
+        SetNavigation(Navigation.Mode.Automatic);
+    }
+
+    void ExitChoosing()
+    {
+        asChoose = true;
+        isChoosing = false;
+        chooseTower.SetActive(false);
+        curseur.transform.position = curseurInitialPos;
+        ResetAllSprites();
+    }
+
+    // ─────────────────────────────────────────
+    // Curseur & sélection
+    // ─────────────────────────────────────────
+
+    void UpdateCurseur()
+    {
+        Vector2 stick = Gamepad.current.leftStick.ReadValue();
+        curseur.transform.position = curseurInitialPos + stick * 100f;
+
+        float magnitude = stick.magnitude;
+
+        if (magnitude > 0.8f)
+            OnStickActive(stick);
+        else if (magnitude < 0.4f)
+            OnStickNeutral();
+    }
+
+    void OnStickActive(Vector2 stick)
+    {
+        asSelected = true;
+        int newSecteur = GetSecteur(stick);
+
+        if (newSecteur != currentSecteur)
+        {
+            if (currentSecteur >= 0)
+                SetCibleSprite(currentSecteur, false);
+
+            currentSecteur = newSecteur;
+            SetCibleSprite(currentSecteur, true);
+        }
+    }
+
+    void OnStickNeutral()
+    {
+        if (!asSelected) return;
+        asSelected = false;
+        if (currentSecteur >= 0)
+            SetCibleSprite(currentSecteur, false);
+    }
+
+    void UpdateSelection()
+    {
+        // Réservé pour logique supplémentaire sur la sélection
+    }
+
+    void CheckConfirmation()
+    {
+        if (!asSelected) return;
+
+        switch (currentSecteur)
+        {
+            case 0: /* Confirmer cible 0 */ break;
+            case 1:
+            gameManagerTD.UpdateEnergie(false,20); 
+            tourBase[tourBaseInt].SetActive(true);
+            tourBase[tourBaseInt].transform.position = currentButtonPosition;
+            tourBaseInt++;
+            isChoosing = false;
+            ExitChoosing();
+            break;
+            case 2: /* Confirmer cible 2 */ break;
+            case 3: /* Confirmer cible 3 */ break;
+            case 4: /* Confirmer cible 4 */ break;
+        }
+    }
+
+    // ─────────────────────────────────────────
+    // Helpers
+    // ─────────────────────────────────────────
+
+    int GetSecteur(Vector2 stick)
+    {
+        float angle = Mathf.Atan2(stick.y, stick.x) * Mathf.Rad2Deg;
+        float angleFromTop = (angle - 90f + 360f) % 360f;
+        return Mathf.RoundToInt(angleFromTop / 72f) % 5;
+    }
+
+    void SetCibleSprite(int index, bool selected)
+    {
+        cibles[index].sprite = selected
+            ? spriteSelectionne[index]
+            : spriteNotSelectionne[index];
+    }
+
+    void ResetAllSprites()
+    {
+        for (int i = 0; i < cibles.Count; i++)
+            SetCibleSprite(i, false);
+        currentSecteur = -1;
+        asSelected = false;
     }
 }

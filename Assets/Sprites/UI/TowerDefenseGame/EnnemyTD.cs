@@ -32,6 +32,8 @@ public class EnnemyTD : MonoBehaviour
     [SerializeField] Image image;
     Color32 colorbase;
     [SerializeField] Color32 colordammaged;
+    [Header("Reference")]
+    [SerializeField] GameManagerTD gameManagerTD;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -89,6 +91,7 @@ public class EnnemyTD : MonoBehaviour
     {
         if (life <= 0)
         {
+            gameManagerTD.UpdateEnergie(true,100); 
             gameObject.SetActive(!gameObject.activeSelf);
             targetFight[0].isFighting = false;
         }
