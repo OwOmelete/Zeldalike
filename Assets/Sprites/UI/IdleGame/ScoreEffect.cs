@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,8 +11,20 @@ public class ScoreEffect : MonoBehaviour
     void Start()
     {
         scoreManager = FindAnyObjectByType<ScoreManager>();
-        Destroy(gameObject,0.5f);
         scoreEffect.text = "+" + scoreManager.Click.ToString();
+        StartCoroutine(enableFalse());
+        
+    }
+    void OnEnable()
+    {
+        scoreManager = FindAnyObjectByType<ScoreManager>();
+        scoreEffect.text = "+" + scoreManager.Click.ToString();
+        StartCoroutine(enableFalse());
+    }
+    IEnumerator enableFalse()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+        gameObject.SetActive(false);
     }
 
 }
