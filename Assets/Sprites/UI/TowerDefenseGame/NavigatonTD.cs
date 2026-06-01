@@ -17,7 +17,16 @@ public class NavigationTD : MonoBehaviour
     public List<Sprite> spriteNotSelectionne = new List<Sprite>();
 
     [Header("Tour Prefab")]
+    public int tourBasePrice;
     public List<GameObject> tourBase = new List<GameObject>();
+    public int TourInvokFamillierBasePrice;
+    public List<GameObject> TourInvokFamillier = new List<GameObject>();
+    public int TourGlacePrice;
+    public List<GameObject> TourGlace = new List<GameObject>();
+    public int TourFeuPrice;
+    public List<GameObject> TourFeu = new List<GameObject>();
+    public int AneantisseurPrice;
+    public List<GameObject> Aneantisseur = new List<GameObject>();
 
     [Header("Curseur")]
     public GameObject curseur;
@@ -29,6 +38,10 @@ public class NavigationTD : MonoBehaviour
     Vector2 currentButtonPosition;
     int currentSecteur = -1;
     int tourBaseInt;
+    int TourGlaceInt;
+    int TourFeuInt;
+    int AneantisseurInt;
+    int TourInvokFamillierInt;
     bool isChoosing;
     bool asChoose;
     bool asSelected;
@@ -156,18 +169,49 @@ public class NavigationTD : MonoBehaviour
 
         switch (currentSecteur)
         {
-            case 0: /* Confirmer cible 0 */ break;
+            case 0: 
+            gameManagerTD.UpdateEnergie(false,TourInvokFamillierBasePrice); 
+            int position = boutons.IndexOf(EventSystem.current.currentSelectedGameObject);
+            TourInvokFamillier[position].SetActive(true);
+            isChoosing = false;
+            ExitChoosing();
+            break;
+
             case 1:
-            gameManagerTD.UpdateEnergie(false,20); 
+            gameManagerTD.UpdateEnergie(false,tourBasePrice); 
             tourBase[tourBaseInt].SetActive(true);
             tourBase[tourBaseInt].transform.position = currentButtonPosition;
             tourBaseInt++;
             isChoosing = false;
             ExitChoosing();
             break;
-            case 2: /* Confirmer cible 2 */ break;
-            case 3: /* Confirmer cible 3 */ break;
-            case 4: /* Confirmer cible 4 */ break;
+
+            case 2: 
+            gameManagerTD.UpdateEnergie(false,TourGlacePrice); 
+            TourGlace[TourGlaceInt].SetActive(true);
+            TourGlace[TourGlaceInt].transform.position = currentButtonPosition;
+            TourGlaceInt++;
+            isChoosing = false;
+            ExitChoosing();
+            break;
+
+            case 3: 
+            gameManagerTD.UpdateEnergie(false,TourFeuPrice); 
+            TourFeu[TourFeuInt].SetActive(true);
+            TourFeu[TourFeuInt].transform.position = currentButtonPosition;
+            TourFeuInt++;
+            isChoosing = false;
+            ExitChoosing();
+            break;
+
+            case 4: 
+            gameManagerTD.UpdateEnergie(false,AneantisseurPrice); 
+            Aneantisseur[AneantisseurInt].SetActive(true);
+            Aneantisseur[AneantisseurInt].transform.position = currentButtonPosition;
+            AneantisseurInt++;
+            isChoosing = false;
+            ExitChoosing();
+            break;
         }
     }
 

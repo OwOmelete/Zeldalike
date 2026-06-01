@@ -1,10 +1,18 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Splines;
+using Unity.Mathematics;
 
 public class TourInvokFamillier : MonoBehaviour
 {
-[SerializeField] List<Transform> zoneSpawn = new List<Transform>();
+[SerializeField] SplineContainer zoneSpawn;
+[SerializeField] List<GameObject> unite = new List<GameObject>();
+int uniteCount;
+    void Start()
+    {
+         //StartCoroutine(TourInvok());
+    }
     void OnEnable()
     {
         StartCoroutine(TourInvok());
@@ -13,8 +21,24 @@ public class TourInvokFamillier : MonoBehaviour
     {
         while (true)
         {
-            int monNombreAleatoire = Random.Range(0, zoneSpawn.Count);
-            yield return new WaitForSeconds(10f);
+            
+            if (unite[uniteCount].activeSelf)
+            {
+                uniteCount++;
+                
+                yield return null;
+            }
+            else
+            {
+                float randomValue = UnityEngine.Random.Range(0.0f, 1.0f);
+                unite[uniteCount].SetActive(true);
+                zoneSpawn.Evaluate(randomValue, out float3 position, out float3 tangent, out float3 upVector);
+                Vector3 SpawnPoint = zoneSpawn.transform.TransformPoint(position)/2;
+                unite[uniteCount].transform.position = SpawnPoint;
+                uniteCount++;
+                yield return new WaitForSeconds(10f); 
+            }
+            
         }
     }
 }

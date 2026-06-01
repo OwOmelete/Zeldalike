@@ -22,8 +22,6 @@ public class GameManagerTD : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        energie = 40;
-        life = 20;
         energieText.text = energie.ToString();
         lifeText.text = life.ToString();
     }
