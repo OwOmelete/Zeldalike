@@ -17,10 +17,11 @@ public class InvoManager : MonoBehaviour
     
     private List<Transform> enemiesInRange = new List<Transform>();
     private float lastBasicAttack;
+
+    [SerializeField] private GameObject wave;
     
     private Transform lastEnemyLocked;
-
-    public MeshRenderer wave;
+    
     public float basicAttackCooldown;
     
     public InputActionReference SouthButton;
@@ -251,9 +252,9 @@ public class InvoManager : MonoBehaviour
     
     IEnumerator waveTimer()
     {
-        wave.enabled = true;
+        wave.SetActive(true);
         yield return new WaitForSeconds(0.4f);
-        wave.enabled = false;
+        wave.SetActive(false);
     }
     
     public int GetNewAttackID()

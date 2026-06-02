@@ -152,6 +152,11 @@ public class InvoBehaviour : MonoBehaviour
             }
         }
 
+        if (other.gameObject.CompareTag("FireWave") && Data.currentState == stateDisabled)
+        {
+            ChangeState(stateIdle);
+        }
+
         if (other.CompareTag("Dummy"))
         {
             if (Data.currentState == stateAttack)
