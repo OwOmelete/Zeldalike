@@ -177,6 +177,7 @@ public class EnnemyTD : MonoBehaviour
         {
             if (DistanceToTarget(patrole[nextDestination]) > 2f)  Move(patrole[nextDestination]);
             else if (nextDestination<patrole.Count-1) nextDestination++;
+            else gameManagerTD.UpdateLife(1);
             yield return null;  
         }
         
