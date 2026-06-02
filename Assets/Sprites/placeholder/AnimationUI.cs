@@ -15,12 +15,13 @@ public class AnimationUI : MonoBehaviour
     }
     void Update()
     {
-        if(!LeftTrigger)  OnLeftTrigger();
-        if(!RightTrigger) OnRightTrigger();
+        if(Gamepad.current.leftTrigger.ReadValue() > 0.2f) OnLeftTrigger();
+        if(Gamepad.current.rightTrigger.ReadValue() > 0.2f) OnRightTrigger();
     }
 
     private void OnLeftTrigger()
     {
+        
             Left.SetTrigger("Close");
             Right.SetTrigger("Open");
             Switch=true;
