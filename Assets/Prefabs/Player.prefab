@@ -102,6 +102,7 @@ Transform:
   - {fileID: 7532571299928537415}
   - {fileID: 6055718549358158056}
   - {fileID: 1819057289191336863}
+  - {fileID: 4053445332736767455}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8592084145741084815
@@ -172,6 +173,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   target: {fileID: 0}
+  _playerHealth: {fileID: 0}
   wave: {fileID: 4245628959529136858}
   basicAttackCooldown: 0.2
   SouthButton: {fileID: 3151224313612964776, guid: 052faaac586de48259a63d0c4782560b, type: 3}
@@ -1042,6 +1044,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8492833549898910848}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6864308675727852578
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4053445332736767455}
+  - component: {fileID: 8326019481567186665}
+  m_Layer: 3
+  m_Name: C O O L  V I B R A T I O N S
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4053445332736767455
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6864308675727852578}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8492833549898910848}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8326019481567186665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6864308675727852578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d43cf259c7187142b0dafd64032525c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoolVibrations
 --- !u!1 &6866092314293009345
 GameObject:
   m_ObjectHideFlags: 0
