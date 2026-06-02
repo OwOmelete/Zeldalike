@@ -223,10 +223,9 @@ public class InvoManager : MonoBehaviour
 
         StartCoroutine(waveTimer());
         FireWaveAction?.Invoke();
-        
         _animator.SetTrigger("HeatWave");
+        CoolVibrations.Instance?.CoolVibrate(.25f, .5f, 1.0f);
 
-        
     }
 
     private void OnLeftShoulder()
@@ -237,6 +236,7 @@ public class InvoManager : MonoBehaviour
     
     private void OnRightTrigger()
     {
+        CoolVibrations.Instance?.CoolVibrate(.2f, .2f, .8f);
     }
 
     private void OnRightShoulder()
