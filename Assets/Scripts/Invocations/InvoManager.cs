@@ -17,10 +17,11 @@ public class InvoManager : MonoBehaviour
     
     private List<Transform> enemiesInRange = new List<Transform>();
     private float lastBasicAttack;
+
+    [SerializeField] private GameObject wave;
     
     private Transform lastEnemyLocked;
-
-    public MeshRenderer wave;
+    
     public float basicAttackCooldown;
     
     public InputActionReference SouthButton;
@@ -36,6 +37,7 @@ public class InvoManager : MonoBehaviour
     
     public static event Action<Transform> OnLock;
     public static event Action OnDelock;
+    public ParticleSystem particleSystemVagueChaleur;
 
 
     public static event Action FireWaveAction;
@@ -225,6 +227,8 @@ public class InvoManager : MonoBehaviour
         FireWaveAction?.Invoke();
         _animator.SetTrigger("HeatWave");
         CoolVibrations.Instance?.CoolVibrate(.25f, .4f, .8f);
+        particleSystemVagueChaleur.Play();
+
 
     }
 
@@ -248,9 +252,9 @@ public class InvoManager : MonoBehaviour
     
     IEnumerator waveTimer()
     {
-        wave.enabled = true;
+        wave.SetActive(true);
         yield return new WaitForSeconds(0.4f);
-        wave.enabled = false;
+        wave.SetActive(false);
     }
     
     public int GetNewAttackID()

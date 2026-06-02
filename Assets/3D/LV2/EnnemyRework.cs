@@ -40,6 +40,7 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
     public Animator animator;
     public Camera MainCamera;
     public GameObject MortGeulGlacon;
+    [SerializeField] private CombatZone _combatZone;
     
 
      void Start()
@@ -56,6 +57,11 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
         {
             if (MortGeulGlacon != null)
             {
+                foreach (var door in _combatZone.doors)
+                {
+                    door.OpenDoor();
+                }
+                
                 MortGeulGlacon.SetActive(true);
                 MortGeulGlacon.transform.position = transform.position + new Vector3(0,1.5f,0); 
             }
