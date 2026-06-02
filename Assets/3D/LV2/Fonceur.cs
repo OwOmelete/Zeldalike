@@ -124,12 +124,12 @@ public class Fonceur : EnnemyRework
     yield return new WaitForSeconds(attackSpeed*0.5f);
 
     
-    speed = 15;
+    speed = 20;
     dash=true;
 
     yield return new WaitForSeconds(0.5f);
     dash=false;
-    speed = 5;
+    speed = 10;
     yield return new WaitForSeconds(attackSpeed*0.2f);
     var col = zoneAttack.GetComponent<Collider>();
     col.enabled = true;
