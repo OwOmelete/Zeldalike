@@ -181,10 +181,10 @@ Transform:
   - {fileID: 7715130669398043504}
   - {fileID: 2120540733988289149}
   - {fileID: 3368265795570048938}
+  - {fileID: 4947903265281409977}
   - {fileID: 6192891260890667661}
   - {fileID: 459927455566837886}
   - {fileID: 5275741442776134209}
-  - {fileID: 4947903265281409977}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2389928864958470235
@@ -199,9 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4902953964aa1e84b9867132762f6639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  currentHeal: 20
-  maxHealPoint: 20
-  HealBarre: {fileID: 8914031493035044460}
+  HeatSystem: {fileID: 0}
   cible: {fileID: 6260937458101652820}
   vitesseAttaque: 1
   attaque: 0
@@ -209,16 +207,28 @@ MonoBehaviour:
   porteeAttaqueSpe1: 15
   porteeAttaqueSpe2: {x: 30, y: 15}
   cooldownEntreAttaque: 1.5
+  cooldownAttaqueSpe3: 0
+  cooldownEntreDashPilier: 8
   speed: 3.6
   FightStarted: 0
-  cooldownAttaqueSpe3: 0
   zoneChasse: {fileID: 0}
-  player: {fileID: 0}
   conePrefab: {fileID: 7273888944991189858, guid: 47b8fb856cf44bf43b70dbaa96b2203e, type: 3}
   zoneRougePrefab: {fileID: 4900013158864173812, guid: 8dee79431a105964fb711707802c671f, type: 3}
-  stalactitePrefab: {fileID: 8741921703140504495, guid: aac0cc0a53b8729488ee2614c8bea734, type: 3}
-  projectilePrefab: {fileID: 3162386603261550244, guid: e43e15a4d6f00c041ad7697568c25a56, type: 3}
+  stalactitePrefab:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   murGlacePrefab: {fileID: 3222796644420710882, guid: 3fd2e1c82eea34e428102de4ef43452c, type: 3}
+  projectilePrefab:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  positions: []
+  zones: []
+  playerHealth: {fileID: 0}
+  StalactiteCount: 0
+  zoneCount: 0
+  projectileCount: 0
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -253,6 +263,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4947903265281409977}
   - component: {fileID: 1362683680642104048}
+  - component: {fileID: 3744885790551088368}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -334,6 +345,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &3744885790551088368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3520575573614537616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48488849be5127241acc20b56145709a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Billboard
+  mainCam: {fileID: 0}
 --- !u!1 &4176790094454537043
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,6 +535,7 @@ GameObject:
   - component: {fileID: 425041814927877848}
   - component: {fileID: 4553862285704058786}
   - component: {fileID: 2470765622945242825}
+  - component: {fileID: 1186232933060231844}
   m_Layer: 0
   m_Name: MeshBoss
   m_TagString: Enemy
@@ -611,6 +636,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.3958511, y: 4.7149935, z: 1.8673706}
   m_Center: {x: 0.044403076, y: -1.8574967, z: -0.24038696}
+--- !u!114 &1186232933060231844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5691777866999683028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48488849be5127241acc20b56145709a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Billboard
+  mainCam: {fileID: 0}
 --- !u!1 &6655293396940049969
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,6 +661,7 @@ GameObject:
   - component: {fileID: 1170764981309365372}
   - component: {fileID: 8598897291935603336}
   - component: {fileID: 6526774948436508334}
+  - component: {fileID: 6619945439232324021}
   m_Layer: 0
   m_Name: BarreDeVie
   m_TagString: Untagged
@@ -714,6 +753,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6619945439232324021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6655293396940049969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48488849be5127241acc20b56145709a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Billboard
+  mainCam: {fileID: 0}
 --- !u!1 &7345371969088951992
 GameObject:
   m_ObjectHideFlags: 0

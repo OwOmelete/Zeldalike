@@ -25,6 +25,8 @@ public class EnnemyTD : MonoBehaviour
     [SerializeField] bool asEnnemyTarget;
     [SerializeField] bool isInFight;
     [SerializeField] int nextDestination;
+    [SerializeField] bool isSlow;
+    bool isBurn;
     [SerializeField] List<ObstacleTD> targetFight = new List<ObstacleTD>();
     GameObject targetFightGameobject;
     [Header("Slider")]
@@ -32,6 +34,10 @@ public class EnnemyTD : MonoBehaviour
     [SerializeField] Image image;
     Color32 colorbase;
     [SerializeField] Color32 colordammaged;
+    [SerializeField] Color32 colorSlow;
+    [SerializeField] Color32 colorBurn;
+    [Header("Reference")]
+    [SerializeField] GameManagerTD gameManagerTD;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -83,40 +89,80 @@ public class EnnemyTD : MonoBehaviour
             if (BeforeFight(other)!=null) StopCoroutine(BeforeFight(other));
             StartCoroutine(BeforeFight(other));
             }
+            else
+            {
+                targetFight.Remove(targetFight[i]);
+            }
         }
     }
     void Die()
     {
         if (life <= 0)
         {
-            gameObject.SetActive(!gameObject.activeSelf);
-            targetFight[0].isFighting = false;
+            gameManagerTD.UpdateEnergie(true,100); 
+            gameObject.SetActive(false);
+            if(targetFight.Count>0) targetFight[0].isFighting = false;
         }
+    }
+    public void Burn(float burn)
+    {
+         if (BurnCoroutine(0)!=null) StopCoroutine(BurnCoroutine(0));
+        if(gameObject.activeSelf)StartCoroutine(BurnCoroutine(burn));
+    }
+     IEnumerator BurnCoroutine(float burn)
+    {
+        isBurn=true;
+        image.color = colorBurn;
+        float burnDuration = 2f;
+        while (burnDuration > 0)
+        {
+            burnDuration-=0.5f;
+            takeDammage(burn);
+            yield return new WaitForSeconds(05f);
+        }
+        image.color = colorBurn;
+        isBurn=false;
+    }
+    public void Slow(float slow)
+    {
+        if (SlowCoroutine(0)!=null) StopCoroutine(SlowCoroutine(0));
+        if(gameObject.activeSelf)StartCoroutine(SlowCoroutine(slow));
+    }
+     IEnumerator SlowCoroutine(float slow)
+    {
+        isSlow=true;
+        speed-=slow;
+        image.color = colorSlow;
+        yield return new WaitForSeconds(2f);
+        image.color = colorbase;
+        speed+=slow;
+        isSlow=false;
     }
     IEnumerator dammageAnimation()
     {
         image.color = colordammaged;
         yield return new WaitForSeconds(0.5f);
-        image.color = colorbase;
+        if(!isSlow) image.color = colorbase;
+        else image.color = colorSlow;
         yield return new WaitForSeconds(0.5f);
     }
     IEnumerator EnnemyFight()
     {
-        while (targetFight[0].life > 1)
+        while(targetFight[0].gameObject.activeSelf)
         {
-             targetFight[0].life -= attack;
-             yield return new WaitForSeconds(CouldownAttack);
+            targetFight[0].TakeDamage(dammage);
+            yield return new WaitForSeconds(CouldownAttack);
         }
-        targetFightGameobject.SetActive(false);
-        //Destroy(targetFightGameobject);
+        targetFight.Remove(targetFight[0]);
         asEnnemyTarget = false;
         isInFight=false;
         if (Patrole()!=null) StopCoroutine(Patrole());
         StartCoroutine(Patrole());
+        yield return null;
     }
     IEnumerator ObstacleFight()
     {
-       while (life > 1 && targetFight[0].life > 1)
+       while (life > 1 && targetFight[0]!=null && targetFight[0].life > 1)
         {
             takeDammage(targetFight[0].attack);
             yield return new WaitForSeconds(targetFight[0].CouldownAttack);
@@ -130,7 +176,8 @@ public class EnnemyTD : MonoBehaviour
         while (!isInFight)
         {
             if (DistanceToTarget(patrole[nextDestination]) > 2f)  Move(patrole[nextDestination]);
-            else nextDestination++;
+            else if (nextDestination<patrole.Count-1) nextDestination++;
+            else gameManagerTD.UpdateLife(1);
             yield return null;  
         }
         
