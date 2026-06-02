@@ -39,6 +39,7 @@ public class InvoManager : MonoBehaviour
 
 
     public static event Action FireWaveAction;
+    public ParticleSystem particleSystemVagueChaleur;
 
     private void OnEnable()
     {
@@ -225,6 +226,7 @@ public class InvoManager : MonoBehaviour
         FireWaveAction?.Invoke();
         
         _animator.SetTrigger("HeatWave");
+        particleSystemVagueChaleur.Play();
 
         
     }
