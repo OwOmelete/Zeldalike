@@ -39,7 +39,6 @@ public class InvoManager : MonoBehaviour
 
 
     public static event Action FireWaveAction;
-    public ParticleSystem particleSystemVagueChaleur;
 
     private void OnEnable()
     {
@@ -224,11 +223,9 @@ public class InvoManager : MonoBehaviour
 
         StartCoroutine(waveTimer());
         FireWaveAction?.Invoke();
-        
         _animator.SetTrigger("HeatWave");
-        particleSystemVagueChaleur.Play();
+        CoolVibrations.Instance?.CoolVibrate(.25f, .4f, .8f);
 
-        
     }
 
     private void OnLeftShoulder()
@@ -239,6 +236,7 @@ public class InvoManager : MonoBehaviour
     
     private void OnRightTrigger()
     {
+        
     }
 
     private void OnRightShoulder()

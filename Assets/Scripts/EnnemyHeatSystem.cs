@@ -32,7 +32,13 @@ public class EnnemyHeatSystem : MonoBehaviour
     private int currentIndex;
 
     private float weakPointTime;
-    private bool cooling = true;
+
+    // La température naturelle est le centre de la jauge
+    private float naturalHeat => maxHeat * 0.5f;
+
+    // Zone interdite autour du centre pour les weak points (en fraction de la jauge)
+    [Range(0.0f, 0.5f)]
+    public float centerExclusionRadius = 0.1f;
 
     public bool isAlive = true;
 
@@ -40,7 +46,7 @@ public class EnnemyHeatSystem : MonoBehaviour
     
     private void Start()
     {
-        currentHeat = 0;
+        currentHeat = naturalHeat;
         currentIndex = 0;
     }
 
@@ -70,33 +76,14 @@ public class EnnemyHeatSystem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (cooling)
+        // La barre tend toujours vers sa température naturelle (le centre)
+        if (currentHeat < naturalHeat)
         {
-            if (currentHeat > 0)
-            {
-                if (currentHeat - autoHeatIncrement < 0)
-                {
-                    currentHeat = 0;
-                }
-                else
-                {
-                    currentHeat -= autoHeatIncrement;
-                }
-            }
+            currentHeat = Mathf.Min(currentHeat + autoHeatIncrement, naturalHeat);
         }
-        else
+        else if (currentHeat > naturalHeat)
         {
-            if (currentHeat < maxHeat)
-            {
-                if (currentHeat + autoHeatIncrement > maxHeat)
-                {
-                    currentHeat = maxHeat;
-                }
-                else
-                {
-                    currentHeat += autoHeatIncrement;
-                }
-            }
+            currentHeat = Mathf.Max(currentHeat - autoHeatIncrement, naturalHeat);
         }
         /*if (currentHeat > (maxHeat-weakPointSize)*currentWeakPointPos && currentHeat < (maxHeat-weakPointSize)*currentWeakPointPos+weakPointSize)
         {
@@ -155,15 +142,12 @@ public class EnnemyHeatSystem : MonoBehaviour
     {
         currentHeat -= value;
         if (currentHeat < 0) currentHeat = 0;
-        cooling = true;
-
     }
 
     public void increaseHeat(float value)
     {
         currentHeat += value;
         if (currentHeat > maxHeat) currentHeat = maxHeat;
-        cooling = false;
     }
 
     /*public float GetColdPercentage()
@@ -196,5 +180,19 @@ public class EnnemyHeatSystem : MonoBehaviour
     {
         return currentCorruption / maxCorruption;
     }
+
+    /// <summary>
+    /// Retourne vrai si la position (normalisée 0-1) est trop proche du centre
+    /// et donc invalide pour un weak point.
+    /// </summary>
+    public bool IsWeakPointPositionValid(float normalizedPos)
+    {
+        return Mathf.Abs(normalizedPos - 0.5f) > centerExclusionRadius;
+    }
+
+    /// <summary>
+    /// Expose la température naturelle (centre de jauge) pour les systèmes externes.
+    /// </summary>
+    public float GetNaturalHeat() => naturalHeat;
     
 }
