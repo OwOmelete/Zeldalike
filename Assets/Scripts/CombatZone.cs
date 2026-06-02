@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CombatZone : MonoBehaviour
 {
-    [SerializeField] private Door[] doors;
+    public Door[] doors;
     private bool activated = false;
     
     
