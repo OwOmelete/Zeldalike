@@ -36,6 +36,7 @@ public class InvoManager : MonoBehaviour
     
     public static event Action<Transform> OnLock;
     public static event Action OnDelock;
+    public ParticleSystem particleSystemVagueChaleur;
 
 
     public static event Action FireWaveAction;
@@ -225,6 +226,8 @@ public class InvoManager : MonoBehaviour
         FireWaveAction?.Invoke();
         _animator.SetTrigger("HeatWave");
         CoolVibrations.Instance?.CoolVibrate(.25f, .4f, .8f);
+        particleSystemVagueChaleur.Play();
+
 
     }
 

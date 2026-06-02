@@ -17,26 +17,28 @@ public class AnimationUI : MonoBehaviour
     }
     void Update()
     {
-        if(Gamepad.current.leftShoulder.wasPressedThisFrame && !Switch) OnLeftTrigger();
-        if(Gamepad.current.rightShoulder.wasPressedThisFrame && Switch) OnRightTrigger();
+        if(Gamepad.current.leftShoulder.wasPressedThisFrame && Switch) OnLeftTrigger();
+        if(Gamepad.current.rightShoulder.wasPressedThisFrame && !Switch) OnRightTrigger();
     }
 
     private void OnLeftTrigger()
-    {
-
-            Left.SetTrigger("Close");
-            Right.SetTrigger("Open");
-            Switch=true;
-            material.SetColor("_EmissionColor",colorChaud);
-            
-    }
-
-    private void OnRightTrigger()
     {
         Left.SetTrigger("Open");
         Right.SetTrigger("Close");
         Switch=false;
         material.SetColor("_EmissionColor",colorFroid);
+            
+    }
+
+    private void OnRightTrigger()
+    {
+        
+
+        
+            Left.SetTrigger("Close");
+            Right.SetTrigger("Open");
+            Switch=true;
+            material.SetColor("_EmissionColor",colorChaud);
     }
     
 }
