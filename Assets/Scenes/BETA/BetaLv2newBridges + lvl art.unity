@@ -35290,11 +35290,11 @@ Transform:
   m_GameObject: {fileID: 1071466188}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -104.9, y: -3.8, z: -43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1053922846}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1075256430
 GameObject:
@@ -37045,7 +37045,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 296223003020906809, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1275072089363319145, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
       propertyPath: m_IsActive
@@ -37190,10 +37190,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4245628959529136858, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 8492833549898910848, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1071466190}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
 --- !u!1 &1156224736
@@ -72343,12 +72340,24 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.13548438
       objectReference: {fileID: 0}
+    - target: {fileID: 1730648299326739033, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
+      propertyPath: Targets.m_DataPoints.Array.data[0].m_Value.LookAt
+      value: 
+      objectReference: {fileID: 1071466190}
+    - target: {fileID: 1730648299326739033, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
+      propertyPath: Targets.m_DataPoints.Array.data[0].m_Value.Offset.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1749124435081005904, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 1071466190}
     - target: {fileID: 2110932523043844628, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
       propertyPath: Targets.m_DataPoints.Array.data[0].m_Value.LookAt
+      value: 
+      objectReference: {fileID: 1071466190}
+    - target: {fileID: 2171637535435027652, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
+      propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 1071466190}
     - target: {fileID: 2202386460978495280, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
@@ -72360,6 +72369,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1071466190}
     - target: {fileID: 2388872934133277039, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
+      propertyPath: respawnPoint
+      value: 
+      objectReference: {fileID: 539362311}
+    - target: {fileID: 2418952590538383207, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
       propertyPath: respawnPoint
       value: 
       objectReference: {fileID: 539362311}
@@ -72427,6 +72440,10 @@ PrefabInstance:
       propertyPath: Targets.m_DataPoints.Array.data[0].m_Value.LookAt
       value: 
       objectReference: {fileID: 1071466190}
+    - target: {fileID: 6777034804714582951, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
+      propertyPath: Target.TrackingTarget
+      value: 
+      objectReference: {fileID: 1071466190}
     - target: {fileID: 6870092543677584757, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
       propertyPath: respawnPoint
       value: 
@@ -72443,10 +72460,22 @@ PrefabInstance:
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 1071466190}
+    - target: {fileID: 7850845181534053142, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
+      propertyPath: Targets.m_DataPoints.Array.data[0].m_Value.LookAt
+      value: 
+      objectReference: {fileID: 1071466190}
+    - target: {fileID: 7850845181534053142, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
+      propertyPath: Targets.m_DataPoints.Array.data[0].m_Value.Offset.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8062059164272760850, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 1071466190}
+    - target: {fileID: 8138509920604938284, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
+      propertyPath: respawnPoint
+      value: 
+      objectReference: {fileID: 539362311}
     - target: {fileID: 8155460046585044171, guid: 102084ed13fcd8a4384beb743b7b8ffc, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
@@ -82186,6 +82215,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1154100216}
+  - {fileID: 1071466190}
   - {fileID: 1580207612}
   - {fileID: 466513130}
   - {fileID: 1223440887}
