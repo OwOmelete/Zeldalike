@@ -15,6 +15,8 @@ public class SimonManager : MonoBehaviour, IDamagable
 
     [SerializeField] private Transform objectRef;
     [SerializeField] private Transform ThrowingDirection;
+
+    [SerializeField] private Door _door;
     
     private HashSet<int> receivedAttacks = new HashSet<int>();
 
@@ -63,12 +65,14 @@ public class SimonManager : MonoBehaviour, IDamagable
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            hot();
+            //hot();
+            _door.OpenDoor();
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            cold();
+            _door.Close();
+            //cold();
         }
 
         if (Time.time - timer >= afkDelay && isTrying)
@@ -135,6 +139,10 @@ public class SimonManager : MonoBehaviour, IDamagable
     {
         hasWon = true;
         ReleaseInvos();
+        if (_door != null)
+        {
+            _door.OpenDoor();
+        }
         Debug.Log("bravo");
     }
 
