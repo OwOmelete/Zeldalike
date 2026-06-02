@@ -224,19 +224,8 @@ public class InvoManager : MonoBehaviour
         StartCoroutine(waveTimer());
         FireWaveAction?.Invoke();
         _animator.SetTrigger("HeatWave");
-        StopCoroutine(Vibre());
-        StartCoroutine(Vibre(.3f, .3f, .8f));
+        CoolVibrations.Instance?.CoolVibrate(.25f, .5f, 1.0f);
 
-    }
-
-    IEnumerator Vibre(float duree = .25f, float forceGauche = .5f, float forceDroite = 1.0f)
-    {
-        if (Gamepad.current != null)
-        {
-            Gamepad.current.SetMotorSpeeds(forceGauche, forceDroite);
-            yield return new WaitForSeconds(duree);
-            Gamepad.current.SetMotorSpeeds(0f, 0f);
-        }
     }
 
     private void OnLeftShoulder()
@@ -247,8 +236,7 @@ public class InvoManager : MonoBehaviour
     
     private void OnRightTrigger()
     {
-        StopCoroutine(Vibre());
-        StartCoroutine(Vibre(.2f, .3f, .5f));
+        CoolVibrations.Instance?.CoolVibrate(.2f, .2f, .8f);
     }
 
     private void OnRightShoulder()
