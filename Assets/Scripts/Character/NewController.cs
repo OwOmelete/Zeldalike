@@ -111,7 +111,7 @@ public class TopDownPlayerController : MonoBehaviour
         dashTimer = dashDuration;
         lastDash = Time.time;
         animator.SetTrigger("Dash");
-
+        CoolVibrations.Instance?.CoolVibrate(.1f, .15f, .8f);
         dashDirection = moveDirection.normalized;
 
         if (dashDirection.magnitude < 0.1f)
