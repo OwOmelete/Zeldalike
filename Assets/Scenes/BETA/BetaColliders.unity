@@ -13312,6 +13312,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1063449471689253176, guid: 41322ba15c1dfda4d84259da21b1970e, type: 3}
   m_PrefabInstance: {fileID: 419218257}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &419968230 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7802699639190494086, guid: 8e6dfe8a054542542956776c526655bc, type: 3}
+  m_PrefabInstance: {fileID: 698223528859569336}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &425212428
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34704,11 +34709,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4697700205071725147, guid: 8083ce481ef5b044eae542ab2c8dbe65, type: 3}
   m_PrefabInstance: {fileID: 1107890009}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1109374360 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4188943396892161846, guid: 8e6dfe8a054542542956776c526655bc, type: 3}
-  m_PrefabInstance: {fileID: 698223528859569336}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1110335299
 GameObject:
   m_ObjectHideFlags: 0
@@ -53108,7 +53108,7 @@ Transform:
   m_LocalScale: {x: 10000, y: 10000, z: 10000}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1109374360}
+  m_Father: {fileID: 419968230}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1629789997
 MeshRenderer:
@@ -69184,7 +69184,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2095656769}
+  m_Father: {fileID: 419968230}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.25}
@@ -70449,11 +70449,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8930748927885151185, guid: 173a7e96370d521419c65c205ed1b42b, type: 3}
   m_PrefabInstance: {fileID: 2094894099}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &2095656769 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6170868904834131424, guid: 8e6dfe8a054542542956776c526655bc, type: 3}
-  m_PrefabInstance: {fileID: 698223528859569336}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2095813239
 PrefabInstance:
@@ -73185,11 +73180,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4188943396892161846, guid: 8e6dfe8a054542542956776c526655bc, type: 3}
-      insertIndex: 1
+    - targetCorrespondingSourceObject: {fileID: 7802699639190494086, guid: 8e6dfe8a054542542956776c526655bc, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1629789996}
-    - targetCorrespondingSourceObject: {fileID: 6170868904834131424, guid: 8e6dfe8a054542542956776c526655bc, type: 3}
-      insertIndex: 2
+    - targetCorrespondingSourceObject: {fileID: 7802699639190494086, guid: 8e6dfe8a054542542956776c526655bc, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 2068920797}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e6dfe8a054542542956776c526655bc, type: 3}
@@ -73375,6 +73370,10 @@ PrefabInstance:
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 22163918}
+    - target: {fileID: 3830600273051785454, guid: 78eaaf74591ef404d84a0d78ad3259a1, type: 3}
+      propertyPath: Target.TrackingTarget
+      value: 
+      objectReference: {fileID: 22163918}
     - target: {fileID: 3851686806272006948, guid: 78eaaf74591ef404d84a0d78ad3259a1, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
@@ -73391,6 +73390,10 @@ PrefabInstance:
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 22163918}
+    - target: {fileID: 5465862147821276909, guid: 78eaaf74591ef404d84a0d78ad3259a1, type: 3}
+      propertyPath: Target.TrackingTarget
+      value: 
+      objectReference: {fileID: 22163918}
     - target: {fileID: 6032072658989739760, guid: 78eaaf74591ef404d84a0d78ad3259a1, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
@@ -73399,6 +73402,14 @@ PrefabInstance:
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 22163918}
+    - target: {fileID: 7585027143008200704, guid: 78eaaf74591ef404d84a0d78ad3259a1, type: 3}
+      propertyPath: Composition.ScreenPosition.x
+      value: 0.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 7585027143008200704, guid: 78eaaf74591ef404d84a0d78ad3259a1, type: 3}
+      propertyPath: Composition.ScreenPosition.y
+      value: 0.22
+      objectReference: {fileID: 0}
     - target: {fileID: 8154505682316731138, guid: 78eaaf74591ef404d84a0d78ad3259a1, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
