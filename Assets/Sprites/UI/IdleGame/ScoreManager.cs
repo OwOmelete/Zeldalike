@@ -89,8 +89,6 @@ public class ScoreManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f);
         IdleGame.SetActive(false);
         yield return null; 
-        
-        
     }
     IEnumerator AutoClick()
     {
