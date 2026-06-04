@@ -9,6 +9,7 @@ public class ScoreManager : MonoBehaviour
 {
     public uiManager uiManagerp;
     public GameObject IdleGame;
+    public GameObject PC;
     public float Score;
     public float Click ;
     public GameObject Button;
@@ -86,8 +87,8 @@ public class ScoreManager : MonoBehaviour
     }
     IEnumerator unActive()
     {
-        yield return new WaitForSecondsRealtime(1f);
         IdleGame.SetActive(false);
+        PC.SetActive(true);
         yield return null; 
     }
     IEnumerator AutoClick()

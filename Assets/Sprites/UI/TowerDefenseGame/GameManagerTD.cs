@@ -10,6 +10,7 @@ public class GameManagerTD : MonoBehaviour
     public TextMeshProUGUI energieText;
     public TextMeshProUGUI lifeText;
     public GameObject TowerDefence;
+    public GameObject PC;
     public void UpdateEnergie(bool signe,int add)
     {
         if(signe) energie+=add;
@@ -29,6 +30,13 @@ public class GameManagerTD : MonoBehaviour
     }
     void Update()
     {
-        if(Gamepad.current.startButton.wasPressedThisFrame) TowerDefence.SetActive(false);
+        if(Gamepad.current.startButton.wasPressedThisFrame)
+        {
+          TowerDefence.SetActive(false);  
+          PC.SetActive(true);
+        }
+        
+
     }
+  
 }
