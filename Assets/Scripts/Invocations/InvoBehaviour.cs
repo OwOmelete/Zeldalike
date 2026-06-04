@@ -21,6 +21,7 @@ public class InvoBehaviour : MonoBehaviour
     public StateProtection stateProtection;
     public StateAttack stateAttack;
     public StateDisabled stateDisabled;
+    public ParticleSystem particleSystemFamillier;
 
     public static event Action<InvoBehaviour> OnInvoSpawn;
     public static event Action<bool> OnInvoActivate;
@@ -91,6 +92,9 @@ public class InvoBehaviour : MonoBehaviour
     public void ChangeState(IState newState)
     {
         StopAllCoroutines();
+
+        particleSystemFamillier.Play();
+
         if (Data.currentState != null)
             Data.currentState.Exit();
 
@@ -146,6 +150,11 @@ public class InvoBehaviour : MonoBehaviour
                 damagable.TakeDamage(Data.damage, attackID, Data);
                 ChangeState(stateDisabled);
             }
+        }
+
+        if (other.gameObject.CompareTag("FireWave") && Data.currentState == stateDisabled)
+        {
+            ChangeState(stateIdle);
         }
 
         if (other.CompareTag("Dummy"))

@@ -20,6 +20,8 @@ public class NavigationMenuStart : MonoBehaviour
     public List<Sprite> sprites = new List<Sprite>();
     public List<Image> images = new List<Image>();
     bool changing;
+    public GameObject quitter;
+    public GameObject Menu;
 
 
     void Start()
@@ -88,18 +90,22 @@ public class NavigationMenuStart : MonoBehaviour
 
             Navigation nav = new Navigation();
             nav.mode = Navigation.Mode.Explicit;
-
-            // 🔼 Bouton du haut
             if (i > 0)
                 nav.selectOnUp = boutons[i - 1].GetComponent<Button>();
                 
-
-            // 🔽 Bouton du bas
             if (i < boutons.Count - 1)
                 nav.selectOnDown = boutons[i + 1].GetComponent<Button>();
                 Enter.SetTrigger(i+1);
                 Quit.SetTrigger(i+1);
             b.navigation = nav;
         }
+    }
+    public void Quitter()
+    {
+        if (Menu.activeSelf)
+        {
+           quitter.SetActive(false); 
+        }
+        
     }
 }

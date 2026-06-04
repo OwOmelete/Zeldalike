@@ -17,10 +17,11 @@ public class InvoManager : MonoBehaviour
     
     private List<Transform> enemiesInRange = new List<Transform>();
     private float lastBasicAttack;
+
+    [SerializeField] private GameObject wave;
     
     private Transform lastEnemyLocked;
-
-    public MeshRenderer wave;
+    
     public float basicAttackCooldown;
     
     public InputActionReference SouthButton;
@@ -36,6 +37,7 @@ public class InvoManager : MonoBehaviour
     
     public static event Action<Transform> OnLock;
     public static event Action OnDelock;
+    public ParticleSystem particleSystemVagueChaleur;
 
 
     public static event Action FireWaveAction;
@@ -224,19 +226,10 @@ public class InvoManager : MonoBehaviour
         StartCoroutine(waveTimer());
         FireWaveAction?.Invoke();
         _animator.SetTrigger("HeatWave");
-        StopCoroutine(Vibre());
-        StartCoroutine(Vibre(.3f, .3f, .8f));
+        CoolVibrations.Instance?.CoolVibrate(.25f, .4f, .8f);
+        particleSystemVagueChaleur.Play();
 
-    }
 
-    IEnumerator Vibre(float duree = .25f, float forceGauche = .5f, float forceDroite = 1.0f)
-    {
-        if (Gamepad.current != null)
-        {
-            Gamepad.current.SetMotorSpeeds(forceGauche, forceDroite);
-            yield return new WaitForSeconds(duree);
-            Gamepad.current.SetMotorSpeeds(0f, 0f);
-        }
     }
 
     private void OnLeftShoulder()
@@ -247,8 +240,7 @@ public class InvoManager : MonoBehaviour
     
     private void OnRightTrigger()
     {
-        StopCoroutine(Vibre());
-        StartCoroutine(Vibre(.2f, .3f, .5f));
+        
     }
 
     private void OnRightShoulder()
@@ -260,9 +252,9 @@ public class InvoManager : MonoBehaviour
     
     IEnumerator waveTimer()
     {
-        wave.enabled = true;
+        wave.SetActive(true);
         yield return new WaitForSeconds(0.4f);
-        wave.enabled = false;
+        wave.SetActive(false);
     }
     
     public int GetNewAttackID()

@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class CinemachineSwitch : MonoBehaviour
 {
-    public GameObject camera1;
-    public GameObject camera2;
     [SerializeField] private GameObject camerasParent;
     public GameObject[] camerasToActivateOrDeactivate;
     public GameObject[] camerasToDeactivate;
@@ -41,12 +39,6 @@ public class CinemachineSwitch : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (camera1 != null && camera2 != null)
-            {
-                camera1.SetActive(!camera1.activeSelf);
-                camera2.SetActive(!camera2.activeSelf);
-            }
-
             if (respawnPoint != null)
             {
                 TopDownPlayerController.Instance.SetRespawnPoint(respawnPoint);

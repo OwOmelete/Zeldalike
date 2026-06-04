@@ -16,11 +16,11 @@ GameObject:
   - component: {fileID: 3042000579567092618}
   m_Layer: 5
   m_Name: Tower
-  m_TagString: Obstacle
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8977000001194146767
 RectTransform:
   m_ObjectHideFlags: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4433962, g: 0.2237896, b: 0.2237896, a: 1}
+  m_Color: {r: 0.38768244, g: 0.8301887, b: 0.41321132, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -140,4 +140,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   damage: 15
   attackSpeed: 1
+  reduceMoveSpeed: 0
+  burnDammage: 0
   ennemyTD: []

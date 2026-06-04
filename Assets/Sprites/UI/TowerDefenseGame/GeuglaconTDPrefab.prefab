@@ -93,7 +93,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6973084522344306442
 RectTransform:
   m_ObjectHideFlags: 0
@@ -138,15 +138,23 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  asEnnemyTarget: 0
   isInFight: 0
   nextDestination: 0
+  isSlow: 0
+  targetFight: []
   LifeBar: {fileID: 0}
   image: {fileID: 7504275056540846859}
   colordammaged:
     serializedVersion: 2
     rgba: 2483028223
+  colorSlow:
+    serializedVersion: 2
+    rgba: 2466245507
+  colorBurn:
+    serializedVersion: 2
+    rgba: 2217967323
+  gameManagerTD: {fileID: 0}
 --- !u!135 &3790211838637456139
 SphereCollider:
   m_ObjectHideFlags: 0
