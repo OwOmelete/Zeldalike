@@ -33,13 +33,13 @@ public class CurseurMouvement : MonoBehaviour
     {
        if(hitCollider.CompareTag("Obstacle"))
             {
-                //PC.SetActive(false);
+                PC.SetActive(false);
                 TowerDefence.SetActive(true);
             }
             
        if(hitCollider.CompareTag("Pointer"))
             {
-                //PC.SetActive(false);
+                PC.SetActive(false);
                  Cliker.SetActive(true);
             }
        
