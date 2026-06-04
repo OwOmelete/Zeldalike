@@ -40,6 +40,11 @@ public class SlotManager : MonoBehaviour
         CreateSlots();
         SetupNavigation();
     }
+    void OnEnable()
+    {
+        defaultSlotPosition = slotPosition;
+        SetupNavigation();
+    }
 
     void Update()
     {

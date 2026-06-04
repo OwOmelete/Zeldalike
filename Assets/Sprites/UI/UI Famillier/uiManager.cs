@@ -19,6 +19,7 @@ public class uiManager : MonoBehaviour
     public Slider option;
     public Slider quiter;
     public Slider famillier;
+    public GameObject PcWindows;
     public GameObject ParentFamillier;
     public GameObject ParentOption;
     public GameObject ParentQuiter;
@@ -30,6 +31,7 @@ public class uiManager : MonoBehaviour
     public float sliderSpeed = 2f;
 
     private bool actionTriggered = false;
+    public bool isInPC;
 
     public static uiManager Instance;
 
@@ -58,7 +60,7 @@ public class uiManager : MonoBehaviour
 
     void Update()
     {
-        if (ParentFamillier.activeSelf || ParentOption.activeSelf || ParentQuiter.activeSelf || ParentPause.activeSelf)
+        if (ParentFamillier.activeSelf || ParentOption.activeSelf || ParentQuiter.activeSelf || ParentPause.activeSelf || PcWindows.activeSelf)
         {
             Time.timeScale = 0;
         }
@@ -69,7 +71,7 @@ public class uiManager : MonoBehaviour
       
              if (Gamepad.current == null) return;
 
-        if (Gamepad.current.startButton.wasPressedThisFrame)
+        if (Gamepad.current.startButton.wasPressedThisFrame&&!isInPC)
         {
             TogglePauseMenuwithStart();
         }

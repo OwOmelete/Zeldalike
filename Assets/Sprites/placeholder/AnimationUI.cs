@@ -1,19 +1,29 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 public class AnimationUI : MonoBehaviour
 {
     public Animator Left;
     public Animator Right;
     public bool Switch;
-    public Material material;
+    public List<Material>materialList = new List<Material>();
     public Color32 colorFroid;
     public Color32 colorChaud;
+    [ColorUsage(true, true)]
+    public Color myHdrColorHot;
+    [ColorUsage(true, true)]
+    public Color myHdrColorCold;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Switch = false;
-        material.SetColor("_EmissionColor",colorFroid);
+        Switch = false; 
+        foreach(Material m in materialList)
+        {
+            m.SetColor("_EmissionColor",myHdrColorCold);
+            m.SetColor("_BaseColor",colorFroid);
+        }
     }
     void Update()
     {
@@ -26,19 +36,24 @@ public class AnimationUI : MonoBehaviour
         Left.SetTrigger("Open");
         Right.SetTrigger("Close");
         Switch=false;
-        material.SetColor("_EmissionColor",colorFroid);
+        foreach(Material m in materialList)
+        {
+            m.SetColor("_EmissionColor",myHdrColorCold);
+            m.SetColor("_BaseColor",colorFroid);
+        }
             
     }
 
     private void OnRightTrigger()
     {
-        
-
-        
             Left.SetTrigger("Close");
             Right.SetTrigger("Open");
             Switch=true;
-            material.SetColor("_EmissionColor",colorChaud);
+            foreach(Material m in materialList)
+        {
+            m.SetColor("_EmissionColor",myHdrColorHot);
+            m.SetColor("_BaseColor",colorChaud);
+        }
     }
     
 }
