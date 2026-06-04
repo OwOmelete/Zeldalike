@@ -25,22 +25,22 @@ public class ButtonChainManager : MonoBehaviour
     
     private void OnNorthButton()
     {
-        addInputToChain(ButtonChainObject.direction.north);
+        //addInputToChain(ButtonChainObject.direction.north);
     }
     
     private void OnEastButton()
     {
-        addInputToChain(ButtonChainObject.direction.east);    
+        //addInputToChain(ButtonChainObject.direction.east);    
     }
     
     private void OnSouthButton()
     {
-        addInputToChain(ButtonChainObject.direction.south);
+        //addInputToChain(ButtonChainObject.direction.south);
     }
     
     private void OnWestButton()
     {
-        addInputToChain(ButtonChainObject.direction.west);
+        //addInputToChain(ButtonChainObject.direction.west);
     }
 
     private void addInputToChain(ButtonChainObject.direction dir)
