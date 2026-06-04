@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,63 +15,114 @@ public class GameManager : MonoBehaviour
 	public int scoreActuel = 0;
 	public int comboActuel = 0;
 
+	[Header("Interface UI (TextMeshPro)")]
+	public TextMeshProUGUI affichageScore;
+	public TextMeshProUGUI affichageCombo;
+	public TextMeshProUGUI affichageJugement; // 💾 NOUVELLE CASE !
+
+	// Miniteur pour faire disparaître le texte de jugement après un court instant
+	private float minuteurJugement = 0f;
+
 	void Awake()
 	{
 		instance = this;
 
-		// SÉCURITÉ 1 : Si on a oublié de glisser l'AudioSource, le script la cherche tout seul sur l'objet
 		if (laMusique == null)
 		{
 			laMusique = GetComponent<AudioSource>();
 		}
 	}
 
+	void Start()
+	{
+		MettreAJourInterface();
+		if (affichageJugement != null) affichageJugement.text = "";
+	}
+
 	void Update()
 	{
 		if (!jeuACommence)
 		{
-			// Dès qu'on appuie sur une touche pour lancer le jeu
 			if (Input.anyKeyDown)
 			{
-				// SÉCURITÉ 2 : On vérifie si l'AudioSource a bien une musique dedans
-				if (laMusique == null)
+				if (laMusique == null || laMusique.clip == null || leScroller == null)
 				{
-					Debug.LogError("🚨 BUG : L'AudioSource est INTROUVABLE sur le GameManager !");
 					return;
 				}
 
-				if (laMusique.clip == null)
-				{
-					Debug.LogError("🚨 BUG : Il n'y a AUCUN fichier musique dans la case 'AudioClip' de l'AudioSource !");
-					return;
-				}
-
-				if (leScroller == null)
-				{
-					Debug.LogError("🚨 BUG : L'objet 'Conteneur_Notes' (NoteScroller) n'est pas glissé dans le GameManager !");
-					return;
-				}
-
-				// Si toutes les sécurités passent, on lance le jeu !
 				jeuACommence = true;
 				leScroller.jeuDemarre = true;
 				laMusique.Play();
-
-				Debug.Log("✅ TOUT EST OK : La musique '" + laMusique.clip.name + "' se lance et le scroller démarre !");
+			}
+		}
+		else
+		{
+			// Système de disparition du texte "PERFECT/GOOD" après 0.5 seconde
+			if (minuteurJugement > 0)
+			{
+				minuteurJugement -= Time.deltaTime;
+				if (minuteurJugement <= 0 && affichageJugement != null)
+				{
+					affichageJugement.text = "";
+				}
 			}
 		}
 	}
 
+	// Gestion des différents types de réussites
+	public void DeclencherJugement(string type)
+	{
+		if (affichageJugement == null) return;
+
+		if (type == "PERFECT")
+		{
+			scoreActuel += 150; // Plus de points !
+			comboActuel++;
+			affichageJugement.text = "<color=#00FF00>PERFECT !</color>"; // Vert
+		}
+		else if (type == "GOOD")
+		{
+			scoreActuel += 100;
+			comboActuel++;
+			affichageJugement.text = "<color=#FFFF00>GOOD</color>"; // Jaune
+		}
+		else if (type == "BAD")
+		{
+			scoreActuel += 50;
+			comboActuel = 0; // Le combo se brise sur un Bad !
+			affichageJugement.text = "<color=#FF00FF>BAD</color>"; // Violet
+		}
+		else if (type == "MISS")
+		{
+			comboActuel = 0;
+			affichageJugement.text = "<color=#FF0000>MISS...</color>"; // Rouge
+		}
+
+		minuteurJugement = 0.5f; // Le texte reste visible une demi-seconde
+		MettreAJourInterface();
+	}
+
+	// Gardien du score classique (utilisé pour la fin des notes longues)
 	public void NoteTouchee()
 	{
 		scoreActuel += 100;
 		comboActuel++;
-		Debug.Log("⭐ Score : " + scoreActuel + " | Combo : " + comboActuel);
+		MettreAJourInterface();
 	}
 
 	public void NoteRatee()
 	{
-		comboActuel = 0;
-		Debug.Log("❌ RATÉ ! Le combo retombe à 0.");
+		DeclencherJugement("MISS");
+	}
+
+	void MettreAJourInterface()
+	{
+		if (affichageScore != null) affichageScore.text = "SCORE: " + scoreActuel.ToString();
+
+		if (affichageCombo != null)
+		{
+			if (comboActuel > 0) affichageCombo.text = "COMBO x" + comboActuel.ToString();
+			else affichageCombo.text = "";
+		}
 	}
 }

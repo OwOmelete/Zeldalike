@@ -4,17 +4,20 @@ public class DestroyOnExit : MonoBehaviour
 {
 	void Update()
 	{
-		// On vérifie la vraie position à l'écran (World Space)
-		// Si le déchet descend en dessous du bas de l'écran (Y < -10)
-		if (transform.position.y < -5f) // Si -5f est encore trop bas, essaie -2f ou -3f
+		// SÉCURITÉ : Si ce script a été désactivé par le ButtonController
+		// (parce que le joueur est en train de maintenir la note), on ne fait rien !
+		if (!this.enabled) return;
+
+		// Si la note descend en dessous de la zone de l'écran (-15f)
+		if (transform.position.y < -15f)
 		{
-			// On prévient le GameManager que la note est ratée avant de la détruire
-			if (GameManager.instance != null)
+			// On signale le raté au GameManager uniquement si le jeu a commencé
+			if (GameManager.instance != null && GameManager.instance.jeuACommence)
 			{
 				GameManager.instance.NoteRatee();
 			}
 
-			// On détruit le déchet
+			// On détruit l'objet proprement
 			Destroy(gameObject);
 		}
 	}

@@ -7,51 +7,81 @@ public class ButtonController : MonoBehaviour
 	public Color couleurNormale;
 	public Color couleurAppuye;
 	public KeyCode toucheAssignee;
-
-	// On va lui donner le conteneur pour aller chercher les déchets
 	public Transform conteneurNotes;
 
-	// La distance max en pixels pour valider un coup (la tolérance du timing)
-	public float distanceTolerance = 75f;
+	[Header("Seuils de Précision (en Pixels)")]
+	public float margePerfect = 20f;
+	public float margeGood = 45f;
+	public float margeBad = 75f; // Équivalent à ton ancienne distanceTolerance
+
+	private NoteLongue noteLongueActive;
 
 	void Start()
 	{
 		laCaseImage = GetComponent<Image>();
-		laCaseImage.color = couleurNormale;
+		if (laCaseImage != null) laCaseImage.color = couleurNormale;
 	}
 
 	void Update()
 	{
-		// Effet visuel des touches
 		if (Input.GetKeyDown(toucheAssignee))
 		{
-			laCaseImage.color = couleurAppuye;
+			if (laCaseImage != null) laCaseImage.color = couleurAppuye;
 			VerifierHit();
+		}
+
+		if (Input.GetKey(toucheAssignee) && noteLongueActive != null)
+		{
+			noteLongueActive.ReduireBande(400f);
 		}
 
 		if (Input.GetKeyUp(toucheAssignee))
 		{
-			laCaseImage.color = couleurNormale;
+			if (laCaseImage != null) laCaseImage.color = couleurNormale;
+
+			if (noteLongueActive != null)
+			{
+				Debug.Log("❌ RELÂCHÉ TROP TÔT !");
+				GameManager.instance.DeclencherJugement("MISS");
+				Destroy(noteLongueActive.gameObject);
+				noteLongueActive = null;
+			}
 		}
 	}
 
 	void VerifierHit()
 	{
-		// On regarde tous les déchets qui descendent dans le conteneur
 		foreach (Transform dechet in conteneurNotes)
 		{
-			// On calcule l'écart vertical (Y) entre cette case blanche et le déchet
 			float distanceY = Mathf.Abs(transform.position.y - dechet.position.y);
-
-			// On vérifie aussi s'ils sont bien alignés horizontalement (X) sur la même piste
 			float distanceX = Mathf.Abs(transform.position.x - dechet.position.x);
 
-			if (distanceY <= distanceTolerance && distanceX < 50f)
+			// On vérifie d'abord si l'objet est bien sur notre couloir X
+			if (distanceX < 50f)
 			{
-				Destroy(dechet.gameObject);
-				Debug.Log("TOUCHÉ EN RYTHME !");
-				GameManager.instance.NoteTouchee();
-				break; // On arrête la boucle pour ne détruire qu'un déchet à la fois
+				// On applique le barème selon la distance en Y
+				if (distanceY <= margeBad)
+				{
+					string verdict = "BAD";
+					if (distanceY <= margePerfect) verdict = "PERFECT";
+					else if (distanceY <= margeGood) verdict = "GOOD";
+
+					// Traitement de la note selon sa nature
+					NoteLongue scriptNoteLongue = dechet.GetComponent<NoteLongue>();
+
+					if (scriptNoteLongue != null)
+					{
+						noteLongueActive = scriptNoteLongue;
+						noteLongueActive.EnclencherMaintien();
+						GameManager.instance.DeclencherJugement(verdict); // Le verdict tombe !
+					}
+					else
+					{
+						Destroy(dechet.gameObject);
+						GameManager.instance.DeclencherJugement(verdict); // Le verdict tombe !
+					}
+					break;
+				}
 			}
 		}
 	}
