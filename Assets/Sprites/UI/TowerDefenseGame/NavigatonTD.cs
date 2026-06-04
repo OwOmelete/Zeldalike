@@ -33,7 +33,6 @@ public class NavigationTD : MonoBehaviour
     [Header("Reference")]
     public GameManagerTD gameManagerTD;
 
-    // Privées
     Vector2 curseurInitialPos;
     Vector2 currentButtonPosition;
     int currentSecteur = -1;
@@ -46,17 +45,12 @@ public class NavigationTD : MonoBehaviour
     bool asChoose;
     bool asSelected;
 
-    // ─────────────────────────────────────────
     void Start()
     {
         SetNavigation(Navigation.Mode.Automatic);
         if (boutons.Count > 0)
             EventSystem.current.SetSelectedGameObject(boutons[0]);
     }
-
-    // ─────────────────────────────────────────
-    // Navigation des boutons
-    // ─────────────────────────────────────────
 
     void SetNavigation(Navigation.Mode mode)
     {
@@ -67,10 +61,6 @@ public class NavigationTD : MonoBehaviour
             b.navigation = new Navigation { mode = mode };
         }
     }
-
-    // ─────────────────────────────────────────
-    // Sélecteur de tour
-    // ─────────────────────────────────────────
 
     public void ChooseTower(Transform other)
     {
@@ -89,6 +79,7 @@ public class NavigationTD : MonoBehaviour
     IEnumerator WaitForChoosing()
     {
         isChoosing = true;
+       
 
         while (!asChoose)
         {
@@ -117,10 +108,6 @@ public class NavigationTD : MonoBehaviour
         curseur.transform.position = curseurInitialPos;
         ResetAllSprites();
     }
-
-    // ─────────────────────────────────────────
-    // Curseur & sélection
-    // ─────────────────────────────────────────
 
     void UpdateCurseur()
     {
@@ -160,7 +147,7 @@ public class NavigationTD : MonoBehaviour
 
     void UpdateSelection()
     {
-        // Réservé pour logique supplémentaire sur la sélection
+        
     }
 
     void CheckConfirmation()
@@ -215,9 +202,6 @@ public class NavigationTD : MonoBehaviour
         }
     }
 
-    // ─────────────────────────────────────────
-    // Helpers
-    // ─────────────────────────────────────────
 
     int GetSecteur(Vector2 stick)
     {

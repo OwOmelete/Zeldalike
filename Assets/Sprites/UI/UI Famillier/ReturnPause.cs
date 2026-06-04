@@ -8,9 +8,12 @@ public class ReturnPause : MonoBehaviour
     {
         if (Gamepad.current.buttonEast.wasPressedThisFrame)
         {
-            
-            if(!uiManager.isInPC)uiManager.TogglePauseMenu();
-            gameObject.SetActive(false);
+            ExitPC();
         }
+    }
+    void ExitPC()
+    {
+        if(!uiManager.isInPC)uiManager.TogglePauseMenu();
+            gameObject.SetActive(false);
     }
 }

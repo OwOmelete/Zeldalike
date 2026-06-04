@@ -14,7 +14,7 @@ public class Tuyaux : MonoBehaviour
     {
         ratio=vitesseDePropagation;
         instanceMaterial = new Material(baseMaterial);
-        GetComponent<Renderer>().material = instanceMaterial;
+        if(instanceMaterial!=null)        GetComponent<Renderer>().material = instanceMaterial;
         instanceMaterial.SetFloat("_Ice_Progression",1);
 
          StartCoroutine(TurnOnPipe());
