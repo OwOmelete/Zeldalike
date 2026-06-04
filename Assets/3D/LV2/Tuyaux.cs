@@ -10,18 +10,20 @@ public class Tuyaux : MonoBehaviour
     float ratio ;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-   void Start()
+    void Start()
     {
-        ratio=vitesseDePropagation;
+        ratio = vitesseDePropagation;
         instanceMaterial = new Material(baseMaterial);
-        if(instanceMaterial!=null)        GetComponent<Renderer>().material = instanceMaterial;
-        instanceMaterial.SetFloat("_Ice_Progression",1);
-
-         StartCoroutine(TurnOnPipe());
+        if (instanceMaterial != null)
+        {
+            GetComponent<Renderer>().material = instanceMaterial;
+            instanceMaterial.SetFloat("_Ice_Progression", 1);
+        }
+        StartCoroutine(TurnOnPipe());
     }
-     IEnumerator TurnOnPipe()
+    
+    IEnumerator TurnOnPipe()
     {
-        
         while (vitesseDePropagation > -7)
         {
             vitesseDePropagation-=Time.deltaTime;
