@@ -1,6 +1,7 @@
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManagerTD : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class GameManagerTD : MonoBehaviour
     public int life;
     public TextMeshProUGUI energieText;
     public TextMeshProUGUI lifeText;
+    public GameObject TowerDefence;
     public void UpdateEnergie(bool signe,int add)
     {
         if(signe) energie+=add;
@@ -24,5 +26,9 @@ public class GameManagerTD : MonoBehaviour
     {
         energieText.text = energie.ToString();
         lifeText.text = life.ToString();
+    }
+    void Update()
+    {
+        if(Gamepad.current.startButton.wasPressedThisFrame) TowerDefence.SetActive(false);
     }
 }
