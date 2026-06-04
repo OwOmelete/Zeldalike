@@ -127,7 +127,7 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
 
     private int angleToInt(float angle)
     {
-        float curAngle = 360 / 4; 
+        float curAngle = 360 / 8; 
         angle -= curAngle/2;
         if (angle < 0) angle += 360;
 
