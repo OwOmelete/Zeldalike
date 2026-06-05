@@ -13,6 +13,6 @@ public class isOnPc : MonoBehaviour
     void OnDisable()
     {
        uiManager.isInPC=false; 
-       TopDownPlayerController.Instance.moveSpeed=moveSpeed;
+       TopDownPlayerController.Instance.moveSpeed=12f;
     }
 }
