@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -28,6 +29,7 @@ public class SlotManager : MonoBehaviour
     private Vector2 targetPosition;
     public float moveSpeed = 5f;
     private bool isMoving = false;
+    public int localFamiCount;
 
     void Awake()
     {
@@ -41,9 +43,31 @@ public class SlotManager : MonoBehaviour
         SetupNavigation();
     }
     void OnEnable()
+{
+    Debug.Log("OnEnable");
+
+    defaultSlotPosition = slotPosition;
+    SetupNavigation();
+
+    int famiToAdd = InvoManager.Instance.InvoList.Count - localFamiCount;
+
+    Debug.Log("famiToAdd = " + famiToAdd);
+
+    if (famiToAdd > 0)
     {
-        defaultSlotPosition = slotPosition;
-        SetupNavigation();
+        Debug.Log("Avant AddRandomFamilliers");
+
+        StartCoroutine(AddFamilliersT(famiToAdd));
+
+        Debug.Log("Après AddRandomFamilliers");
+
+        localFamiCount += InvoManager.Instance.InvoList.Count;
+    }
+}
+IEnumerator AddFamilliersT(int famiToAdd)
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+        AddRandomFamilliers(famiToAdd);
     }
 
     void Update()
@@ -89,16 +113,23 @@ public class SlotManager : MonoBehaviour
             slotPosition.y -= slotOffset + 30;
         }
     }
-    public void AddRandomFamilliers(int amount)
+public void AddRandomFamilliers(int amount)
 {
+    Debug.Log("AddRandomFamilliers appelé");
+
     if (testFamilliers == null || testFamilliers.Length == 0)
+    {
+        Debug.Log("testFamilliers vide !");
         return;
+    }
 
     for (int i = 0; i < amount; i++)
     {
+        Debug.Log("Ajout famillier " + i);
+
         FamillierData random = testFamilliers[Random.Range(0, testFamilliers.Length)];
 
-        AddFamillier(random); 
+        AddFamillier(random);
     }
 }
 
