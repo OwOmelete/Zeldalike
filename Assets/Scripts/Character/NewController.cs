@@ -73,9 +73,13 @@ public class TopDownPlayerController : MonoBehaviour
     private void onSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         cameraTransform = Camera.main.transform;
-        controller.enabled = false;
-        transform.position = new Vector3(-90,-2.48f,-42);
-        controller.enabled = true;
+        if (controller != null)
+        {
+            controller.enabled = false;
+            transform.position = new Vector3(-90,-2.48f,-42);
+            controller.enabled = true;
+            
+        }
     }
 
     private void Respawn()
