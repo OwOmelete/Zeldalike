@@ -6,11 +6,12 @@ public class TriggerMiniJeu : MonoBehaviour
 {
     public GameObject canvas;
     public GameObject Y;
+    bool canAccess;
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-        StartCoroutine(waitForInput());
+        canAccess=true;
         Y.SetActive(true);
         }
     }
@@ -18,20 +19,15 @@ public class TriggerMiniJeu : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-        StopCoroutine(waitForInput());
+        canAccess=false;
         Y.SetActive(false);
         }
     }
-    IEnumerator waitForInput()
+    void Update()
     {
-        while (true)
+         if(Gamepad.current.buttonNorth.wasPressedThisFrame && canAccess )
         {
-        if(Gamepad.current.buttonNorth.wasPressedThisFrame)
-        {
-            canvas.SetActive(true); 
-        }
-            
-        yield return null; 
+           if (canvas!=null) canvas.SetActive(true); 
         }
     }
 }
