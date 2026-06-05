@@ -40,7 +40,7 @@ public class InvoDataInstance
     public float hotValue;
     public float veryHotValue;
 
-    public temperature currentTemperature;
+    public temperature currentTemperature = temperature.cold;
 
     public float attackDelay;
 
