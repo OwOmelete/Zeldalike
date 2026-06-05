@@ -57,10 +57,14 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
         {
             if (MortGeulGlacon != null)
             {
-                foreach (var door in _combatZone.doors)
+                if (_combatZone!= null)
+                {
+                   foreach (var door in _combatZone.doors)
                 {
                     door.OpenDoor();
+                } 
                 }
+                
                 
                 MortGeulGlacon.SetActive(true);
                 MortGeulGlacon.transform.position = transform.position + new Vector3(0,1.5f,0); 
