@@ -38,6 +38,7 @@ public class EnnemyTD : MonoBehaviour
     [SerializeField] Color32 colorBurn;
     [Header("Reference")]
     [SerializeField] GameManagerTD gameManagerTD;
+    [SerializeField] GameObject underBridge;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -178,6 +179,8 @@ public class EnnemyTD : MonoBehaviour
             if (DistanceToTarget(patrole[nextDestination]) > 2f)  Move(patrole[nextDestination]);
             else if (nextDestination<patrole.Count-1) nextDestination++;
             else gameManagerTD.UpdateLife(1);
+
+            if(nextDestination==4)transform.SetParent(underBridge.transform);
             yield return null;  
         }
         
