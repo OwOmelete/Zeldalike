@@ -36,10 +36,7 @@ public class NavigationMenuStart : MonoBehaviour
         canChange=true;
         changing=false;
     }
-    public void OnSetActive()
-    {
-        EventSystem.current.SetSelectedGameObject(boutons[0]);
-    }
+    
     void Update()
     {
         Vector2 leftStick = Gamepad.current.leftStick.ReadValue();
