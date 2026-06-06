@@ -9,14 +9,16 @@ public class CombatZone : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (!activated)
+        if (other.CompareTag("Player"))
         {
-            activated = true;
-            foreach (var door in doors)
+            if (!activated)
             {
-                door.Close();
+                activated = true;
+                foreach (var door in doors)
+                {
+                    door.Close();
+                }
             }
         }
-
     }
 }

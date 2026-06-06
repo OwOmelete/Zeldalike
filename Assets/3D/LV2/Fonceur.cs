@@ -12,7 +12,6 @@ public class Fonceur : EnnemyRework
     public bool canAttack=true;
     public PlayerHealth playerHealth;
     public bool asAttack;
-
     void Awake()
     {
         canAttack=true;
@@ -26,8 +25,16 @@ public class Fonceur : EnnemyRework
                 MortGeulGlacon.SetActive(true);
                 MortGeulGlacon.transform.position = transform.position + new Vector3(0,1.5f,0); 
             }
-            
-            Destroy(gameObject);
+            if (_combatZone!= null)
+            {
+                foreach (var door in _combatZone.doors)
+                {
+                    door.OpenDoor();
+                } 
+            }
+
+
+            Destroy(gameObject,0.5f);
         }
         if (dash)
         {

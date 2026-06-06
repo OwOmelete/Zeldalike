@@ -40,7 +40,7 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
     public Animator animator;
     public Camera MainCamera;
     public GameObject MortGeulGlacon;
-    [SerializeField] private CombatZone _combatZone;
+    public CombatZone _combatZone;
     
 
      void Start()
@@ -49,6 +49,7 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
     // Pour eviter de mettre le test de range dans l'update on va faire un scipt secondaire qui invoque les action avec un sphereCollider en trigger
         OnRange+=PrepareAttack;
         NewDestination();
+        player = InvoManager.Instance.gameObject.transform; 
     }
     public virtual void Update()
     {
@@ -69,8 +70,8 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
                 MortGeulGlacon.SetActive(true);
                 MortGeulGlacon.transform.position = transform.position + new Vector3(0,1.5f,0); 
             }
-            
-            Destroy(gameObject);
+
+            Destroy(gameObject,1f);
         }
         
         
