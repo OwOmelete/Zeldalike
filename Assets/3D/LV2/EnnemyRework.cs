@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using Unity.Mathematics;
 public class EnnemyRework :  MonoBehaviour, IDamagable
 {
         [Header("StatsEnnemi")]
@@ -82,6 +83,8 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
         }
         else if (!fightStart && !IsPatrol)
         {
+             if(patrol.Count>0) 
+           {
             Vector3 distance = patrol[nextDestination].position - transform.position;
             if (Math.Abs(distance.magnitude) < 1 && !isIdle)
             {
@@ -94,14 +97,19 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
             }
             
         }
+        }
     }
    
-    
+    public void StartFight(Collider other)
+    {
+        fightStart=true;
+        player = other.transform;
+    }
     void OnTriggerEnter(Collider collider)
     {
         if (collider.CompareTag("Player"))
         {
-            fightStart=true;
+            StartFight(collider);
             GetComponent<SphereCollider>().enabled=false;
         }
     }
@@ -163,6 +171,8 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
     float distance = 4f; 
 
     zoneAttack.transform.position = transform.position + dir * distance;
+    Quaternion rot = Quaternion.LookRotation(dir)*Quaternion.Euler(-90,0,0);
+    zoneAttack.transform.localRotation = rot;
 }
 
 

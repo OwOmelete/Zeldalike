@@ -36305,6 +36305,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 787009347}
   m_Mesh: {fileID: 1811050927446270320, guid: 3e63bb454c535194990d7399e1ec7ae5, type: 3}
+--- !u!114 &789339913 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5912807320336456151, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+  m_PrefabInstance: {fileID: 1667562852610019197}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72324ee2de07121459224a9668e5408b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &790361256
 GameObject:
   m_ObjectHideFlags: 0
@@ -38901,6 +38912,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 855943695}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &856708138 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5958694440244644374, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+  m_PrefabInstance: {fileID: 1667562852610019197}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd89014284c7c0747a38934bdb3387a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &857362432 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5781123334148072915, guid: f03e9c0e6b508d2458a1a294c1793772, type: 3}
@@ -99683,6 +99705,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 3572020552898679830, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+      propertyPath: m_Radius
+      value: 1.42
+      objectReference: {fileID: 0}
     - target: {fileID: 3646888593805170630, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -99751,10 +99777,26 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 5331989155205010281, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5351453273832739401, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+      propertyPath: m_Size.y
+      value: 7.8785
+      objectReference: {fileID: 0}
+    - target: {fileID: 5351453273832739401, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+      propertyPath: m_Center.y
+      value: -1.43925
+      objectReference: {fileID: 0}
     - target: {fileID: 5441191433017156826, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
       propertyPath: playerHealth
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5447409258358308144, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+      propertyPath: ennemyRework
+      value: 
+      objectReference: {fileID: 789339913}
     - target: {fileID: 5477823659724634665, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
       propertyPath: MainCamera
       value: 
@@ -99791,6 +99833,14 @@ PrefabInstance:
       propertyPath: MainCamera
       value: 
       objectReference: {fileID: 1412361002}
+    - target: {fileID: 5912807320336456151, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+      propertyPath: zoneAttack
+      value: 
+      objectReference: {fileID: 1667562852610019200}
+    - target: {fileID: 5912807320336456151, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+      propertyPath: patrol.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5943382280884019537, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -99811,6 +99861,10 @@ PrefabInstance:
       propertyPath: MainCamera
       value: 
       objectReference: {fileID: 1412361002}
+    - target: {fileID: 5958694440244644374, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+      propertyPath: patrol.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5958694440244644374, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
       propertyPath: 'patrol.Array.data[0]'
       value: 
@@ -99882,6 +99936,18 @@ PrefabInstance:
     - target: {fileID: 6618195461670340378, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640465693808533167, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+      propertyPath: ennemyRework
+      value: 
+      objectReference: {fileID: 856708138}
+    - target: {fileID: 6771891979154895318, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+      propertyPath: m_Size.y
+      value: 8.5051
+      objectReference: {fileID: 0}
+    - target: {fileID: 6771891979154895318, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+      propertyPath: m_Center.y
+      value: -1.7525507
       objectReference: {fileID: 0}
     - target: {fileID: 6832292646053158336, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
       propertyPath: m_AnchorMax.x
@@ -99959,7 +100025,8 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Wall
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5331989155205010281, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -99986,6 +100053,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945c2b3bf584b9c4c81adbea2b7f7a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Door
+--- !u!1 &1667562852610019200 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 885342773686715896, guid: 9d24297d3a6d7a6418e38ae5bea0d2c8, type: 3}
+  m_PrefabInstance: {fileID: 1667562852610019197}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1686741420375976394
 PrefabInstance:
   m_ObjectHideFlags: 0

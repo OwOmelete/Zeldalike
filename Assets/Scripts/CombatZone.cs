@@ -5,6 +5,7 @@ public class CombatZone : MonoBehaviour
 {
     public Door[] doors;
     private bool activated = false;
+    public EnnemyRework ennemyRework;
     
     
     private void OnTriggerEnter(Collider other)
@@ -19,6 +20,8 @@ public class CombatZone : MonoBehaviour
                     door.Close();
                 }
             }
+            ennemyRework.StartFight(other);
+            Debug.Log("PlayerDetected");
         }
     }
 }

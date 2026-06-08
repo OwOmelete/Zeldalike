@@ -48,12 +48,15 @@ public class Fonceur : EnnemyRework
         }
         else if (!fightStart && !IsPatrol)
         {
+           if(patrol.Count>0) 
+           {
             Vector3 distance = patrol[nextDestination].position - transform.position;
             if (Math.Abs(distance.magnitude) < 1)
             {
                 NewDestination();
             }
             Move(patrol[nextDestination]);
+        }
         }
     }
 
@@ -112,6 +115,7 @@ public class Fonceur : EnnemyRework
         canAttack=true;
         yield return new WaitForEndOfFrame();
     }
+    
      IEnumerator Turn(Transform target)
     {
         Vector3 dir = target.position - transform.position;
@@ -145,6 +149,7 @@ public class Fonceur : EnnemyRework
     zoneAttack.GetComponent<DetectionAttack>().canAttack = true;
     col.enabled = false;
     zoneAttack.SetActive(false);
+    yield return new WaitForSeconds(2f);
     IsAttacking = false;
     asAttack = false;
     StartCoroutine(Cooldown());
