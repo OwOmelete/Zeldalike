@@ -11,6 +11,16 @@ public class TriggerMiniJeu : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log(other);
+        ReferenceUi refUi = other.gameObject.GetComponent<ReferenceUi>();
+
+        if(refUi == null)
+            {
+            Debug.Log("ReferenceUi introuvable !");
+            return;
+            }
+
+        canvas = refUi.Reference();
         canAccess=true;
         Y.SetActive(true);
         }
@@ -19,6 +29,7 @@ public class TriggerMiniJeu : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+        
         canAccess=false;
         Y.SetActive(false);
         }

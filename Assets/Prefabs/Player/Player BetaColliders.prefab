@@ -225,7 +225,8 @@ PrefabInstance:
     - {fileID: 4245628959529136858, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
     - {fileID: 850682432443864654, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
     - {fileID: 4983104941721621871, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8111891940072174151, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8492833549898910848, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
       insertIndex: 0
@@ -233,13 +234,34 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8492833549898910848, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
       insertIndex: 7
       addedObject: {fileID: 3343172715801422483}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 296223003020906809, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4470454725890272932}
   m_SourcePrefab: {fileID: 100100000, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
 --- !u!198 &1308933537687849622 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 3518842451900934354, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
   m_PrefabInstance: {fileID: 2521792104773214788}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2802173341030953853 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 296223003020906809, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
+  m_PrefabInstance: {fileID: 2521792104773214788}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4470454725890272932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2802173341030953853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc0d97e232fbf074896e2d4fcffff26a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReferenceUi
+  Pc: {fileID: 0}
 --- !u!4 &6279055352258031300 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8492833549898910848, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
@@ -250,7 +272,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4927297894258511424, guid: 9dbe54cc7f2df8f42b4d3d23b96ad955, type: 3}
   m_PrefabInstance: {fileID: 2521792104773214788}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2802173341030953853}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d84a43afe26614b4eaeab86cb912d2e0, type: 3}
