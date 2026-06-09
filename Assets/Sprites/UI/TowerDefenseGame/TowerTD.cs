@@ -44,7 +44,7 @@ public class TowerTD : MonoBehaviour
     IEnumerator Attack()
     {
         isAttacking=true;
-        while (isInRange&&ennemyTD[0] != null)
+        while (isInRange&&ennemyTD.Count>0)
         {
            
               ennemyTD[0].takeDammage(damage); 

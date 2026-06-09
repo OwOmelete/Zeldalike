@@ -26,6 +26,7 @@ int uniteCount;
             if (unite[uniteCount].activeSelf)
             {
                 uniteCount++;
+                if (uniteCount>=unite.Count)uniteCount=0;
                 
                 yield return null;
             }
@@ -39,6 +40,7 @@ int uniteCount;
                 Vector3 dir = origine.transform.position - SpawnPoint;
                 unite[uniteCount].transform.position -= dir*0.8f;
                 uniteCount++;
+                if (uniteCount>=unite.Count)uniteCount=0;
                 yield return new WaitForSeconds(10f); 
             }
             

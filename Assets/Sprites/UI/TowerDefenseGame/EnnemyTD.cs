@@ -70,7 +70,7 @@ public class EnnemyTD : MonoBehaviour
     {
         life-=dammage;
         if (dammageAnimation()!=null) StopCoroutine(dammageAnimation());
-        StartCoroutine (dammageAnimation());
+        if (gameObject.activeSelf) StartCoroutine (dammageAnimation());
         
         Die();
     }
@@ -163,7 +163,7 @@ public class EnnemyTD : MonoBehaviour
     }
     IEnumerator ObstacleFight()
     {
-       while (life > 1 && targetFight[0]!=null && targetFight[0].life > 1)
+       while (life > 1 && targetFight.Count>0 && targetFight[0].life > 1)
         {
             takeDammage(targetFight[0].attack);
             yield return new WaitForSeconds(targetFight[0].CouldownAttack);
@@ -178,7 +178,12 @@ public class EnnemyTD : MonoBehaviour
         {
             if (DistanceToTarget(patrole[nextDestination]) > 2f)  Move(patrole[nextDestination]);
             else if (nextDestination<patrole.Count-1) nextDestination++;
-            else gameManagerTD.UpdateLife(1);
+            else 
+            {
+                gameManagerTD.UpdateLife(1);
+                nextDestination=0;
+                gameObject.SetActive(false);
+            }
 
             if(nextDestination==4)transform.SetParent(underBridge.transform);
             yield return null;  

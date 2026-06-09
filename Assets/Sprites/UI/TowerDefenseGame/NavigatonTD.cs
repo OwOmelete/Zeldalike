@@ -32,6 +32,7 @@ public class NavigationTD : MonoBehaviour
     public GameObject curseur;
     [Header("Reference")]
     public GameManagerTD gameManagerTD;
+    public bool[] isBuild = new bool[5] {false,false,false,false,false};
 
     Vector2 curseurInitialPos;
     Vector2 currentButtonPosition;
@@ -47,6 +48,7 @@ public class NavigationTD : MonoBehaviour
 
     void Start()
     {
+        
         SetNavigation(Navigation.Mode.Automatic);
         if (boutons.Count > 0)
             EventSystem.current.SetSelectedGameObject(boutons[0]);
@@ -56,10 +58,17 @@ public class NavigationTD : MonoBehaviour
     {
         foreach (GameObject go in boutons)
         {
-            Button b = go.GetComponent<Button>();
+            if (go.activeSelf)
+            {
+             Button b = go.GetComponent<Button>();
             if (b == null) continue;
-            b.navigation = new Navigation { mode = mode };
+            b.navigation = new Navigation { mode = mode }; 
+            if(mode != Navigation.Mode.None)EventSystem.current.SetSelectedGameObject(go);
+            }
+            
         }
+        
+        
     }
 
     public void ChooseTower(Transform other)
@@ -91,7 +100,7 @@ public class NavigationTD : MonoBehaviour
 
             UpdateCurseur();
             UpdateSelection();
-            if (Gamepad.current.buttonSouth.wasPressedThisFrame)CheckConfirmation();
+            if (Gamepad.current.buttonSouth.wasPressedThisFrame) CheckConfirmation();
             
 
             yield return null;
@@ -157,47 +166,62 @@ public class NavigationTD : MonoBehaviour
         switch (currentSecteur)
         {
             case 0: 
+            if(gameManagerTD.energie<TourInvokFamillierBasePrice) return;
             gameManagerTD.UpdateEnergie(false,TourInvokFamillierBasePrice); 
             int position = boutons.IndexOf(EventSystem.current.currentSelectedGameObject);
             TourInvokFamillier[position].SetActive(true);
             isChoosing = false;
             ExitChoosing();
+            EventSystem.current.currentSelectedGameObject.SetActive(false);
+            SetNavigation(Navigation.Mode.Automatic);
             break;
 
             case 1:
+            if(gameManagerTD.energie<tourBasePrice) return;
             gameManagerTD.UpdateEnergie(false,tourBasePrice); 
             tourBase[tourBaseInt].SetActive(true);
             tourBase[tourBaseInt].transform.position = currentButtonPosition;
             tourBaseInt++;
             isChoosing = false;
             ExitChoosing();
+            EventSystem.current.currentSelectedGameObject.SetActive(false);
+            SetNavigation(Navigation.Mode.Automatic);
             break;
 
             case 2: 
+            if(gameManagerTD.energie<TourGlacePrice) return;
             gameManagerTD.UpdateEnergie(false,TourGlacePrice); 
             TourGlace[TourGlaceInt].SetActive(true);
             TourGlace[TourGlaceInt].transform.position = currentButtonPosition;
             TourGlaceInt++;
             isChoosing = false;
             ExitChoosing();
+            EventSystem.current.currentSelectedGameObject.SetActive(false);
+            SetNavigation(Navigation.Mode.Automatic);
             break;
 
             case 3: 
+            if(gameManagerTD.energie<TourFeuPrice) return;
             gameManagerTD.UpdateEnergie(false,TourFeuPrice); 
             TourFeu[TourFeuInt].SetActive(true);
             TourFeu[TourFeuInt].transform.position = currentButtonPosition;
             TourFeuInt++;
             isChoosing = false;
             ExitChoosing();
+            EventSystem.current.currentSelectedGameObject.SetActive(false);
+            SetNavigation(Navigation.Mode.Automatic);
             break;
 
             case 4: 
+            if(gameManagerTD.energie<AneantisseurPrice) return;
             gameManagerTD.UpdateEnergie(false,AneantisseurPrice); 
             Aneantisseur[AneantisseurInt].SetActive(true);
             Aneantisseur[AneantisseurInt].transform.position = currentButtonPosition;
             AneantisseurInt++;
             isChoosing = false;
             ExitChoosing();
+            EventSystem.current.currentSelectedGameObject.SetActive(false);
+            SetNavigation(Navigation.Mode.Automatic);
             break;
         }
     }
