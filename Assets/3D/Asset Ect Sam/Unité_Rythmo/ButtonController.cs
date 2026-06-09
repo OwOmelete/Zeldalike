@@ -12,14 +12,17 @@ public class ButtonController : MonoBehaviour
 	[Header("Seuils de Précision (en Pixels)")]
 	public float margePerfect = 20f;
 	public float margeGood = 45f;
-	public float margeBad = 75f; // Équivalent à ton ancienne distanceTolerance
+	public float margeBad = 75f;
 
 	private NoteLongue noteLongueActive;
+	private NoteScroller scrollerGlobal;
 
 	void Start()
 	{
 		laCaseImage = GetComponent<Image>();
 		if (laCaseImage != null) laCaseImage.color = couleurNormale;
+
+		scrollerGlobal = FindFirstObjectByType<NoteScroller>();
 	}
 
 	void Update()
@@ -32,7 +35,15 @@ public class ButtonController : MonoBehaviour
 
 		if (Input.GetKey(toucheAssignee) && noteLongueActive != null)
 		{
-			noteLongueActive.ReduireBande(400f);
+			if (scrollerGlobal != null)
+			{
+				// On envoie la vitesse brute (ex: 600f), le deltaTime est géré dans NoteLongue
+				noteLongueActive.ReduireBande(scrollerGlobal.vitesseDefilement);
+			}
+			else
+			{
+				noteLongueActive.ReduireBande(600f);
+			}
 		}
 
 		if (Input.GetKeyUp(toucheAssignee))
@@ -56,29 +67,26 @@ public class ButtonController : MonoBehaviour
 			float distanceY = Mathf.Abs(transform.position.y - dechet.position.y);
 			float distanceX = Mathf.Abs(transform.position.x - dechet.position.x);
 
-			// On vérifie d'abord si l'objet est bien sur notre couloir X
 			if (distanceX < 50f)
 			{
-				// On applique le barème selon la distance en Y
 				if (distanceY <= margeBad)
 				{
 					string verdict = "BAD";
 					if (distanceY <= margePerfect) verdict = "PERFECT";
 					else if (distanceY <= margeGood) verdict = "GOOD";
 
-					// Traitement de la note selon sa nature
 					NoteLongue scriptNoteLongue = dechet.GetComponent<NoteLongue>();
 
 					if (scriptNoteLongue != null)
 					{
 						noteLongueActive = scriptNoteLongue;
 						noteLongueActive.EnclencherMaintien();
-						GameManager.instance.DeclencherJugement(verdict); // Le verdict tombe !
+						GameManager.instance.DeclencherJugement(verdict);
 					}
 					else
 					{
 						Destroy(dechet.gameObject);
-						GameManager.instance.DeclencherJugement(verdict); // Le verdict tombe !
+						GameManager.instance.DeclencherJugement(verdict);
 					}
 					break;
 				}
