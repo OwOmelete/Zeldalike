@@ -30,7 +30,6 @@ public class NoteSpawner : MonoBehaviour
 
 	void Start()
 	{
-		// Forcer le scroller à (0,0) au tout début pour calibrer
 		if (GameManager.instance != null && GameManager.instance.leScroller != null)
 		{
 			GameManager.instance.leScroller.transform.localPosition = Vector3.zero;
@@ -42,7 +41,6 @@ public class NoteSpawner : MonoBehaviour
 		}
 	}
 
-	// Public pour être appelé par le menu de sélection au moment du clic
 	public void ChargerPartitionDepuisTexte()
 	{
 		if (GameManager.instance == null || string.IsNullOrEmpty(GameManager.instance.textePartitionSelectionnee))
@@ -68,7 +66,6 @@ public class NoteSpawner : MonoBehaviour
 			}
 		}
 
-		// Reset complet des compteurs pour éviter les bugs de rechargement
 		indexNoteActuelle = 0;
 		tempsTrajetCalcule = false;
 	}
@@ -122,10 +119,8 @@ public class NoteSpawner : MonoBehaviour
 			rectDechet.anchorMax = new Vector2(0.5f, 0f);
 			rectDechet.pivot = new Vector2(0.5f, 0.5f);
 
-			// 🎯 LA CORRECTION : Calcule l'emplacement X parfait peu importe la hiérarchie du Canvas
+			// Évite le décalage horizontal des couloirs lié aux Canvas Parents
 			float positionX = conteneurNotes.InverseTransformPoint(pisteCible.position).x;
-
-			// Calcul Y basé sur la hauteur de spawn fixe
 			float positionYCalculee = hauteurSpawnY - conteneurNotes.anchoredPosition.y;
 
 			rectDechet.anchoredPosition = new Vector2(positionX, positionYCalculee);

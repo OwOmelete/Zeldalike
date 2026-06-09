@@ -5,6 +5,7 @@ public class SelectionDifficulte : MonoBehaviour
 	[Header("Panneaux UI")]
 	public GameObject panneauMenu;    // Glisse "Menu_Selection" ici
 	public GameObject panneauJeu;     // Glisse "Interface_Jeu" ici
+	public GameObject panneauEcranFin; // Glisse "Ecran_Fin" ici
 
 	[Header("Références Jeu")]
 	public NoteScroller leScroller;   // Glisse ton NoteScroller ici
@@ -15,9 +16,10 @@ public class SelectionDifficulte : MonoBehaviour
 
 	void Start()
 	{
-		// Au lancement, le menu est actif et l'interface de jeu est masquée
+		// Au lancement, le menu est actif, le reste est masqué d'office
 		if (panneauMenu != null) panneauMenu.SetActive(true);
 		if (panneauJeu != null) panneauJeu.SetActive(false);
+		if (panneauEcranFin != null) panneauEcranFin.SetActive(false);
 
 		// On bloque le scroller et les inputs de jeu au démarrage
 		if (leScroller != null) leScroller.jeuDemarre = false;
@@ -29,7 +31,6 @@ public class SelectionDifficulte : MonoBehaviour
 		ScoreRequisEtoile = 5000;
 		ModeChoisi = "EASY";
 
-		// On injecte directement le texte de la partition Easy dans le GameManager
 		if (GameManager.instance != null && GameManager.instance.partitionEasy != null)
 		{
 			GameManager.instance.textePartitionSelectionnee = GameManager.instance.partitionEasy.text;
@@ -42,7 +43,6 @@ public class SelectionDifficulte : MonoBehaviour
 		ScoreRequisEtoile = 10000;
 		ModeChoisi = "NORMAL";
 
-		// On injecte directement le texte de la partition Normal dans le GameManager
 		if (GameManager.instance != null && GameManager.instance.partitionNormal != null)
 		{
 			GameManager.instance.textePartitionSelectionnee = GameManager.instance.partitionNormal.text;
@@ -55,7 +55,6 @@ public class SelectionDifficulte : MonoBehaviour
 		ScoreRequisEtoile = 20000;
 		ModeChoisi = "HARD";
 
-		// On injecte directement le texte de la partition Hard dans le GameManager
 		if (GameManager.instance != null && GameManager.instance.partitionHard != null)
 		{
 			GameManager.instance.textePartitionSelectionnee = GameManager.instance.partitionHard.text;
@@ -65,24 +64,28 @@ public class SelectionDifficulte : MonoBehaviour
 
 	private void DemarrerPartie()
 	{
-		// 1. On cache le menu et on affiche l'interface de gameplay
+		// 1. On cache le menu et l'écran de fin, on affiche le tapis de jeu
 		if (panneauMenu != null) panneauMenu.SetActive(false);
+		if (panneauEcranFin != null) panneauEcranFin.SetActive(false);
 		if (panneauJeu != null) panneauJeu.SetActive(true);
 
-		// 🔄 ON FORCE LE SPAWNER À CHARGER LES NOTES MAINTENANT QUE LE TEXTE EST DISPONIBLE
+		// 🔄 SÉCURITÉ : Réactivation et chargement forcé du Spawner
 		NoteSpawner spawner = FindFirstObjectByType<NoteSpawner>();
 		if (spawner != null)
 		{
+			spawner.enabled = true;
 			spawner.ChargerPartitionDepuisTexte();
 		}
 
-		// 2. On lance la musique et le gameplay de manière synchronisée
+		// 2. On réinitialise et lance la synchronisation audio/mécanique
 		if (GameManager.instance != null)
 		{
+			GameManager.instance.ReinitialiserPartie(); // Nettoie le score précédent
 			GameManager.instance.jeuACommence = true;
+
 			if (GameManager.instance.laMusique != null)
 			{
-				GameManager.instance.laMusique.Stop(); // Sécurité : on rembobine la musique
+				GameManager.instance.laMusique.Stop();
 				GameManager.instance.laMusique.Play();
 			}
 		}

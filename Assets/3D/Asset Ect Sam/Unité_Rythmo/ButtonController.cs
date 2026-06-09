@@ -6,7 +6,20 @@ public class ButtonController : MonoBehaviour
 	private Image laCaseImage;
 	public Color couleurNormale;
 	public Color couleurAppuye;
-	public KeyCode toucheAssignee;
+
+	[Header("Contrôles Clavier")]
+	public KeyCode toucheAssignee;          // F, G, H, J
+
+	[Header("Contrôles Manette Xbox")]
+	[Tooltip("Coche cette case si ce bouton utilise une gâchette arrière (LT ou RT)")]
+	public bool estUneGachetteArriere = false;
+
+	[Tooltip("Nom de l'axe Unity (ex: 'GachetteGauche' ou 'GachetteDroite')")]
+	public string nomAxeManette;
+
+	[Tooltip("Pour les boutons d'épaules classiques (LB ou RB)")]
+	public KeyCode boutonEpauleManette;     // JoystickButton4 (LB) ou JoystickButton5 (RB)
+
 	public Transform conteneurNotes;
 
 	[Header("Seuils de Précision (en Pixels)")]
@@ -16,6 +29,7 @@ public class ButtonController : MonoBehaviour
 
 	private NoteLongue noteLongueActive;
 	private NoteScroller scrollerGlobal;
+	private bool gachetteEnfonceeAuFramePrecedent = false;
 
 	void Start()
 	{
@@ -27,17 +41,39 @@ public class ButtonController : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown(toucheAssignee))
+		bool estAppuyeCeFrame = false;
+		bool estEnfonceCeFrame = false;
+		bool estRelacheCeFrame = false;
+
+		// 1. GESTION DES GACHETTES ARRIÈRE ANALOGIQUES (LT / RT)
+		if (estUneGachetteArriere && !string.IsNullOrEmpty(nomAxeManette))
+		{
+			float valeurAxe = Input.GetAxisRaw(nomAxeManette);
+			bool gachettePressee = valeurAxe > 0.5f;
+
+			if (gachettePressee && !gachetteEnfonceeAuFramePrecedent) estAppuyeCeFrame = true;
+			if (gachettePressee) estEnfonceCeFrame = true;
+			if (!gachettePressee && gachetteEnfonceeAuFramePrecedent) estRelacheCeFrame = true;
+
+			gachetteEnfonceeAuFramePrecedent = gachettePressee;
+		}
+
+		// 2. GESTION DES TOUCHES CLAVIER ET ÉPAULES (LB / RB)
+		if (Input.GetKeyDown(toucheAssignee) || Input.GetKeyDown(boutonEpauleManette)) estAppuyeCeFrame = true;
+		if (Input.GetKey(toucheAssignee) || Input.GetKey(boutonEpauleManette)) estEnfonceCeFrame = true;
+		if (Input.GetKeyUp(toucheAssignee) || Input.GetKeyUp(boutonEpauleManette)) estRelacheCeFrame = true;
+
+		// 🎮 REACTION AUX INPUTS
+		if (estAppuyeCeFrame)
 		{
 			if (laCaseImage != null) laCaseImage.color = couleurAppuye;
 			VerifierHit();
 		}
 
-		if (Input.GetKey(toucheAssignee) && noteLongueActive != null)
+		if (estEnfonceCeFrame && noteLongueActive != null)
 		{
 			if (scrollerGlobal != null)
 			{
-				// On envoie la vitesse brute (ex: 600f), le deltaTime est géré dans NoteLongue
 				noteLongueActive.ReduireBande(scrollerGlobal.vitesseDefilement);
 			}
 			else
@@ -46,8 +82,10 @@ public class ButtonController : MonoBehaviour
 			}
 		}
 
-		if (Input.GetKeyUp(toucheAssignee))
+		if (estRelacheCeFrame)
 		{
+			if (Input.GetKey(toucheAssignee) || Input.GetKey(boutonEpauleManette) || (estUneGachetteArriere && Input.GetAxisRaw(nomAxeManette) > 0.5f)) return;
+
 			if (laCaseImage != null) laCaseImage.color = couleurNormale;
 
 			if (noteLongueActive != null)

@@ -67,6 +67,20 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	// Fonction de nettoyage appelée par le menu au lancement d'un niveau
+	public void ReinitialiserPartie()
+	{
+		scoreActuel = 0;
+		comboActuel = 0;
+		maxComboAtteint = 0;
+		totalPerfect = 0;
+		totalGood = 0;
+		totalBad = 0;
+		totalMiss = 0;
+		finDePartieDeclenchee = false;
+		MettreAJourInterface();
+	}
+
 	void Update()
 	{
 		// 🕹️ ENREGISTREMENT : Lancement manuel de la musique pour le mode Éditeur
@@ -101,21 +115,31 @@ public class GameManager : MonoBehaviour
 			if (Input.GetKeyUp(KeyCode.J)) EnregistrerNote(tempsPressionTouche[4], tempsActuel, 4);
 		}
 
-		// 🕹️ LOGIQUE DE JEU STANDARD (Le démarrage est déclenché par l'UI du menu)
+		// 🕹️ LOGIQUE DE JEU STANDARD
 		if (!modeEditeurActif && jeuACommence)
 		{
 			float tempsActuelMusique = laMusique.time;
 
-			if ((tempsActuelMusique >= dureeTotaleDuMorceau - 0.2f || !laMusique.isPlaying) && !finDePartieDeclenchee)
+			// SÉCURITÉ : On ne valide la fin du morceau que si l'AudioSource a démarré (tempsActuelMusique > 0.5s)
+			if (laMusique.isPlaying || tempsActuelMusique > 0.5f)
 			{
-				finDePartieDeclenchee = true;
-				jeuACommence = false;
-
-				if (leScroller != null) leScroller.jeuDemarre = false;
-
-				if (scriptEcranFin != null)
+				if ((tempsActuelMusique >= dureeTotaleDuMorceau - 0.2f || !laMusique.isPlaying) && !finDePartieDeclenchee)
 				{
-					scriptEcranFin.AfficherLesResultats(scoreActuel, maxComboAtteint, totalPerfect, totalGood, totalBad, totalMiss);
+					finDePartieDeclenchee = true;
+					jeuACommence = false;
+
+					if (leScroller != null) leScroller.jeuDemarre = false;
+
+					// Désactivation automatique du spawner pour bloquer les déchets en fin de partie
+					NoteSpawner spawner = FindFirstObjectByType<NoteSpawner>();
+					if (spawner != null) spawner.enabled = false;
+
+					// 🎯 CORRECTIF : Force le GameObject à s'allumer avant d'appeler l'affichage des scores
+					if (scriptEcranFin != null)
+					{
+						scriptEcranFin.gameObject.SetActive(true);
+						scriptEcranFin.AfficherLesResultats(scoreActuel, maxComboAtteint, totalPerfect, totalGood, totalBad, totalMiss);
+					}
 				}
 			}
 
