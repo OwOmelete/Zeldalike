@@ -12,7 +12,6 @@ public class NoteLongue : MonoBehaviour
 
 	void Update()
 	{
-		// SI LA NOTE EST MAINTENUE : On la fige sur place en compensant le mouvement global du scroller
 		if (estMaintenue)
 		{
 			if (GameManager.instance != null && GameManager.instance.leScroller != null)
@@ -23,7 +22,6 @@ public class NoteLongue : MonoBehaviour
 			return;
 		}
 
-		// SI ELLE N'EST PAS TOUCHÉE : Détection de la dead zone classique
 		if (transform.position.y < -15f)
 		{
 			if (GameManager.instance != null && GameManager.instance.jeuACommence)
@@ -43,7 +41,8 @@ public class NoteLongue : MonoBehaviour
 	{
 		if (laBandeVerte != null)
 		{
-			float nouvelleHauteur = laBandeVerte.sizeDelta.y - (Time.deltaTime * vitesse);
+			// Le calcul est maintenant parfaitement calé sur le temps et la vitesse du scroller
+			float nouvelleHauteur = laBandeVerte.sizeDelta.y - (vitesse * Time.deltaTime);
 
 			if (nouvelleHauteur <= 0)
 			{

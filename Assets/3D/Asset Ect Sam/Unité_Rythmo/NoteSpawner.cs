@@ -7,9 +7,6 @@ public class NoteSpawner : MonoBehaviour
 	public GameObject dechetNormalPrefab;
 	public GameObject dechetLongPrefab;
 
-	[Header("Le Fichier de la Partition")]
-	public TextAsset fichierPartition;
-
 	[Header("LES 4 CASES BLANCHES")]
 	public RectTransform[] mesPistesUI;
 
@@ -33,13 +30,10 @@ public class NoteSpawner : MonoBehaviour
 
 	void Start()
 	{
-		// Forcer le scroller à (0,0) au tout début pour calibrer
 		if (GameManager.instance != null && GameManager.instance.leScroller != null)
 		{
 			GameManager.instance.leScroller.transform.localPosition = Vector3.zero;
 		}
-
-		ChargerPartitionDepuisTexte();
 
 		if (conteneurNotes == null && GameManager.instance != null && GameManager.instance.leScroller != null)
 		{
@@ -47,11 +41,15 @@ public class NoteSpawner : MonoBehaviour
 		}
 	}
 
-	void ChargerPartitionDepuisTexte()
+	public void ChargerPartitionDepuisTexte()
 	{
-		if (fichierPartition == null) return;
+		if (GameManager.instance == null || string.IsNullOrEmpty(GameManager.instance.textePartitionSelectionnee))
+		{
+			Debug.LogWarning("⚠️ Aucune partition reçue du GameManager !");
+			return;
+		}
 
-		string[] lignes = fichierPartition.text.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+		string[] lignes = GameManager.instance.textePartitionSelectionnee.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
 		partition = new NoteData[lignes.Length];
 
 		for (int i = 0; i < lignes.Length; i++)
@@ -67,6 +65,9 @@ public class NoteSpawner : MonoBehaviour
 				partition[i] = nouvelleNote;
 			}
 		}
+
+		indexNoteActuelle = 0;
+		tempsTrajetCalcule = false;
 	}
 
 	void Update()
@@ -114,15 +115,12 @@ public class NoteSpawner : MonoBehaviour
 
 		if (rectDechet != null)
 		{
-			// FORCE LE PIVOT ET LES ANCRES À ÊTRE PILE SYNCHRO AVEC LA PISTE
 			rectDechet.anchorMin = new Vector2(0.5f, 0f);
 			rectDechet.anchorMax = new Vector2(0.5f, 0f);
 			rectDechet.pivot = new Vector2(0.5f, 0.5f);
 
-			// Positionnement horizontal direct en local pour éviter les décalages d'écrans
-			float positionX = pisteCible.localPosition.x;
-
-			// Calcul Y basé sur la hauteur de spawn fixe
+			// Évite le décalage horizontal des couloirs lié aux Canvas Parents
+			float positionX = conteneurNotes.InverseTransformPoint(pisteCible.position).x;
 			float positionYCalculee = hauteurSpawnY - conteneurNotes.anchoredPosition.y;
 
 			rectDechet.anchoredPosition = new Vector2(positionX, positionYCalculee);
