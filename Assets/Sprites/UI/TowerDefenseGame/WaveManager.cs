@@ -14,7 +14,7 @@ public class WaveManager : MonoBehaviour
     public List<GameObject> Robouclier= new List<GameObject>();
     int RobouclierCount;
     public GameObject Boss;
-    int waveCount;
+    public int waveCount;
     // Update is called once per frame
     void Update()
     {
