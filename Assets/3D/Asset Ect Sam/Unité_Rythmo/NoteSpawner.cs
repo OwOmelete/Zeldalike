@@ -109,9 +109,11 @@ public class NoteSpawner : MonoBehaviour
 
 		GameObject nouveauDechet = Instantiate(prefabAUtiliser, conteneurNotes);
 		nouveauDechet.transform.localScale = Vector3.one;
-
 		RectTransform rectDechet = nouveauDechet.GetComponent<RectTransform>();
 		RectTransform pisteCible = mesPistesUI[indexPisteCode];
+		
+				noteData noteData = nouveauDechet.GetComponent<noteData>() ;
+				noteData.piste = donneesNote.piste;
 
 		if (rectDechet != null)
 		{
