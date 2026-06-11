@@ -1,98 +1,99 @@
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
-using TMPro; // On ajoute TextMeshPro pour ton nouveau texte
+using TMPro;
 
 public class EcranFin : MonoBehaviour
 {
-	[Header("Panneau Principal")]
-	public GameObject panneauFinObject;
+	[Header("Panneaux UI")]
+	public GameObject panneauEcranFin;
 
-	[Header("Textes des Scores")]
-	public TextMeshProUGUI texteScoreFinal; // Passé en TextMeshPro comme ton UI globale
-	public TextMeshProUGUI texteMaxCombo;
-	public TextMeshProUGUI textePerfects;
-	public TextMeshProUGUI texteGoods;
-	public TextMeshProUGUI texteBads;
-	public TextMeshProUGUI texteMisses;
+	[Header("Affichages des Statistiques (TextMeshPro)")]
+	public TextMeshProUGUI affichageScoreFinal;
+	public TextMeshProUGUI affichageMaxCombo;
+	public TextMeshProUGUI affichagePerfects;
+	public TextMeshProUGUI affichageGoods;
+	public TextMeshProUGUI affichageBads;
+	public TextMeshProUGUI affichageMisses;
+	public TextMeshProUGUI affichageDifficulte;
 
-	[Header("Texte Humouristique")]
-	public TextMeshProUGUI texteBlagueScore; // 💾 NOUVELLE CASE : Glisse ton texte d'ambiance ici !
+	[Header("Zone pour la Phrase Bonus")]
+	public TextMeshProUGUI affichagePhraseBonus; // Glisse ton texte du milieu ici !
 
-	[Header("Système de Rang (Flames)")]
-	public GameObject[] lesFlammesUI;
+	[Header("Visuels des Récompenses (Flammes / Étoiles)")]
+	public GameObject flamme1;
+	public GameObject flamme2;
+	public GameObject flamme3;
 
 	void Start()
 	{
-		if (panneauFinObject != null) panneauFinObject.SetActive(false);
+		if (panneauEcranFin != null) panneauEcranFin.SetActive(false);
 	}
 
-	public void AfficherLesResultats(int score, int maxCombo, int nbPerfect, int nbGood, int nbBad, int nbMiss)
+	public void AfficherLesResultats(int scoreFinal, int maxCombo, int perfects, int goods, int bads, int misses)
 	{
-		panneauFinObject.SetActive(true);
+		if (panneauEcranFin != null) panneauEcranFin.SetActive(true);
 
-		if (texteScoreFinal != null) texteScoreFinal.text = score.ToString();
-		if (texteMaxCombo != null) texteMaxCombo.text = "MAX COMBO : " + maxCombo.ToString();
-		if (textePerfects != null) textePerfects.text = "PERFECT : " + nbPerfect.ToString();
-		if (texteGoods != null) texteGoods.text = "GOOD : " + nbGood.ToString();
-		if (texteBads != null) texteBads.text = "BAD : " + nbBad.ToString();
-		if (texteMisses != null) texteMisses.text = "MISS : " + nbMiss.ToString();
+		if (affichageScoreFinal != null) affichageScoreFinal.text = "SCORE FINAL\n: " + scoreFinal.ToString();
+		if (affichageMaxCombo != null) affichageMaxCombo.text = "MAX COMBO : " + maxCombo.ToString();
+		if (affichagePerfects != null) affichagePerfects.text = "PERFECTS : " + perfects.ToString();
+		if (affichageGoods != null) affichageGoods.text = "GOODS : " + goods.ToString();
+		if (affichageBads != null) affichageBads.text = "BADS : " + bads.ToString();
+		if (affichageMisses != null) affichageMisses.text = "MISSES : " + misses.ToString();
 
-		// 📝 ÉVALUATION DU TEXTE HUMOURISTIQUE SELON LE SCORE
-		CalculerTexteHumour(score);
+		if (affichageDifficulte != null) affichageDifficulte.text = "MODE : " + SelectionDifficulte.ModeChoisi;
 
-		StartCoroutine(AnimationFlammes(score));
+		// Calcul du palier de flammes
+		int palierScoreRequis = SelectionDifficulte.ScoreRequisEtoile;
+		int flammesObtenues = 0;
+
+		if (scoreFinal >= palierScoreRequis)
+		{
+			flammesObtenues = 3;
+		}
+		else if (scoreFinal >= palierScoreRequis * 0.75f)
+		{
+			flammesObtenues = 2;
+		}
+		else if (scoreFinal >= palierScoreRequis * 0.40f)
+		{
+			flammesObtenues = 1;
+		}
+		else
+		{
+			flammesObtenues = 0;
+		}
+
+		// 🎯 REMPLACEMENT : Tes phrases marrantes et personnalisées !
+		if (affichagePhraseBonus != null)
+		{
+			if (flammesObtenues == 3)
+			{
+				affichagePhraseBonus.text = "<color=#FF4500>T'ES EN FEU !!! </color>";
+			}
+			else if (flammesObtenues == 2)
+			{
+				affichagePhraseBonus.text = "<color=#FFA500>TU CHAUFFES ! </color>";
+			}
+			else if (flammesObtenues == 1)
+			{
+				affichagePhraseBonus.text = "<color=#FFFF00>C'EST TIÈDE... </color>";
+			}
+			else
+			{
+				affichagePhraseBonus.text = "<color=#778899>T'ES ÉTEINT... </color>";
+			}
+		}
+
+		ActualiserVisuelFlammes(flammesObtenues);
 	}
 
-	void CalculerTexteHumour(int score)
+	private void ActualiserVisuelFlammes(int nombreDeFlammes)
 	{
-		if (texteBlagueScore == null) return;
+		if (flamme1 != null) flamme1.SetActive(false);
+		if (flamme2 != null) flamme2.SetActive(false);
+		if (flamme3 != null) flamme3.SetActive(false);
 
-		// 🎯 PALIERS DE TEXTE (À adapter selon tes envies !)
-		if (score <= 2000)
-		{
-			texteBlagueScore.text = "<color=#FF0000>Un score éteint...</color>\nTes doigts ont laggé ou quoi ?";
-		}
-		else if (score > 2000 && score <= 6000)
-		{
-			texteBlagueScore.text = "<color=#FFA500>Petite étincelle.</color>\nC'est tiède, mais on va dire que c'est un début.";
-		}
-		else if (score > 6000 && score <= 10000)
-		{
-			texteBlagueScore.text = "<color=#FFFF00>Ça commence à chauffer !</color>\nLe rythme est là, le jury commence à hocher la tête.";
-		}
-		else // Score supérieur à 10000 (Comme ton run à 10900 !)
-		{
-			texteBlagueScore.text = "<color=#00FF00>Un score enflammé !</color>\nTu as brisé le clavier, Quincy Jones est fier de toi.";
-		}
-	}
-
-	IEnumerator AnimationFlammes(int score)
-	{
-		foreach (GameObject flamme in lesFlammesUI)
-		{
-			flamme.SetActive(false);
-		}
-
-		yield return new WaitForSeconds(0.5f);
-
-		if (score > 2000)
-		{
-			lesFlammesUI[0].SetActive(true);
-		}
-
-		yield return new WaitForSeconds(0.3f);
-
-		if (score > 6000)
-		{
-			lesFlammesUI[1].SetActive(true);
-		}
-
-		yield return new WaitForSeconds(0.3f);
-
-		if (score > 10000)
-		{
-			lesFlammesUI[2].SetActive(true);
-		}
+		if (nombreDeFlammes >= 1 && flamme1 != null) flamme1.SetActive(true);
+		if (nombreDeFlammes >= 2 && flamme2 != null) flamme2.SetActive(true);
+		if (nombreDeFlammes >= 3 && flamme3 != null) flamme3.SetActive(true);
 	}
 }

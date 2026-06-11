@@ -5,6 +5,18 @@ public class GameManager : MonoBehaviour
 {
 	public static GameManager instance;
 
+	[Header("Fichiers de Partitions (Glisser les .txt ici)")]
+	public TextAsset partitionEasy;
+	public TextAsset partitionNormal;
+	public TextAsset partitionHard;
+
+	// Cette variable stockera le texte brut du fichier choisi par le menu
+	[HideInInspector] public string textePartitionSelectionnee;
+
+	[Header("Mode Éditeur (Création de Partition)")]
+	[Tooltip("Coche cette case pour enregistrer tes pressions de touches dans la console pendant la musique.")]
+	public bool modeEditeurActif = false;
+
 	[Header("Scripts et Audio")]
 	public AudioSource laMusique;
 	public NoteScroller leScroller;
@@ -30,7 +42,9 @@ public class GameManager : MonoBehaviour
 	public TextMeshProUGUI affichageJugement;
 
 	private float minuteurJugement = 0f;
-	private float dureeTotaleDuMorceau = 0f; // ⏱️ Calculé automatiquement maintenant !
+	private float dureeTotaleDuMorceau = 0f;
+
+	private float[] tempsPressionTouche = new float[5]; // Index 1 à 4 pour les pistes F, G, H, J
 
 	void Awake()
 	{
@@ -47,46 +61,85 @@ public class GameManager : MonoBehaviour
 		MettreAJourInterface();
 		if (affichageJugement != null) affichageJugement.text = "";
 
-		// 🎵 CALCULE LA DURÉE AUTOMATIQUEMENT SELON LE MP3 CHARGÉ
 		if (laMusique != null && laMusique.clip != null)
 		{
 			dureeTotaleDuMorceau = laMusique.clip.length;
 		}
 	}
 
+	// Fonction de nettoyage appelée par le menu au lancement d'un niveau
+	public void ReinitialiserPartie()
+	{
+		scoreActuel = 0;
+		comboActuel = 0;
+		maxComboAtteint = 0;
+		totalPerfect = 0;
+		totalGood = 0;
+		totalBad = 0;
+		totalMiss = 0;
+		finDePartieDeclenchee = false;
+		MettreAJourInterface();
+	}
+
 	void Update()
 	{
-		if (!jeuACommence)
+		// 🕹️ ENREGISTREMENT : Lancement manuel de la musique pour le mode Éditeur
+		if (!jeuACommence && modeEditeurActif)
 		{
 			if (Input.anyKeyDown)
 			{
-				if (laMusique == null || laMusique.clip == null || leScroller == null)
+				if (laMusique != null && laMusique.clip != null)
 				{
-					return;
+					jeuACommence = true;
+					laMusique.Play();
+					Debug.Log("--- DÉBUT DE L'ENREGISTREMENT AUTOMATIQUE ---");
 				}
-
-				jeuACommence = true;
-				leScroller.jeuDemarre = true;
-				laMusique.Play();
 			}
 		}
-		else
+
+		// 🎹 MODE ÉDITEUR : Détection des touches (Simples & Longues)
+		if (modeEditeurActif && jeuACommence)
 		{
-			// 🏁 FIN AUTOMATIQUE ET DYNAMIQUE
-			// Si le temps de la musique dépasse sa durée totale (moins une micro-marge de sécurité de 0.2s)
-			// ou si l'audio ne joue plus, on déclenche l'écran de fin.
+			float tempsActuel = (laMusique != null && laMusique.isPlaying) ? laMusique.time : Time.time;
+
+			if (Input.GetKeyDown(KeyCode.F)) tempsPressionTouche[1] = tempsActuel;
+			if (Input.GetKeyUp(KeyCode.F)) EnregistrerNote(tempsPressionTouche[1], tempsActuel, 1);
+
+			if (Input.GetKeyDown(KeyCode.G)) tempsPressionTouche[2] = tempsActuel;
+			if (Input.GetKeyUp(KeyCode.G)) EnregistrerNote(tempsPressionTouche[2], tempsActuel, 2);
+
+			if (Input.GetKeyDown(KeyCode.H)) tempsPressionTouche[3] = tempsActuel;
+			if (Input.GetKeyUp(KeyCode.H)) EnregistrerNote(tempsPressionTouche[3], tempsActuel, 3);
+
+			if (Input.GetKeyDown(KeyCode.J)) tempsPressionTouche[4] = tempsActuel;
+			if (Input.GetKeyUp(KeyCode.J)) EnregistrerNote(tempsPressionTouche[4], tempsActuel, 4);
+		}
+
+		// 🕹️ LOGIQUE DE JEU STANDARD
+		if (!modeEditeurActif && jeuACommence)
+		{
 			float tempsActuelMusique = laMusique.time;
 
-			if ((tempsActuelMusique >= dureeTotaleDuMorceau - 0.2f || !laMusique.isPlaying) && !finDePartieDeclenchee)
+			// SÉCURITÉ : On ne valide la fin du morceau que si l'AudioSource a démarré (tempsActuelMusique > 0.5s)
+			if (laMusique.isPlaying || tempsActuelMusique > 0.5f)
 			{
-				finDePartieDeclenchee = true;
-				jeuACommence = false;
-
-				if (leScroller != null) leScroller.jeuDemarre = false;
-
-				if (scriptEcranFin != null)
+				if ((tempsActuelMusique >= dureeTotaleDuMorceau - 0.2f || !laMusique.isPlaying) && !finDePartieDeclenchee)
 				{
-					scriptEcranFin.AfficherLesResultats(scoreActuel, maxComboAtteint, totalPerfect, totalGood, totalBad, totalMiss);
+					finDePartieDeclenchee = true;
+					jeuACommence = false;
+
+					if (leScroller != null) leScroller.jeuDemarre = false;
+
+					// Désactivation automatique du spawner pour bloquer les déchets en fin de partie
+					NoteSpawner spawner = FindFirstObjectByType<NoteSpawner>();
+					if (spawner != null) spawner.enabled = false;
+
+					// 🎯 CORRECTIF : Force le GameObject à s'allumer avant d'appeler l'affichage des scores
+					if (scriptEcranFin != null)
+					{
+						scriptEcranFin.gameObject.SetActive(true);
+						scriptEcranFin.AfficherLesResultats(scoreActuel, maxComboAtteint, totalPerfect, totalGood, totalBad, totalMiss);
+					}
 				}
 			}
 
@@ -98,6 +151,19 @@ public class GameManager : MonoBehaviour
 					affichageJugement.text = "";
 				}
 			}
+		}
+	}
+
+	private void EnregistrerNote(float tempsDebut, float tempsFin, int piste)
+	{
+		float dureeMaintien = tempsFin - tempsDebut;
+		if (dureeMaintien > 0.3f)
+		{
+			Debug.Log(tempsDebut.ToString("F1") + "," + piste + ",1," + dureeMaintien.ToString("F1"));
+		}
+		else
+		{
+			Debug.Log(tempsDebut.ToString("F1") + "," + piste + ",0,0");
 		}
 	}
 

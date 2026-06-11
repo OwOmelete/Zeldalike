@@ -6,37 +6,86 @@ public class ButtonController : MonoBehaviour
 	private Image laCaseImage;
 	public Color couleurNormale;
 	public Color couleurAppuye;
-	public KeyCode toucheAssignee;
+
+	[Header("Contrôles Clavier")]
+	public KeyCode toucheAssignee;          // F, G, H, J
+
+	[Header("Contrôles Manette Xbox")]
+	[Tooltip("Coche cette case si ce bouton utilise une gâchette arrière (LT ou RT)")]
+	public bool estUneGachetteArriere = false;
+
+	[Tooltip("Nom de l'axe Unity (ex: 'GachetteGauche' ou 'GachetteDroite')")]
+	public string nomAxeManette;
+
+	[Tooltip("Pour les boutons d'épaules classiques (LB ou RB)")]
+	public KeyCode boutonEpauleManette;     // JoystickButton4 (LB) ou JoystickButton5 (RB)
+
 	public Transform conteneurNotes;
 
 	[Header("Seuils de Précision (en Pixels)")]
 	public float margePerfect = 20f;
 	public float margeGood = 45f;
-	public float margeBad = 75f; // Équivalent à ton ancienne distanceTolerance
+	public float margeBad = 75f;
 
 	private NoteLongue noteLongueActive;
+	private NoteScroller scrollerGlobal;
+	private bool gachetteEnfonceeAuFramePrecedent = false;
 
 	void Start()
 	{
 		laCaseImage = GetComponent<Image>();
 		if (laCaseImage != null) laCaseImage.color = couleurNormale;
+
+		scrollerGlobal = FindFirstObjectByType<NoteScroller>();
 	}
 
 	void Update()
 	{
-		if (Input.GetKeyDown(toucheAssignee))
+		bool estAppuyeCeFrame = false;
+		bool estEnfonceCeFrame = false;
+		bool estRelacheCeFrame = false;
+
+		// 1. GESTION DES GACHETTES ARRIÈRE ANALOGIQUES (LT / RT)
+		if (estUneGachetteArriere && !string.IsNullOrEmpty(nomAxeManette))
+		{
+			float valeurAxe = Input.GetAxisRaw(nomAxeManette);
+			bool gachettePressee = valeurAxe > 0.5f;
+
+			if (gachettePressee && !gachetteEnfonceeAuFramePrecedent) estAppuyeCeFrame = true;
+			if (gachettePressee) estEnfonceCeFrame = true;
+			if (!gachettePressee && gachetteEnfonceeAuFramePrecedent) estRelacheCeFrame = true;
+
+			gachetteEnfonceeAuFramePrecedent = gachettePressee;
+		}
+
+		// 2. GESTION DES TOUCHES CLAVIER ET ÉPAULES (LB / RB)
+		if (Input.GetKeyDown(toucheAssignee) || Input.GetKeyDown(boutonEpauleManette)) estAppuyeCeFrame = true;
+		if (Input.GetKey(toucheAssignee) || Input.GetKey(boutonEpauleManette)) estEnfonceCeFrame = true;
+		if (Input.GetKeyUp(toucheAssignee) || Input.GetKeyUp(boutonEpauleManette)) estRelacheCeFrame = true;
+
+		// 🎮 REACTION AUX INPUTS
+		if (estAppuyeCeFrame)
 		{
 			if (laCaseImage != null) laCaseImage.color = couleurAppuye;
 			VerifierHit();
 		}
 
-		if (Input.GetKey(toucheAssignee) && noteLongueActive != null)
+		if (estEnfonceCeFrame && noteLongueActive != null)
 		{
-			noteLongueActive.ReduireBande(400f);
+			if (scrollerGlobal != null)
+			{
+				noteLongueActive.ReduireBande(scrollerGlobal.vitesseDefilement);
+			}
+			else
+			{
+				noteLongueActive.ReduireBande(600f);
+			}
 		}
 
-		if (Input.GetKeyUp(toucheAssignee))
+		if (estRelacheCeFrame)
 		{
+			if (Input.GetKey(toucheAssignee) || Input.GetKey(boutonEpauleManette) || (estUneGachetteArriere && Input.GetAxisRaw(nomAxeManette) > 0.5f)) return;
+
 			if (laCaseImage != null) laCaseImage.color = couleurNormale;
 
 			if (noteLongueActive != null)
@@ -56,29 +105,26 @@ public class ButtonController : MonoBehaviour
 			float distanceY = Mathf.Abs(transform.position.y - dechet.position.y);
 			float distanceX = Mathf.Abs(transform.position.x - dechet.position.x);
 
-			// On vérifie d'abord si l'objet est bien sur notre couloir X
 			if (distanceX < 50f)
 			{
-				// On applique le barème selon la distance en Y
 				if (distanceY <= margeBad)
 				{
 					string verdict = "BAD";
 					if (distanceY <= margePerfect) verdict = "PERFECT";
 					else if (distanceY <= margeGood) verdict = "GOOD";
 
-					// Traitement de la note selon sa nature
 					NoteLongue scriptNoteLongue = dechet.GetComponent<NoteLongue>();
 
 					if (scriptNoteLongue != null)
 					{
 						noteLongueActive = scriptNoteLongue;
 						noteLongueActive.EnclencherMaintien();
-						GameManager.instance.DeclencherJugement(verdict); // Le verdict tombe !
+						GameManager.instance.DeclencherJugement(verdict);
 					}
 					else
 					{
 						Destroy(dechet.gameObject);
-						GameManager.instance.DeclencherJugement(verdict); // Le verdict tombe !
+						GameManager.instance.DeclencherJugement(verdict);
 					}
 					break;
 				}
