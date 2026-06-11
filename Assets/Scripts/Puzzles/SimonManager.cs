@@ -175,7 +175,7 @@ public class SimonManager : MonoBehaviour, IDamagable
 
     IEnumerator Release()
     {
-        while (rbList.Count >= 1)
+        while (rbList.Count >= 0)
         {
             Rigidbody rb = rbList[^1];
             rb.isKinematic = false;   
