@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 public class WaveManager : MonoBehaviour
 {
@@ -14,16 +15,14 @@ public class WaveManager : MonoBehaviour
     public List<GameObject> Robouclier= new List<GameObject>();
     int RobouclierCount;
     public GameObject Boss;
-    int waveCount;
+    public int waveCount;
+    public GameManagerTD gameManagerTD;
     // Update is called once per frame
     void Update()
     {
-        if (Gamepad.current.rightShoulder.wasPressedThisFrame)
-        {
-            StartCoroutine(invokeWave());
-        }
+       
     }
-    IEnumerator invokeWave()
+    public IEnumerator invokeWave()
     {
        int x = (int) Math.Round(Vagues[waveCount].x);
        for(int i = 0 ; i < x ; i++)
@@ -55,4 +54,5 @@ public class WaveManager : MonoBehaviour
         waveCount++;
         if(waveCount>=Vagues.Count) waveCount=0;
     }
+   
 }

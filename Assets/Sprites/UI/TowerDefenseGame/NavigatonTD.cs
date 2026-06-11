@@ -54,7 +54,7 @@ public class NavigationTD : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(boutons[0]);
     }
 
-    void SetNavigation(Navigation.Mode mode)
+    public void SetNavigation(Navigation.Mode mode)
     {
         foreach (GameObject go in boutons)
         {

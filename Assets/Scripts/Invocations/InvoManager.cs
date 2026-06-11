@@ -167,7 +167,7 @@ public class InvoManager : MonoBehaviour
 
     private void basicAttack()
     {
-        if (InvoList.Count > 0)
+        if (InvoList.Count > 0 && GetClosest(1).Count!=0)
         {
             lastBasicAttack = Time.time;
             InvoBehaviour invo = GetClosest(1)[0];
@@ -367,6 +367,5 @@ public class InvoManager : MonoBehaviour
         return result;
     }
     
-    
-    
+     
 }
