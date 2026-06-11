@@ -18,6 +18,7 @@ public class NoteLongue : MonoBehaviour
 			{
 				float vitesseScroller = GameManager.instance.leScroller.vitesseDefilement;
 				transform.position += new Vector3(0f, vitesseScroller * Time.deltaTime, 0f);
+				gameObject.GetComponent<noteData>().speedLateral = new Vector3(0,0,0) ; 
 			}
 			return;
 		}

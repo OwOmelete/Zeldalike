@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class ButtonController : MonoBehaviour
@@ -17,8 +18,8 @@ public class ButtonController : MonoBehaviour
 	[Tooltip("Nom de l'axe Unity (ex: 'GachetteGauche' ou 'GachetteDroite')")]
 	public string nomAxeManette;
 
-	[Tooltip("Pour les boutons d'épaules classiques (LB ou RB)")]
-	public KeyCode boutonEpauleManette;     // JoystickButton4 (LB) ou JoystickButton5 (RB)
+	[Tooltip("Pour les boutons d'épaules classiques (LB ou RB)")] 
+	public int piste;   // JoystickButton4 (LB) ou JoystickButton5 (RB)
 
 	public Transform conteneurNotes;
 
@@ -40,63 +41,67 @@ public class ButtonController : MonoBehaviour
 	}
 
 	void Update()
-	{
-		bool estAppuyeCeFrame = false;
-		bool estEnfonceCeFrame = false;
-		bool estRelacheCeFrame = false;
+{
+    bool estAppuyeCeFrame = false;
+    bool estEnfonceCeFrame = false;
+    bool estRelacheCeFrame = false;
 
-		// 1. GESTION DES GACHETTES ARRIÈRE ANALOGIQUES (LT / RT)
-		if (estUneGachetteArriere && !string.IsNullOrEmpty(nomAxeManette))
-		{
-			float valeurAxe = Input.GetAxisRaw(nomAxeManette);
-			bool gachettePressee = valeurAxe > 0.5f;
+    if (Gamepad.current == null)
+        return;
 
-			if (gachettePressee && !gachetteEnfonceeAuFramePrecedent) estAppuyeCeFrame = true;
-			if (gachettePressee) estEnfonceCeFrame = true;
-			if (!gachettePressee && gachetteEnfonceeAuFramePrecedent) estRelacheCeFrame = true;
+    switch (piste)
+    {
+        case 0: // LB
+            estAppuyeCeFrame = Gamepad.current.leftShoulder.wasPressedThisFrame;
+            estEnfonceCeFrame = Gamepad.current.leftShoulder.isPressed;
+            estRelacheCeFrame = Gamepad.current.leftShoulder.wasReleasedThisFrame;
+            break;
 
-			gachetteEnfonceeAuFramePrecedent = gachettePressee;
-		}
+        case 1: // LT
+            estAppuyeCeFrame = Gamepad.current.leftTrigger.wasPressedThisFrame;
+            estEnfonceCeFrame = Gamepad.current.leftTrigger.isPressed;
+            estRelacheCeFrame = Gamepad.current.leftTrigger.wasReleasedThisFrame;
+            break;
 
-		// 2. GESTION DES TOUCHES CLAVIER ET ÉPAULES (LB / RB)
-		if (Input.GetKeyDown(toucheAssignee) || Input.GetKeyDown(boutonEpauleManette)) estAppuyeCeFrame = true;
-		if (Input.GetKey(toucheAssignee) || Input.GetKey(boutonEpauleManette)) estEnfonceCeFrame = true;
-		if (Input.GetKeyUp(toucheAssignee) || Input.GetKeyUp(boutonEpauleManette)) estRelacheCeFrame = true;
+        case 2: // RB
+            estAppuyeCeFrame = Gamepad.current.rightShoulder.wasPressedThisFrame;
+            estEnfonceCeFrame = Gamepad.current.rightShoulder.isPressed;
+            estRelacheCeFrame = Gamepad.current.rightShoulder.wasReleasedThisFrame;
+            break;
 
-		// 🎮 REACTION AUX INPUTS
-		if (estAppuyeCeFrame)
-		{
-			if (laCaseImage != null) laCaseImage.color = couleurAppuye;
-			VerifierHit();
-		}
+        case 3: // RT
+            estAppuyeCeFrame = Gamepad.current.rightTrigger.wasPressedThisFrame;
+            estEnfonceCeFrame = Gamepad.current.rightTrigger.isPressed;
+            estRelacheCeFrame = Gamepad.current.rightTrigger.wasReleasedThisFrame;
+            break;
+    }
 
-		if (estEnfonceCeFrame && noteLongueActive != null)
-		{
-			if (scrollerGlobal != null)
-			{
-				noteLongueActive.ReduireBande(scrollerGlobal.vitesseDefilement);
-			}
-			else
-			{
-				noteLongueActive.ReduireBande(600f);
-			}
-		}
+    // Appui initial
+    if (estAppuyeCeFrame)
+    {
+        laCaseImage.color = couleurAppuye;
+        VerifierHit();
+    }
 
-		if (estRelacheCeFrame)
-		{
-			if (Input.GetKey(toucheAssignee) || Input.GetKey(boutonEpauleManette) || (estUneGachetteArriere && Input.GetAxisRaw(nomAxeManette) > 0.5f)) return;
+    // Maintien note longue
+    if (estEnfonceCeFrame && noteLongueActive != null)
+    {
+        noteLongueActive.ReduireBande(scrollerGlobal.vitesseDefilement);
+    }
 
-			if (laCaseImage != null) laCaseImage.color = couleurNormale;
+    // Relâchement
+    if (estRelacheCeFrame)
+    {
+        laCaseImage.color = couleurNormale;
 
-			if (noteLongueActive != null)
-			{
-				Debug.Log("❌ RELÂCHÉ TROP TÔT !");
-				GameManager.instance.DeclencherJugement("MISS");
-				Destroy(noteLongueActive.gameObject);
-				noteLongueActive = null;
-			}
-		}
-	}
+        if (noteLongueActive != null)
+        {
+            GameManager.instance.DeclencherJugement("MISS");
+            Destroy(noteLongueActive.gameObject);
+            noteLongueActive = null;
+        }
+    }
+}
 
 	void VerifierHit()
 	{

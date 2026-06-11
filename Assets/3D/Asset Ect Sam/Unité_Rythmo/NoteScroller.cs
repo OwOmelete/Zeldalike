@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class NoteScroller : MonoBehaviour
 {
-	public float vitesseDefilement = 600f;
+	public float vitesseDefilement = 700f;
 	public bool jeuDemarre = false;
 
 	void Update()

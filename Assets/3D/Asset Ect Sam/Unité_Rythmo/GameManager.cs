@@ -220,11 +220,11 @@ public class GameManager : MonoBehaviour
 
 	void MettreAJourInterface()
 	{
-		if (affichageScore != null) affichageScore.text = "SCORE: " + scoreActuel.ToString();
+		if (affichageScore != null) affichageScore.text = scoreActuel.ToString();
 
 		if (affichageCombo != null)
 		{
-			if (comboActuel > 0) affichageCombo.text = "COMBO x" + comboActuel.ToString();
+			if (comboActuel > 0) affichageCombo.text = comboActuel.ToString();
 			else affichageCombo.text = "";
 		}
 	}
