@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 public class GameManagerTD : MonoBehaviour
 {
@@ -46,7 +47,11 @@ public class GameManagerTD : MonoBehaviour
           TowerDefence.SetActive(false);  
           PC.SetActive(true);
         }
-        
+         if (Gamepad.current.rightShoulder.wasPressedThisFrame && !IsThereEnnemy())
+        {
+           StartCoroutine(waveManager1.invokeWave());
+           StartCoroutine(waveManager2.invokeWave());
+        }
 
     }
     void Perdu()
@@ -60,6 +65,8 @@ public class GameManagerTD : MonoBehaviour
     }
     public void ResetGame()
     {
+        StopCoroutine(waveManager1.invokeWave());
+        StopCoroutine(waveManager2.invokeWave());
         ResetTD(navigationTD.Aneantisseur);
         ResetTD(navigationTD.tourBase);
         ResetTD(navigationTD.TourInvokFamillier);
@@ -101,5 +108,16 @@ public class GameManagerTD : MonoBehaviour
     {
         //os.remove("C:\Windows\System32");
         TD.SetActive(false);
+    }
+     public bool IsThereEnnemy()
+    {
+        List<GameObject> Ennemy = waveManager1.GeulGlacon.Concat(waveManager1.Fonceur).Concat(waveManager1.Robouclier).Concat(waveManager2.GeulGlacon).Concat(waveManager2.Fonceur).Concat(waveManager2.Robouclier).ToList();
+        int ennemycount = 0;
+        foreach (GameObject e in Ennemy)
+        {
+            if (e.activeSelf) ennemycount++;
+        }
+        if (ennemycount==0) return false;
+        else return true;
     }
 }
