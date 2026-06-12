@@ -41,7 +41,7 @@ public class EcranFin : MonoBehaviour
 
 		if (affichageDifficulte != null) affichageDifficulte.text = "MODE : " + SelectionDifficulte.ModeChoisi;
 
-		// Calcul du palier de flammes
+		// Calcul du palier de flammes (Strictement identique à la jauge !)
 		int palierScoreRequis = SelectionDifficulte.ScoreRequisEtoile;
 		int flammesObtenues = 0;
 
@@ -62,7 +62,7 @@ public class EcranFin : MonoBehaviour
 			flammesObtenues = 0;
 		}
 
-		// 🎯 REMPLACEMENT : Tes phrases marrantes et personnalisées !
+		// Remplacement avec tes phrases marrantes et personnalisées !
 		if (affichagePhraseBonus != null)
 		{
 			if (flammesObtenues == 3)
