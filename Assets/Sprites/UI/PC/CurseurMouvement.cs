@@ -8,6 +8,7 @@ public class CurseurMouvement : MonoBehaviour
     public float speed;
     public GameObject TowerDefence;
     public GameObject Cliker;
+    public GameObject UniteRythmo;
     public GameObject PC;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -42,7 +43,11 @@ public class CurseurMouvement : MonoBehaviour
                 PC.SetActive(false);
                  Cliker.SetActive(true);
             }
-       
+       if(hitCollider.CompareTag("Enemy"))
+            {
+                PC.SetActive(false);
+                 UniteRythmo.SetActive(true);
+            }
     }
 }
 }
