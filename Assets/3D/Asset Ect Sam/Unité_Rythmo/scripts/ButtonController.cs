@@ -18,7 +18,7 @@ public class ButtonController : MonoBehaviour
 	[Tooltip("Nom de l'axe Unity (ex: 'GachetteGauche' ou 'GachetteDroite')")]
 	public string nomAxeManette;
 
-	[Tooltip("Pour les boutons d'épaules classiques (LB ou RB)")] 
+	[Tooltip("Pour les boutons d'épaules classiques (LB ou RB)")]
 	public int piste;   // JoystickButton4 (LB) ou JoystickButton5 (RB)
 
 	public Transform conteneurNotes;
@@ -28,9 +28,15 @@ public class ButtonController : MonoBehaviour
 	public float margeGood = 65f;
 	public float margeBad = 95f;
 
+	[Header("Effets de Particules (FX)")]
+	[Tooltip("Le FX d'étincelles flash qui pop à chaque appui réussi")]
+	public ParticleSystem fxImpactPrefab;
+	[Tooltip("Le FX en boucle qui reste allumé pendant le maintien d'une note longue")]
+	public ParticleSystem fxMaintienPrefab;
+
 	private NoteLongue noteLongueActive;
 	private NoteScroller scrollerGlobal;
-	private bool gachetteEnfonceeAuFramePrecedent = false;
+	private ParticleSystem fxMaintienInstance; // Stocke l'effet en cours pour l'éteindre au relâchement
 
 	void Start()
 	{
@@ -38,70 +44,92 @@ public class ButtonController : MonoBehaviour
 		if (laCaseImage != null) laCaseImage.color = couleurNormale;
 
 		scrollerGlobal = FindFirstObjectByType<NoteScroller>();
+
+		// On pré-installe le FX de maintien sous la touche pour qu'il soit prêt à cracher du feu
+		if (fxMaintienPrefab != null)
+		{
+			fxMaintienInstance = Instantiate(fxMaintienPrefab, transform.position, Quaternion.identity, transform);
+			fxMaintienInstance.Stop(); // Éteint par défaut
+		}
 	}
 
 	void Update()
-{
-    bool estAppuyeCeFrame = false;
-    bool estEnfonceCeFrame = false;
-    bool estRelacheCeFrame = false;
+	{
+		// SÉCURITÉ PAUSE : Bloque complètement les inputs si le jeu est mis en pause
+		if (Time.timeScale == 0f) return;
 
-    if (Gamepad.current == null)
-        return;
+		bool estAppuyeCeFrame = false;
+		bool estEnfonceCeFrame = false;
+		bool estRelacheCeFrame = false;
 
-    switch (piste)
-    {
-        case 0: // LB
-            estAppuyeCeFrame = Gamepad.current.leftShoulder.wasPressedThisFrame;
-            estEnfonceCeFrame = Gamepad.current.leftShoulder.isPressed;
-            estRelacheCeFrame = Gamepad.current.leftShoulder.wasReleasedThisFrame;
-            break;
+		if (Gamepad.current == null)
+			return;
 
-        case 1: // LT
-            estAppuyeCeFrame = Gamepad.current.leftTrigger.wasPressedThisFrame;
-            estEnfonceCeFrame = Gamepad.current.leftTrigger.isPressed;
-            estRelacheCeFrame = Gamepad.current.leftTrigger.wasReleasedThisFrame;
-            break;
+		switch (piste)
+		{
+			case 0: // LB
+				estAppuyeCeFrame = Gamepad.current.leftShoulder.wasPressedThisFrame;
+				estEnfonceCeFrame = Gamepad.current.leftShoulder.isPressed;
+				estRelacheCeFrame = Gamepad.current.leftShoulder.wasReleasedThisFrame;
+				break;
 
-        case 2: // RB
-            estAppuyeCeFrame = Gamepad.current.rightShoulder.wasPressedThisFrame;
-            estEnfonceCeFrame = Gamepad.current.rightShoulder.isPressed;
-            estRelacheCeFrame = Gamepad.current.rightShoulder.wasReleasedThisFrame;
-            break;
+			case 1: // LT
+				estAppuyeCeFrame = Gamepad.current.leftTrigger.wasPressedThisFrame;
+				estEnfonceCeFrame = Gamepad.current.leftTrigger.isPressed;
+				estRelacheCeFrame = Gamepad.current.leftTrigger.wasReleasedThisFrame;
+				break;
 
-        case 3: // RT
-            estAppuyeCeFrame = Gamepad.current.rightTrigger.wasPressedThisFrame;
-            estEnfonceCeFrame = Gamepad.current.rightTrigger.isPressed;
-            estRelacheCeFrame = Gamepad.current.rightTrigger.wasReleasedThisFrame;
-            break;
-    }
+			case 2: // RB
+				estAppuyeCeFrame = Gamepad.current.rightShoulder.wasPressedThisFrame;
+				estEnfonceCeFrame = Gamepad.current.rightShoulder.isPressed;
+				estRelacheCeFrame = Gamepad.current.rightShoulder.wasReleasedThisFrame;
+				break;
 
-    // Appui initial
-    if (estAppuyeCeFrame)
-    {
-        laCaseImage.color = couleurAppuye;
-        VerifierHit();
-    }
+			case 3: // RT
+				estAppuyeCeFrame = Gamepad.current.rightTrigger.wasPressedThisFrame;
+				estEnfonceCeFrame = Gamepad.current.rightTrigger.isPressed;
+				estRelacheCeFrame = Gamepad.current.rightTrigger.wasReleasedThisFrame;
+				break;
+		}
 
-    // Maintien note longue
-    if (estEnfonceCeFrame && noteLongueActive != null)
-    {
-        noteLongueActive.ReduireBande(scrollerGlobal.vitesseDefilement);
-    }
+		// Appui initial
+		if (estAppuyeCeFrame)
+		{
+			laCaseImage.color = couleurAppuye;
+			VerifierHit();
+		}
 
-    // Relâchement
-    if (estRelacheCeFrame)
-    {
-        laCaseImage.color = couleurNormale;
+		// Maintien note longue
+		if (estEnfonceCeFrame && noteLongueActive != null)
+		{
+			noteLongueActive.ReduireBande(scrollerGlobal.vitesseDefilement);
 
-        if (noteLongueActive != null)
-        {
-            GameManager.instance.DeclencherJugement("MISS");
-            Destroy(noteLongueActive.gameObject);
-            noteLongueActive = null;
-        }
-    }
-}
+			// 🔥 Allume les particules de maintien si elles sont éteintes
+			if (fxMaintienInstance != null && !fxMaintienInstance.isPlaying)
+			{
+				fxMaintienInstance.Play();
+			}
+		}
+
+		// Relâchement ou fin de note longue
+		if (estRelacheCeFrame || (noteLongueActive == null && fxMaintienInstance != null && fxMaintienInstance.isPlaying))
+		{
+			laCaseImage.color = couleurNormale;
+
+			// 🔥 Éteint les particules de maintien dès qu'on lâche
+			if (fxMaintienInstance != null)
+			{
+				fxMaintienInstance.Stop();
+			}
+
+			if (estRelacheCeFrame && noteLongueActive != null)
+			{
+				GameManager.instance.DeclencherJugement("MISS");
+				Destroy(noteLongueActive.gameObject);
+				noteLongueActive = null;
+			}
+		}
+	}
 
 	void VerifierHit()
 	{
@@ -117,6 +145,13 @@ public class ButtonController : MonoBehaviour
 					string verdict = "BAD";
 					if (distanceY <= margePerfect) verdict = "PERFECT";
 					else if (distanceY <= margeGood) verdict = "GOOD";
+
+					// 💥 Déclenche le FX d'impact (uniquement si on ne rate pas complètement)
+					if (verdict != "BAD" && fxImpactPrefab != null)
+					{
+						ParticleSystem impact = Instantiate(fxImpactPrefab, transform.position, Quaternion.identity);
+						Destroy(impact.gameObject, 1f); // Nettoie la hiérarchie après 1 seconde
+					}
 
 					NoteLongue scriptNoteLongue = dechet.GetComponent<NoteLongue>();
 
