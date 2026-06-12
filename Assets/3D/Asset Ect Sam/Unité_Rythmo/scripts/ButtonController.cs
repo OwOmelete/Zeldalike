@@ -28,15 +28,16 @@ public class ButtonController : MonoBehaviour
 	public float margeGood = 65f;
 	public float margeBad = 95f;
 
-	[Header("Effets de Particules (FX)")]
-	[Tooltip("Le FX d'étincelles flash qui pop à chaque appui réussi")]
-	public ParticleSystem fxImpactPrefab;
-	[Tooltip("Le FX en boucle qui reste allumé pendant le maintien d'une note longue")]
-	public ParticleSystem fxMaintienPrefab;
+	[Header("Effets UI (FX)")]
+	[Tooltip("Glisse ton Prefab d'Image UI (avec son Animator) ici")]
+	public GameObject fxImpactUiPrefab;
 
 	private NoteLongue noteLongueActive;
 	private NoteScroller scrollerGlobal;
-	private ParticleSystem fxMaintienInstance; // Stocke l'effet en cours pour l'éteindre au relâchement
+
+	// 🎯 VARIABLES POUR LE FX MAINTIEN
+	private GameObject fxActuelInstance;
+	private Animator fxAnimator;
 
 	void Start()
 	{
@@ -44,18 +45,10 @@ public class ButtonController : MonoBehaviour
 		if (laCaseImage != null) laCaseImage.color = couleurNormale;
 
 		scrollerGlobal = FindFirstObjectByType<NoteScroller>();
-
-		// On pré-installe le FX de maintien sous la touche pour qu'il soit prêt à cracher du feu
-		if (fxMaintienPrefab != null)
-		{
-			fxMaintienInstance = Instantiate(fxMaintienPrefab, transform.position, Quaternion.identity, transform);
-			fxMaintienInstance.Stop(); // Éteint par défaut
-		}
 	}
 
 	void Update()
 	{
-		// SÉCURITÉ PAUSE : Bloque complètement les inputs si le jeu est mis en pause
 		if (Time.timeScale == 0f) return;
 
 		bool estAppuyeCeFrame = false;
@@ -70,59 +63,56 @@ public class ButtonController : MonoBehaviour
 			case 0: // LB
 				estAppuyeCeFrame = Gamepad.current.leftShoulder.wasPressedThisFrame;
 				estEnfonceCeFrame = Gamepad.current.leftShoulder.isPressed;
-				estRelacheCeFrame = Gamepad.current.leftShoulder.wasReleasedThisFrame;
 				break;
 
 			case 1: // LT
 				estAppuyeCeFrame = Gamepad.current.leftTrigger.wasPressedThisFrame;
 				estEnfonceCeFrame = Gamepad.current.leftTrigger.isPressed;
-				estRelacheCeFrame = Gamepad.current.leftTrigger.wasReleasedThisFrame;
 				break;
 
 			case 2: // RB
 				estAppuyeCeFrame = Gamepad.current.rightShoulder.wasPressedThisFrame;
 				estEnfonceCeFrame = Gamepad.current.rightShoulder.isPressed;
-				estRelacheCeFrame = Gamepad.current.rightShoulder.wasReleasedThisFrame;
 				break;
 
 			case 3: // RT
 				estAppuyeCeFrame = Gamepad.current.rightTrigger.wasPressedThisFrame;
 				estEnfonceCeFrame = Gamepad.current.rightTrigger.isPressed;
-				estRelacheCeFrame = Gamepad.current.rightTrigger.wasReleasedThisFrame;
 				break;
 		}
 
-		// Appui initial
+		// On détecte le relâchement dès que la gâchette/bouton n'est plus enfoncé
+		if (!estEnfonceCeFrame && laCaseImage.color == couleurAppuye)
+		{
+			estRelacheCeFrame = true;
+		}
+
 		if (estAppuyeCeFrame)
 		{
 			laCaseImage.color = couleurAppuye;
 			VerifierHit();
 		}
 
-		// Maintien note longue
+		// 🔥 LOGIQUE DU MAINTIEN
 		if (estEnfonceCeFrame && noteLongueActive != null)
 		{
 			noteLongueActive.ReduireBande(scrollerGlobal.vitesseDefilement);
 
-			// 🔥 Allume les particules de maintien si elles sont éteintes
-			if (fxMaintienInstance != null && !fxMaintienInstance.isPlaying)
+			// Si on a un Animator sur le FX, on lui dit de passer sur l'anim de boucle
+			if (fxAnimator != null)
 			{
-				fxMaintienInstance.Play();
+				fxAnimator.SetBool("estEnMaintien", true);
 			}
 		}
 
-		// Relâchement ou fin de note longue
-		if (estRelacheCeFrame || (noteLongueActive == null && fxMaintienInstance != null && fxMaintienInstance.isPlaying))
+		if (estRelacheCeFrame)
 		{
 			laCaseImage.color = couleurNormale;
 
-			// 🔥 Éteint les particules de maintien dès qu'on lâche
-			if (fxMaintienInstance != null)
-			{
-				fxMaintienInstance.Stop();
-			}
+			// 🔥 ARRET DU FX : Si on lâche ou qu'on rate, on coupe proprement
+			CouperLeFX();
 
-			if (estRelacheCeFrame && noteLongueActive != null)
+			if (noteLongueActive != null)
 			{
 				GameManager.instance.DeclencherJugement("MISS");
 				Destroy(noteLongueActive.gameObject);
@@ -146,14 +136,24 @@ public class ButtonController : MonoBehaviour
 					if (distanceY <= margePerfect) verdict = "PERFECT";
 					else if (distanceY <= margeGood) verdict = "GOOD";
 
-					// 💥 Déclenche le FX d'impact (uniquement si on ne rate pas complètement)
-					if (verdict != "BAD" && fxImpactPrefab != null)
-					{
-						ParticleSystem impact = Instantiate(fxImpactPrefab, transform.position, Quaternion.identity);
-						Destroy(impact.gameObject, 1f); // Nettoie la hiérarchie après 1 seconde
-					}
-
 					NoteLongue scriptNoteLongue = dechet.GetComponent<NoteLongue>();
+
+					// 💥 INSTANTIATION DE L'IMPACT
+					if (verdict != "BAD" && fxImpactUiPrefab != null)
+					{
+						// On nettoie d'abord l'ancien FX s'il y en avait un par sécurité
+						CouperLeFX();
+
+						// On crée le nouvel impact sous le bouton
+						fxActuelInstance = Instantiate(fxImpactUiPrefab, transform.position, Quaternion.identity, transform);
+						fxAnimator = fxActuelInstance.GetComponent<Animator>();
+
+						// Si c'est une note SIMPLE, le FX s'autodétruit après 0.3s
+						if (scriptNoteLongue == null)
+						{
+							Destroy(fxActuelInstance, 0.3f);
+						}
+					}
 
 					if (scriptNoteLongue != null)
 					{
@@ -169,6 +169,23 @@ public class ButtonController : MonoBehaviour
 					break;
 				}
 			}
+		}
+	}
+
+	// Petite fonction utilitaire pour nettoyer proprement l'effet à l'écran
+	void CouperLeFX()
+	{
+		if (fxAnimator != null)
+		{
+			fxAnimator.SetBool("estEnMaintien", false);
+		}
+
+		if (fxActuelInstance != null)
+		{
+			// Si c'était une note longue, on détruit directement l'objet quand on lâche
+			Destroy(fxActuelInstance);
+			fxActuelInstance = null;
+			fxAnimator = null;
 		}
 	}
 }
