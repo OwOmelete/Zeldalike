@@ -24,9 +24,9 @@ public class ButtonController : MonoBehaviour
 	public Transform conteneurNotes;
 
 	[Header("Seuils de Précision (en Pixels)")]
-	public float margePerfect = 20f;
-	public float margeGood = 45f;
-	public float margeBad = 75f;
+	public float margePerfect = 35f;
+	public float margeGood = 65f;
+	public float margeBad = 95f;
 
 	private NoteLongue noteLongueActive;
 	private NoteScroller scrollerGlobal;

@@ -18,7 +18,10 @@ public class NoteLongue : MonoBehaviour
 			{
 				float vitesseScroller = GameManager.instance.leScroller.vitesseDefilement;
 				transform.position += new Vector3(0f, vitesseScroller * Time.deltaTime, 0f);
-				gameObject.GetComponent<noteData>().speedLateral = new Vector3(0,0,0) ; 
+				if (gameObject.GetComponent<noteData>() != null)
+				{
+					gameObject.GetComponent<noteData>().speedLateral = new Vector3(0, 0, 0);
+				}
 			}
 			return;
 		}
@@ -53,12 +56,11 @@ public class NoteLongue : MonoBehaviour
 			}
 			else
 			{
+				// On modifie SEULEMENT la hauteur de la bande.
 				laBandeVerte.sizeDelta = new Vector2(laBandeVerte.sizeDelta.x, nouvelleHauteur);
 
-				if (leBoutDeLaNote != null)
-				{
-					leBoutDeLaNote.anchoredPosition = new Vector2(0f, nouvelleHauteur);
-				}
+				// 🎯 Le bout (la queue) étant enfant de la bande avec des ancres en haut (1,1),
+				// il va suivre le mouvement descendat automatiquement sans qu'on ait besoin d'y toucher ici !
 			}
 		}
 	}

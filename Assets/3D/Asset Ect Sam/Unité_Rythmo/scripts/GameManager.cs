@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
 	public AudioSource laMusique;
 	public NoteScroller leScroller;
 	public EcranFin scriptEcranFin;
+	[Tooltip("Nombre de secondes avant la fin de la musique pour afficher l'écran (ex: 3.0 pour couper le fondu de fin)")]
+	public float avanceDeclenchementFin = 3.0f; // 🌟 AJOUT : Coupe le morceau plus tôt pendant le fondu
 
 	public bool jeuACommence = false;
 	private bool finDePartieDeclenchee = false;
@@ -40,6 +42,7 @@ public class GameManager : MonoBehaviour
 	public TextMeshProUGUI affichageScore;
 	public TextMeshProUGUI affichageCombo;
 	public TextMeshProUGUI affichageJugement;
+	public UnityEngine.UI.Slider jaugeScore;
 
 	private float minuteurJugement = 0f;
 	private float dureeTotaleDuMorceau = 0f;
@@ -123,7 +126,8 @@ public class GameManager : MonoBehaviour
 			// SÉCURITÉ : On ne valide la fin du morceau que si l'AudioSource a démarré (tempsActuelMusique > 0.5s)
 			if (laMusique.isPlaying || tempsActuelMusique > 0.5f)
 			{
-				if ((tempsActuelMusique >= dureeTotaleDuMorceau - 0.2f || !laMusique.isPlaying) && !finDePartieDeclenchee)
+				// 🎯 MODIFICATION : On utilise 'avanceDeclenchementFin' pour couper plus tôt avant la fin théorique du fichier
+				if ((tempsActuelMusique >= (dureeTotaleDuMorceau - avanceDeclenchementFin) || !laMusique.isPlaying) && !finDePartieDeclenchee)
 				{
 					finDePartieDeclenchee = true;
 					jeuACommence = false;
@@ -134,7 +138,7 @@ public class GameManager : MonoBehaviour
 					NoteSpawner spawner = FindFirstObjectByType<NoteSpawner>();
 					if (spawner != null) spawner.enabled = false;
 
-					// 🎯 CORRECTIF : Force le GameObject à s'allumer avant d'appeler l'affichage des scores
+					// Force le GameObject à s'allumer avant d'appeler l'affichage des scores
 					if (scriptEcranFin != null)
 					{
 						scriptEcranFin.gameObject.SetActive(true);
@@ -226,6 +230,55 @@ public class GameManager : MonoBehaviour
 		{
 			if (comboActuel > 0) affichageCombo.text = comboActuel.ToString();
 			else affichageCombo.text = "";
+		}
+
+		// 🎯 CALCUL PAR SEGMENTS BASÉ SUR TES VALEURS VISUELLES DE SLIDER
+		if (jaugeScore != null)
+		{
+			float scoreMaxRequis = SelectionDifficulte.ScoreRequisEtoile;
+
+			if (scoreMaxRequis > 0)
+			{
+				// Paliers de points (40% et 75%)
+				float pointsPalier1 = scoreMaxRequis * 0.40f;
+				float pointsPalier2 = scoreMaxRequis * 0.75f;
+
+				float valeurSlider = 0f;
+
+				if (scoreActuel <= pointsPalier1)
+				{
+					// Segment 1 : De 0 à l'Étoile 1 (Slider progresse de 0 à 0.236)
+					float pourcentageSegment = (float)scoreActuel / pointsPalier1;
+					valeurSlider = pourcentageSegment * 0.236f;
+				}
+				else if (scoreActuel <= pointsPalier2)
+				{
+					// Segment 2 : De l'Étoile 1 à l'Étoile 2 (Slider progresse de 0.236 à 0.542)
+					float pointsDansCeSegment = scoreActuel - pointsPalier1;
+					float tailleDuSegmentPoints = pointsPalier2 - pointsPalier1;
+					float pourcentageSegment = pointsDansCeSegment / tailleDuSegmentPoints;
+
+					valeurSlider = 0.236f + (pourcentageSegment * (0.542f - 0.236f));
+				}
+				else if (scoreActuel <= scoreMaxRequis)
+				{
+					// Segment 3 : De l'Étoile 2 à l'Étoile 3 (Slider progresse de 0.542 à 0.76)
+					float pointsDansCeSegment = scoreActuel - pointsPalier2;
+					float tailleDuSegmentPoints = scoreMaxRequis - pointsPalier2;
+					float pourcentageSegment = pointsDansCeSegment / tailleDuSegmentPoints;
+
+					valeurSlider = 0.542f + (pourcentageSegment * (0.76f - 0.542f));
+				}
+				else
+				{
+					// Au-delà du score max requis (Bonus) : Le Slider continue de monter de 0.76 à 1.0
+					float pointsBonus = scoreActuel - scoreMaxRequis;
+					float pourcentageBonus = pointsBonus / (scoreMaxRequis * 0.5f);
+					valeurSlider = 0.76f + (pourcentageBonus * (1.0f - 0.76f));
+				}
+
+				jaugeScore.value = Mathf.Clamp01(valeurSlider);
+			}
 		}
 	}
 }
