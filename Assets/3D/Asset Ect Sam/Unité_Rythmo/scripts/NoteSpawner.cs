@@ -67,13 +67,25 @@ public class NoteSpawner : MonoBehaviour
 		}
 
 		indexNoteActuelle = 0;
-		tempsTrajetCalcule = false;
+
+		// ✅ On calcule tempsDeTrajet ici directement, sans attendre le Update()
+		float vitesse = GameManager.instance.leScroller.vitesseDefilement;
+		if (vitesse > 0)
+		{
+			tempsDeTrajet = hauteurSpawnY / vitesse;
+			tempsTrajetCalcule = true;
+		}
+		else
+		{
+			tempsTrajetCalcule = false;
+		}
 	}
 
 	void Update()
 	{
 		if (GameManager.instance == null || !GameManager.instance.jeuACommence || partition == null || partition.Length == 0) return;
 
+		// Calcul de secours au cas où ChargerPartitionDepuisTexte() aurait échoué
 		if (!tempsTrajetCalcule)
 		{
 			float vitesse = GameManager.instance.leScroller.vitesseDefilement;
@@ -87,7 +99,8 @@ public class NoteSpawner : MonoBehaviour
 
 		minuteurAudio = GameManager.instance.laMusique.time;
 
-		if (indexNoteActuelle < partition.Length)
+		// Boucle while : spawn toutes les notes en retard en une seule frame
+		while (indexNoteActuelle < partition.Length)
 		{
 			float tempsApparitionAnticipe = partition[indexNoteActuelle].tempsFrappeVoulu - tempsDeTrajet;
 
@@ -96,6 +109,7 @@ public class NoteSpawner : MonoBehaviour
 				SpawnDechet(partition[indexNoteActuelle]);
 				indexNoteActuelle++;
 			}
+			else break; // La prochaine note n'est pas encore prête, on attend
 		}
 	}
 
@@ -112,8 +126,8 @@ public class NoteSpawner : MonoBehaviour
 		RectTransform rectDechet = nouveauDechet.GetComponent<RectTransform>();
 		RectTransform pisteCible = mesPistesUI[indexPisteCode];
 		
-				noteData noteData = nouveauDechet.GetComponent<noteData>() ;
-				noteData.piste = donneesNote.piste;
+		noteData noteData = nouveauDechet.GetComponent<noteData>();
+		noteData.piste = donneesNote.piste;
 
 		if (rectDechet != null)
 		{
@@ -121,7 +135,6 @@ public class NoteSpawner : MonoBehaviour
 			rectDechet.anchorMax = new Vector2(0.5f, 0f);
 			rectDechet.pivot = new Vector2(0.5f, 0.5f);
 
-			// Évite le décalage horizontal des couloirs lié aux Canvas Parents
 			float positionX = conteneurNotes.InverseTransformPoint(pisteCible.position).x;
 			float positionYCalculee = hauteurSpawnY - conteneurNotes.anchoredPosition.y;
 

@@ -1,68 +1,108 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class MenuPause : MonoBehaviour
 {
-	[Header("Panneau UI de Pause")]
-	public GameObject panneauPause;
+    [Header("UI")]
+    public GameObject panneauPause;
+    public GameObject button;
 
-	private bool jeuEstEnPause = false;
+    [Header("Retour Menu")]
+    public GameObject PC;
+    public GameObject JeuDeRythme;
 
-	void Update()
-	{
-		// Déclenche la pause avec la touche Échap (clavier)
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			if (GameManager.instance != null && GameManager.instance.jeuACommence)
-			{
-				if (jeuEstEnPause) ReprendreJeu();
-				else MettreEnPause();
-			}
-		}
-	}
+    private bool jeuEstEnPause = false;
 
-	public void ReprendreJeu()
-	{
-		if (panneauPause != null) panneauPause.SetActive(false);
+    void Update()
+    {
+        bool pausePressed =
+            Input.GetKeyDown(KeyCode.Escape) ||
+            (Gamepad.current != null &&
+             Gamepad.current.startButton.wasPressedThisFrame);
 
-		Time.timeScale = 1f; // Relance le temps d'Unity
-		jeuEstEnPause = false;
+        if (!pausePressed)
+            return;
 
-		// Relance la musique
-		if (GameManager.instance != null && GameManager.instance.laMusique != null)
-		{
-			GameManager.instance.laMusique.UnPause();
-		}
-	}
+        if (GameManager.instance == null ||
+            !GameManager.instance.jeuACommence)
+            return;
 
-	public void MettreEnPause()
-	{
-		if (panneauPause != null) panneauPause.SetActive(true);
+        if (jeuEstEnPause)
+            ReprendreJeu();
+        else
+            MettreEnPause();
+    }
 
-		Time.timeScale = 0f; // Gèle le temps d'Unity
-		jeuEstEnPause = true;
+    public void MettreEnPause()
+    {
+        jeuEstEnPause = true;
 
-		// Met la musique en pause
-		if (GameManager.instance != null && GameManager.instance.laMusique != null)
-		{
-			GameManager.instance.laMusique.Pause();
-		}
-	}
+        if (panneauPause != null)
+            panneauPause.SetActive(true);
 
-	public void RecommencerNiveau()
-	{
-		Time.timeScale = 1f; // TRÈS IMPORTANT : On remet le temps à正常 avant de recharger !
+        if (button != null)
+            EventSystem.current.SetSelectedGameObject(button);
 
-		// 🎯 CORRECTION : On récupère dynamiquement le nom exact de la scène active pour la recharger de zéro
-		string nomSceneActuelle = SceneManager.GetActiveScene().name;
-		SceneManager.LoadScene(nomSceneActuelle);
-	}
+        Time.timeScale = 0f;
 
-	public void RetourMenu()
-	{
-		Time.timeScale = 1f; // On remet le temps à 1
+        if (GameManager.instance != null &&
+            GameManager.instance.laMusique != null)
+        {
+            GameManager.instance.laMusique.Pause();
+        }
+    }
 
-		// 🎯 SÉCURITÉ : Remplace "MenuSelection" par le nom EXACT de ta scène si elle s'appelle autrement (ex: "Menu", "MainMenu")
-		SceneManager.LoadScene("UI_PC_WindowsXP");
-	}
+    public void ReprendreJeu()
+    {
+        jeuEstEnPause = false;
+
+        if (panneauPause != null)
+            panneauPause.SetActive(false);
+
+        Time.timeScale = 1f;
+
+        if (GameManager.instance != null &&
+            GameManager.instance.laMusique != null)
+        {
+            GameManager.instance.laMusique.UnPause();
+        }
+    }
+
+    public void RecommencerNiveau()
+    {
+        // Ferme le menu pause proprement avant de relancer
+        jeuEstEnPause = false;
+        Time.timeScale = 1f;
+
+        if (panneauPause != null)
+            panneauPause.SetActive(false);
+
+        // Délègue le vrai reset à SelectionDifficulte
+        SelectionDifficulte sel = FindFirstObjectByType<SelectionDifficulte>();
+        if (sel != null)
+            sel.Recommencer();
+    }
+
+    public void RetourMenu()
+    {
+        Time.timeScale = 1f;
+
+        if (GameManager.instance != null &&
+            GameManager.instance.laMusique != null)
+        {
+            GameManager.instance.laMusique.Stop();
+        }
+
+        jeuEstEnPause = false;
+
+        if (panneauPause != null)
+            panneauPause.SetActive(false);
+
+        if (PC != null)
+            PC.SetActive(true);
+
+        if (JeuDeRythme != null)
+            JeuDeRythme.SetActive(false);
+    }
 }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class navigationMenu : MonoBehaviour
 {
     public GameObject go;
-    void OnEnable()
+    public void OnEnable()
     {
         EventSystem.current.SetSelectedGameObject(go);
     }

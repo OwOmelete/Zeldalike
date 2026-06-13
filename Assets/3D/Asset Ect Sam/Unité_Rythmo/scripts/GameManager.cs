@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	void Start()
+	public void OnEnable()
 	{
 		MettreAJourInterface();
 		if (affichageJugement != null) affichageJugement.text = "";
@@ -124,10 +124,10 @@ public class GameManager : MonoBehaviour
 			float tempsActuelMusique = laMusique.time;
 
 			// SÉCURITÉ : On ne valide la fin du morceau que si l'AudioSource a démarré (tempsActuelMusique > 0.5s)
-			if (laMusique.isPlaying || tempsActuelMusique > 0.5f)
+			if (laMusique.isPlaying && tempsActuelMusique > 0.5f)
 			{
 				// 🎯 MODIFICATION : On utilise 'avanceDeclenchementFin' pour couper plus tôt avant la fin théorique du fichier
-				if ((tempsActuelMusique >= (dureeTotaleDuMorceau - avanceDeclenchementFin) || !laMusique.isPlaying) && !finDePartieDeclenchee)
+				if (tempsActuelMusique >= (dureeTotaleDuMorceau - avanceDeclenchementFin) && !finDePartieDeclenchee)
 				{
 					finDePartieDeclenchee = true;
 					jeuACommence = false;

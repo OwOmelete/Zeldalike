@@ -12,4 +12,8 @@ public class NoteScroller : MonoBehaviour
 		// Le tapis descend à vitesse constante sur l'axe Y
 		transform.position -= new Vector3(0f, vitesseDefilement * Time.deltaTime, 0f);
 	}
+	public void changeBool()
+	{
+		jeuDemarre=true;
+	}
 }

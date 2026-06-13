@@ -17,7 +17,7 @@ public class CurseurMouvement : MonoBehaviour
     }
     void OnEnable()
     {
-        transform.position = new Vector3 (500,400,0 );
+        transform.position = new Vector3 (300,400,0 );
     }
     // Update is called once per frame
     void Update()
