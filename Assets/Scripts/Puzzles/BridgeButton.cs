@@ -5,6 +5,7 @@ public class BridgeButton : MonoBehaviour, IDamagable
 {
     public Animator[] linkedBridges;
     public BridgesManager Manager;
+    public Animator levierAnimator;
 
     private float lastButtonPress= -5;
     private float buttonCooldown = 0.5f;
@@ -15,6 +16,7 @@ public class BridgeButton : MonoBehaviour, IDamagable
         {
             lastButtonPress = Time.time;
             Manager.activateBridges(linkedBridges);
+            if (levierAnimator) levierAnimator.SetBool("LevierActivator", !levierAnimator.GetBool("LevierActivator"));
         }
     }
 }
