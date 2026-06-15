@@ -8,6 +8,7 @@ public class Enemy2D : MonoBehaviour
     public GameObject playerpref;
     public GameObject enemy;
     public float speed;
+    public GameObject Enemy;
 
 
     void Start()
@@ -35,7 +36,7 @@ public class Enemy2D : MonoBehaviour
     void Die()
     {
 
-        gameObject.SetActive(false);
+        Enemy.SetActive(false);
     }
     public void AddPlayerRef(Combat2D player)
     {

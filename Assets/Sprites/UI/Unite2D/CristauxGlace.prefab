@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4961184646883945631}
   - component: {fileID: 4824753318292267563}
   - component: {fileID: 7500337471623875023}
+  - component: {fileID: 7296389105369525843}
+  - component: {fileID: 4070500391298934459}
   m_Layer: 5
   m_Name: CristauxGlace
   m_TagString: Untagged
@@ -98,6 +100,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   combat2D: {fileID: 0}
   famillier2D: {fileID: 7649354118391047409}
+--- !u!222 &7296389105369525843
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8634242234019446501}
+  m_CullTransparentMesh: 1
+--- !u!114 &4070500391298934459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8634242234019446501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: d3f861fa5fc36e446abebb364ca792e7, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1001 &6899765150569126196
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -196,7 +236,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2776876206827236405, guid: 893b2a8cf0da667409f138500711909a, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

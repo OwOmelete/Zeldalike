@@ -5,6 +5,8 @@ public class Cristaux2D : MonoBehaviour
 {
   public Combat2D combat2D;
   public Famillier2D famillier2D;
+  public GameObject FamillierStock;
+  
   bool canInteract;
   bool isTaken;
 
@@ -15,7 +17,10 @@ public class Cristaux2D : MonoBehaviour
             famillier2D.gameObject.SetActive(true);
              combat2D.familiers.Add(famillier2D);
              famillier2D.refToPlayer(combat2D);
+             famillier2D.transform.SetParent(FamillierStock.transform);
+             
              isTaken=true;
+             gameObject.SetActive(false);
         }
     }
     void OnTriggerEnter2D(Collider2D collision)

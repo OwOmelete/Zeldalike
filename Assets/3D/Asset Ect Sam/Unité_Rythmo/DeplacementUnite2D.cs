@@ -38,7 +38,7 @@ public class DeplacementUnite2D : MonoBehaviour
         yield return new WaitForSeconds(dashDuration);
         rb2d.linearVelocity = Vector2.zero;
         isdash=false;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         isDashing=false;
     }
     void Deplacement()

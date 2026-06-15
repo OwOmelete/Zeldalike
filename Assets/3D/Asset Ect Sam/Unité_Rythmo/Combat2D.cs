@@ -88,12 +88,12 @@ public class Combat2D : MonoBehaviour
     IEnumerator RetourSpawn()
     {
         tryingRespawn=true;
-        float i = 0.3f;
+        float i = 0.15f;
         bool willRespawn=true;
         while (i > 0)
         {
             i-=Time.deltaTime;
-            if (Gamepad.current.rightTrigger.ReadValue() > 0.2f || deplacementUnite2D.isDashing)
+            if (deplacementUnite2D.isdash )
             {
                 tryingRespawn=false;
                 willRespawn =false;
