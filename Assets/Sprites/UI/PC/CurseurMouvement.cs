@@ -11,6 +11,7 @@ public class CurseurMouvement : MonoBehaviour
     public GameObject Cliker;
     public GameObject UniteRythmo;
     public GameObject PC;
+    public GameObject Unite2D;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,21 +34,26 @@ public class CurseurMouvement : MonoBehaviour
     
     foreach (var hitCollider in hitColliders)
     {
-       if(hitCollider.CompareTag("Obstacle"))
+        if(hitCollider.CompareTag("Obstacle"))
             {
                 PC.SetActive(false);
                 TowerDefence.SetActive(true);
             }
             
-       if(hitCollider.CompareTag("Pointer"))
+        if(hitCollider.CompareTag("Pointer"))
             {
                 PC.SetActive(false);
                  Cliker.SetActive(true);
             }
-       if(hitCollider.CompareTag("Enemy"))
+        if(hitCollider.CompareTag("Enemy"))
             {
                 PC.SetActive(false);
                  UniteRythmo.SetActive(true);
+            }
+        if(hitCollider.CompareTag("FireWave"))
+            {
+                PC.SetActive(false);
+                 Unite2D.SetActive(true);
             }
     }
 }

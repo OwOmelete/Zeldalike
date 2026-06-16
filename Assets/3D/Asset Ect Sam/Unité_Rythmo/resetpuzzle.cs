@@ -7,7 +7,7 @@ public class resetpuzzle : MonoBehaviour
     public List<GameObject> switch2 = new();
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("player"))
+        if (collision.CompareTag("Player"))
         {
             foreach(GameObject go in switch1)
             {
