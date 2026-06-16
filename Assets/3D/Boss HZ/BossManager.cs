@@ -90,14 +90,6 @@ public class BossManager : MonoBehaviour, IDamagable
         new Vector2( 1,  1), 
         new Vector2( 1,  0), 
         new Vector2( 1, -1)
-        
-         
-        
-        
-        
-        
-        
-        
     };
 
     animator.SetFloat("x", directions[dir].x);
@@ -118,6 +110,7 @@ private int AngleToInt(float angle)
 
     void Update()
     {
+        if(!HeatSystem.isAlive)Destroy(gameObject);
         if (!FightStarted || player == null) return;
 
         // Décrémentation de tous les cooldowns — toujours, même pendant une attaque

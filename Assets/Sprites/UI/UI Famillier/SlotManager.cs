@@ -74,11 +74,11 @@ IEnumerator AddFamilliersT(int famiToAdd)
     {
         HandleScroll();
 
-        if (Gamepad.current != null &&
+        /*if (Gamepad.current != null &&
             Gamepad.current.buttonSouth.wasPressedThisFrame)
         {
             AddRandomFamilliers(1);
-        }
+        }*/
     }
     void CreateSlots()
     {

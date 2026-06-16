@@ -24,9 +24,9 @@ public class MenuPause : MonoBehaviour
         if (!pausePressed)
             return;
 
-        if (GameManager.instance == null ||
+        /*if (GameManager.instance == null ||
             !GameManager.instance.jeuACommence)
-            return;
+            return;*/
 
         if (jeuEstEnPause)
             ReprendreJeu();

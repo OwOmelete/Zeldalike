@@ -130,9 +130,9 @@ public class GameManager : MonoBehaviour
 				if (tempsActuelMusique >= (dureeTotaleDuMorceau - avanceDeclenchementFin) && !finDePartieDeclenchee)
 				{
 					finDePartieDeclenchee = true;
-					jeuACommence = false;
+					//jeuACommence = false;
 
-					if (leScroller != null) leScroller.jeuDemarre = false;
+					//if (leScroller != null) leScroller.jeuDemarre = false;
 
 					// Désactivation automatique du spawner pour bloquer les déchets en fin de partie
 					NoteSpawner spawner = FindFirstObjectByType<NoteSpawner>();

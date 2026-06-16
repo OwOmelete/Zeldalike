@@ -18,11 +18,12 @@ public class AnimationUI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Switch = false; 
+        Switch = false;
+        OnRightTrigger();
         foreach(Material m in materialList)
         {
-            m.SetColor("_EmissionColor",myHdrColorCold);
-            m.SetColor("_BaseColor",colorFroid);
+            m.SetColor("_EmissionColor",myHdrColorHot);
+            m.SetColor("_BaseColor",colorChaud);
         }
     }
     void Update()
