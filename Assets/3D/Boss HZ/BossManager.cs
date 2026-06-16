@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class BossManager : MonoBehaviour, IDamagable
 {
@@ -36,6 +37,7 @@ public class BossManager : MonoBehaviour, IDamagable
     [Header("Références")]
     public SphereCollider zoneChasse;
     private GameObject player;
+    public GameObject lookAtPlayer;
     public GameObject conePrefab;
     public GameObject zoneRougePrefab;
     public List<GameObject> stalactitePrefab = new List<GameObject>();
@@ -43,6 +45,8 @@ public class BossManager : MonoBehaviour, IDamagable
     public List<GameObject> projectilePrefab = new List<GameObject>();
     public List<Vector3> positions = new List<Vector3>();
     public List<GameObject> zones = new List<GameObject>();
+    public Animator animator;
+    public GameObject MainCamera;
     [SerializeField] PlayerHealth playerHealth;
 
     [Header("Compteurs")]
@@ -57,6 +61,60 @@ public class BossManager : MonoBehaviour, IDamagable
     {
         player = GameObject.FindGameObjectWithTag("Player");
     }
+     private void MiseAngle()
+{
+    Vector3 direction = player.transform.position - transform.position;
+    direction.y = 0f;
+
+    if (direction.sqrMagnitude < 0.001f)
+        return;
+
+    float angle = Vector3.SignedAngle(
+        MainCamera.transform.forward,
+        direction.normalized,
+        Vector3.up
+    );
+
+    if (angle < 0)
+        angle += 360f;
+
+    int dir = AngleToInt(angle);
+
+    Vector2[] directions =
+    {
+        new Vector2( 0, -1),
+        new Vector2(-1, -1),
+        new Vector2(-1,  0), 
+        new Vector2(-1,  1), 
+        new Vector2( 0,  1), 
+        new Vector2( 1,  1), 
+        new Vector2( 1,  0), 
+        new Vector2( 1, -1)
+        
+         
+        
+        
+        
+        
+        
+        
+    };
+
+    animator.SetFloat("x", directions[dir].x);
+    animator.SetFloat("y", directions[dir].y);
+}
+
+private int AngleToInt(float angle)
+{
+    const int nbDirections = 8;
+    float sectorSize = 360f / nbDirections;
+
+    angle += sectorSize * 0.5f;
+    angle %= 360f;
+
+    return Mathf.FloorToInt(angle / sectorSize);
+}
+
 
     void Update()
     {
@@ -71,8 +129,13 @@ public class BossManager : MonoBehaviour, IDamagable
         if (isAttacking) return;
 
         float distance = Vector3.Distance(transform.position, player.transform.position);
+       Vector3 direction = player.transform.position - transform.position;
+        direction.y = 0f;
 
-        // Pendant le cooldown entre attaques : se déplacer seulement
+        
+        lookAtPlayer.transform.rotation = Quaternion.LookRotation(direction);
+        MiseAngle();
+        
         if (cooldownTimer > 0)
         {
             if (distance > porteeAttaqueSpe2.x * 1.5f)
@@ -149,6 +212,7 @@ public class BossManager : MonoBehaviour, IDamagable
     {
         if (receivedAttacks.Contains(attackID)) return;
         receivedAttacks.Add(attackID);
+        animator.SetTrigger("Hit");
 
         switch (data.currentTemperature)
         {
@@ -174,6 +238,7 @@ public class BossManager : MonoBehaviour, IDamagable
 
     void HandleMovement()
     {
+        animator.SetBool("isMoving",true);
         if (StalactiteCount > 0 && stalactitePrefab[StalactiteCount - 1].activeSelf)
         {
             GameObject closestStalactite = GetClosestStalactite();
@@ -241,6 +306,7 @@ public class BossManager : MonoBehaviour, IDamagable
 
     void DeplacementVersJoueur()
     {
+
         Vector3 direction = player.transform.position - transform.position;
         direction.y = 0f;
         direction.Normalize();
@@ -279,6 +345,7 @@ public class BossManager : MonoBehaviour, IDamagable
     IEnumerator AttaqueBaseRoutine()
     {
         isAttacking = true;
+        animator.SetTrigger("Attack");
 
         Vector3 targetPos = player.transform.position;
         targetPos.y = transform.position.y;
@@ -329,6 +396,7 @@ public class BossManager : MonoBehaviour, IDamagable
     IEnumerator AttaqueSpe1Routine()
     {
         isAttacking = true;
+        animator.SetBool("isMoving",false);
 
         List<int> zonesActivees = new List<int>();
 
@@ -373,7 +441,7 @@ public class BossManager : MonoBehaviour, IDamagable
                 StalactiteCount++;
             }
         }
-
+        animator.SetBool("isMoving",true);
         foreach (GameObject z in zones) z.SetActive(false);
 
         cooldownTimer = cooldownEntreAttaque;
@@ -388,6 +456,7 @@ public class BossManager : MonoBehaviour, IDamagable
     IEnumerator AttaqueSpe2Routine()
     {
         isAttacking = true;
+        animator.SetTrigger("Attack");
 
         Vector3 dir = (player.transform.position - transform.position).normalized;
 
@@ -430,7 +499,7 @@ public class BossManager : MonoBehaviour, IDamagable
     IEnumerator AttaqueSpe3Routine()
     {
         isAttacking = true;
-
+        animator.SetBool("isMoving",false);
         yield return new WaitForSeconds(0.5f);
 
         int nbProjectiles = 24;
@@ -456,7 +525,7 @@ public class BossManager : MonoBehaviour, IDamagable
                 projectileCount++;
             }
         }
-
+        animator.SetBool("isMoving",true);
         cooldownAttaqueSpe3 = 30f;
         cooldownTimer = cooldownEntreAttaque;
         isAttacking = false;
@@ -492,6 +561,7 @@ public class BossManager : MonoBehaviour, IDamagable
 
         if (player != null)
         {
+            animator.SetTrigger("Throw");
             Vector3 dirShot = (player.transform.position - transform.position).normalized;
 
             if (projectileCount >= projectilePrefab.Count) projectileCount = 0;
