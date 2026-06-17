@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InvoSource : MonoBehaviour
@@ -46,6 +47,7 @@ public class InvoSource : MonoBehaviour
         }
         
     }
+    
     IEnumerator TurnOnPipe()
     {
         
@@ -81,20 +83,30 @@ public class InvoSource : MonoBehaviour
         ReleaseInvos?.Invoke();
         Destroy(go);
     }
-    
+
+    private void OnCollisionEnter(Collision other)
+    {
+        
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.gameObject.CompareTag("FireWave"))
+        {
+            releaseInvos();
+            Interact();
+        }
+        /*if (other.CompareTag("Player"))
         {
             canInteract = true;
-        }
+        }*/
     }
     
-    private void OnTriggerExit(Collider other)
+    /*private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             canInteract = false;
         }
-    }
+    }*/
 }
