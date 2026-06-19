@@ -37,6 +37,7 @@ public class CinematiqueManager : MonoBehaviour
     public void playAnim(int i)
     {
         Time.timeScale = 0;
+        player.Play();
         player.clip = videoClips[i];
         player.targetCameraAlpha = 1;
         animStart = Time.unscaledTime;
@@ -45,6 +46,7 @@ public class CinematiqueManager : MonoBehaviour
     public void stopAnim()
     {
         Time.timeScale = 1;
+        player.Stop();
         player.targetCameraAlpha = 0;
     }
 }
