@@ -14,6 +14,7 @@ public class InvoManager : MonoBehaviour
 
     [SerializeField]private Target target;
     public PlayerHealth _playerHealth;
+    [SerializeField] private float waveDuration; 
     
     private List<Transform> enemiesInRange = new List<Transform>();
     private float lastBasicAttack;
@@ -253,7 +254,7 @@ public class InvoManager : MonoBehaviour
     IEnumerator waveTimer()
     {
         wave.SetActive(true);
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(waveDuration);
         wave.SetActive(false);
     }
     
