@@ -12,12 +12,59 @@ public class Fonceur : EnnemyRework
     public bool canAttack=true;
     public PlayerHealth playerHealth;
     public bool asAttack;
+
     void Awake()
     {
         canAttack=true;
     }
+         private void MiseAngle()
+{
+    Vector3 direction = player.transform.position - transform.position;
+    direction.y = 0f;
+
+    if (direction.sqrMagnitude < 0.001f)
+        return;
+
+    float angle = Vector3.SignedAngle(
+        MainCamera.transform.forward,
+        direction.normalized,
+        Vector3.up
+    );
+
+    if (angle < 0)
+        angle += 360f;
+
+    int dir = AngleToInt(angle);
+
+    Vector2[] directions =
+    {
+        new Vector2( 0, -1),
+        new Vector2(-1, -1),
+        new Vector2(-1,  0), 
+        new Vector2(-1,  1), 
+        new Vector2( 0,  1), 
+        new Vector2( 1,  1), 
+        new Vector2( 1,  0), 
+        new Vector2( 1, -1)
+    };
+
+    animator.SetFloat("x", directions[dir].x);
+    animator.SetFloat("y", directions[dir].y);
+}
+
+private int AngleToInt(float angle)
+{
+    const int nbDirections = 8;
+    float sectorSize = 360f / nbDirections;
+
+    angle += sectorSize * 0.5f;
+    angle %= 360f;
+
+    return Mathf.FloorToInt(angle / sectorSize);
+}
     public override void Update()
     {
+        if(!animator.GetBool("isStun"))MiseAngle();
         if (!HeatSystem.isAlive)
         {
             if (MortGeulGlacon != null)
@@ -127,7 +174,11 @@ public class Fonceur : EnnemyRework
     }
     public override IEnumerator Attack1()
     {
-    IsAttacking = true;
+        IsAttacking = true;
+        animator.SetTrigger("Charging");
+        yield return new WaitForSeconds(0.8f);
+        animator.SetBool("isCharging",true);
+    
     zoneAttack.SetActive(true); 
     updateZonneAttack();
     yield return new WaitForEndOfFrame();
@@ -144,18 +195,25 @@ public class Fonceur : EnnemyRework
     yield return new WaitForSeconds(attackSpeed*0.2f);
     var col = zoneAttack.GetComponent<Collider>();
     col.enabled = true;
+    animator.SetBool("isCharging",false);
+    animator.SetBool("isStun",true);
 
     yield return new WaitForSeconds(0.1f);
     zoneAttack.GetComponent<DetectionAttack>().canAttack = true;
     col.enabled = false;
     zoneAttack.SetActive(false);
+    
     yield return new WaitForSeconds(2f);
+    animator.SetBool("isStun",false);
     IsAttacking = false;
     asAttack = false;
+    
     StartCoroutine(Cooldown());
+    
     }
      public override void Move(Transform target)
     {
+        animator.SetBool("isMoving",true);
         Vector3 dir = target.position - transform.position;
         dir.Normalize();
         transform.position += dir*speed*Time.deltaTime;

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4733793943400188879}
   - component: {fileID: 8726168523037595896}
   - component: {fileID: 1631207419032291945}
+  - component: {fileID: 8744800887380764660}
   m_Layer: 8
   m_Name: PlaceHolderGeulGlacon
   m_TagString: Untagged
@@ -106,6 +107,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Billboard
   mainCam: {fileID: 0}
+--- !u!95 &8744800887380764660
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001505761139604321}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d0259b967c6d9ce4da97ea3248875727, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2912483550533061210
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +158,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.70710576, y: -0, z: -0, w: 0.70710784}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.0329, y: 3.0329, z: 3.0329}
+  m_LocalScale: {x: 3.0329, y: 5.3746023, z: 3.0329}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5942874996176253921}
@@ -233,7 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   playerHealth: {fileID: 0}
-  damage: 0
+  damage: 20
   canAttack: 0
 --- !u!1 &3022967446270529112
 GameObject:
@@ -338,6 +361,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2653821599930001268}
+  - {fileID: 3952807235158146594}
   - {fileID: 4733793943400188879}
   - {fileID: 3901285447377511012}
   - {fileID: 4231513385460843447}
@@ -384,7 +408,11 @@ MonoBehaviour:
   corruptLife: 3
   CurentHeat: 0
   attackSpeed: 1
-  patrol: []
+  patrol:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   nextDestination: 0
   player: {fileID: 0}
   fightStart: 0
@@ -395,9 +423,10 @@ MonoBehaviour:
   distanceToPlayerActual: 0
   zoneAttack: {fileID: 2912483550533061210}
   HeatSystem: {fileID: 866848527590522865}
-  animator: {fileID: 0}
+  animator: {fileID: 8744800887380764660}
   MainCamera: {fileID: 0}
   MortGeulGlacon: {fileID: 0}
+  _combatZone: {fileID: 0}
 --- !u!114 &866848527590522865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,7 +434,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3076498192933469039}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa22ac11599dc3d4ea782aaa7f549915, type: 3}
   m_Name: 
@@ -419,9 +448,13 @@ MonoBehaviour:
   maxHeat: 100
   maxCorruption: 100
   weakPointSize: 20
-  weakPointSpeed: 0
-  timeToHitWeakPoint: 0
-  weakpointList: []
+  weakPointSpeed: 1
+  timeToHitWeakPoint: 1
+  weakpointList:
+  - 0.518
+  - 0.012
+  - 0.888
+  - 0.441
   centerExclusionRadius: 0.1
   isAlive: 1
 --- !u!65 &5483722092793022593
@@ -525,7 +558,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
   m_LocalPosition: {x: -0.1, y: 1.34, z: 0.9}
-  m_LocalScale: {x: 20.074001, y: 20.074, z: 20.074001}
+  m_LocalScale: {x: 28.412743, y: 28.412739, z: 28.412743}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5942874996176253921}
@@ -551,6 +584,66 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &7753810448529300162
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3952807235158146594}
+  - component: {fileID: 9121417865195837218}
+  m_Layer: 0
+  m_Name: Decal Projector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3952807235158146594
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7753810448529300162}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5942874996176253921}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9121417865195837218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7753810448529300162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalProjector
+  m_Material: {fileID: 2100000, guid: 37a154daedf48044a9c06c7415c03a1e, type: 2}
+  m_DrawDistance: 1000
+  m_FadeScale: 0.9
+  m_StartAngleFade: 180
+  m_EndAngleFade: 180
+  m_UVScale: {x: 1, y: 1}
+  m_UVBias: {x: 0, y: 0}
+  m_RenderingLayerMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ScaleMode: 0
+  m_Offset: {x: 0, y: 0, z: 2.5}
+  m_Size: {x: 8, y: 8, z: 5}
+  m_FadeFactor: 1
+  version: 1
+  m_DecalLayerMask: 1
 --- !u!1 &8929132213008838637
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,6 +858,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 5290941098121135251, guid: 7cc1ee2f6ff207048aa6925aeabab307, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -818,6 +915,18 @@ PrefabInstance:
     - target: {fileID: 1706281563330557811, guid: 5bff1b72c2c724149a7cdf6ee8ef7e79, type: 3}
       propertyPath: m_SizeDelta.y
       value: 134.86093
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706281563330557811, guid: 5bff1b72c2c724149a7cdf6ee8ef7e79, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.9103
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706281563330557811, guid: 5bff1b72c2c724149a7cdf6ee8ef7e79, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.9103
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706281563330557811, guid: 5bff1b72c2c724149a7cdf6ee8ef7e79, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.9103
       objectReference: {fileID: 0}
     - target: {fileID: 1706281563330557811, guid: 5bff1b72c2c724149a7cdf6ee8ef7e79, type: 3}
       propertyPath: m_LocalPosition.x
