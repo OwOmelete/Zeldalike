@@ -5,15 +5,31 @@ using UnityEngine;
 public class ennemyDummy : MonoBehaviour, IDamagable
 {
     [SerializeField] private EnnemyHeatSystem HeatSystem;
+    [SerializeField] private Animation anim;
     
     private HashSet<int> receivedAttacks = new HashSet<int>();
 
+
+    private void OnEnable()
+    {
+        HeatSystem.weakpointBroke += Hit;
+    }
+
+    private void OnDisable()
+    {
+        HeatSystem.weakpointBroke -= Hit;
+    }
 
     private void Update()
     {
         if(!HeatSystem.isAlive) Destroy(gameObject);
     }
 
+    private void Hit()
+    {
+        anim.Play();
+    }
+    
     public void TakeDamage(float damage, int attackID, InvoDataInstance data)
     {
         if (receivedAttacks.Contains(attackID)) return;

@@ -42,6 +42,8 @@ public class EnnemyHeatSystem : MonoBehaviour
 
     public bool isAlive = true;
 
+
+    public event Action weakpointBroke;
     
     
     private void Start()
@@ -117,6 +119,8 @@ public class EnnemyHeatSystem : MonoBehaviour
 
     void ChangeIndex()
     {
+
+        weakpointBroke?.Invoke();
         if (currentIndex + 1 >= weakpointList.Length)
         {
             if (training)
