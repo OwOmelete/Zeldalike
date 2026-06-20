@@ -34,4 +34,12 @@ public class BridgesManager : MonoBehaviour
             currentBridges = null;
         }
     }
+
+    public void activateColliders(GameObject[] colliders)
+    {
+        if (colliders != null)
+        {
+            foreach (var col in colliders) col.SetActive(!col.activeSelf);
+        }
+    }
 }

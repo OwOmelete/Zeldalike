@@ -4,6 +4,7 @@ using UnityEngine;
 public class BridgeButton : MonoBehaviour, IDamagable
 {
     public Animator[] linkedBridges;
+    public GameObject[] linkedColliders;
     public BridgesManager Manager;
     public Animator levierAnimator;
 
@@ -16,6 +17,7 @@ public class BridgeButton : MonoBehaviour, IDamagable
         {
             lastButtonPress = Time.time;
             Manager.activateBridges(linkedBridges);
+            Manager.activateColliders(linkedColliders);
             if (levierAnimator) levierAnimator.SetBool("LevierActivator", !levierAnimator.GetBool("LevierActivator"));
         }
     }
