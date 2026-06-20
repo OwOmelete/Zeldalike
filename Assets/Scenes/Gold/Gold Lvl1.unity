@@ -25327,8 +25327,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 769077674}
     m_Modifications:
     - target: {fileID: 204251706268440581, guid: 379737d7537258b44b261ffc5d445d2b, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 204251706268440581, guid: 379737d7537258b44b261ffc5d445d2b, type: 3}
       propertyPath: m_TagString
       value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 1067749703827168771, guid: 379737d7537258b44b261ffc5d445d2b, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1067749703827168771, guid: 379737d7537258b44b261ffc5d445d2b, type: 3}
       propertyPath: m_TagString
@@ -25408,6 +25416,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2786410865857591234, guid: 379737d7537258b44b261ffc5d445d2b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1127216555}
+    - targetCorrespondingSourceObject: {fileID: 204251706268440581, guid: 379737d7537258b44b261ffc5d445d2b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1308422442}
+    - targetCorrespondingSourceObject: {fileID: 1067749703827168771, guid: 379737d7537258b44b261ffc5d445d2b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 980941415}
   m_SourcePrefab: {fileID: 100100000, guid: 379737d7537258b44b261ffc5d445d2b, type: 3}
 --- !u!1 &706316998 stripped
 GameObject:
@@ -36760,6 +36774,32 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1770343257683924533, guid: 760ee1b6009528446a2c483daadbcfc8, type: 3}
   m_PrefabInstance: {fileID: 980082146}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &980941411 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1067749703827168771, guid: 379737d7537258b44b261ffc5d445d2b, type: 3}
+  m_PrefabInstance: {fileID: 702136385}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &980941415
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980941411}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.009999996, y: 0.017657926, z: 0.0018267618}
+  m_Center: {x: 0.0050001172, y: 0.008828961, z: -0.000913366}
 --- !u!1001 &981790543
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49785,6 +49825,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &1308422438 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 204251706268440581, guid: 379737d7537258b44b261ffc5d445d2b, type: 3}
+  m_PrefabInstance: {fileID: 702136385}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1308422442
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1308422438}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.009999996, y: 0.017657926, z: 0.0018267618}
+  m_Center: {x: 0.004999879, y: 0.008828961, z: -0.0009133734}
 --- !u!1001 &1308947824
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79790,10 +79856,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 476519023453311341, guid: 636398f4de0f11e49b09d719be25b594, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1235886980901552623, guid: 636398f4de0f11e49b09d719be25b594, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -87872,6 +87934,7 @@ MonoBehaviour:
   popUpKillEnemy: {fileID: 0}
   meltPopup: {fileID: 0}
   meltTrigger: {fileID: 0}
+  HiFiTrigger: {fileID: 0}
   lancerText: {fileID: 0}
 --- !u!1 &2032827577863373201
 GameObject:
