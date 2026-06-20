@@ -69,10 +69,10 @@ public class CinematiqueManager : MonoBehaviour
         if (ActualAnim == 3)
         {
             cinematique1.SetActive(true);
-            yield return new WaitForSeconds(0.8f);
+            yield return new WaitForSeconds(1.38f);
             cinematique1.SetActive(false);
             cinematique2.SetActive(true);
-            yield return new WaitForSeconds(0.8f);
+            yield return new WaitForSeconds(1.38f);
             cinematique2.SetActive(false);
         }
     }
