@@ -13,6 +13,8 @@ public class CinematiqueManager : MonoBehaviour
     [SerializeField] private VideoPlayer player;
     [SerializeField] private InputAction input;
     private float animStart;
+    public GameObject cinematique1;
+    public GameObject cinematique2;
     public int ActualAnim;
     private void OnEnable()
     {
@@ -62,7 +64,16 @@ public class CinematiqueManager : MonoBehaviour
 
     IEnumerator StopCoroutine()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2.5f);
         stopAnim();
+        if (ActualAnim == 3)
+        {
+            cinematique1.SetActive(true);
+            yield return new WaitForSeconds(0.8f);
+            cinematique1.SetActive(false);
+            cinematique2.SetActive(true);
+            yield return new WaitForSeconds(0.8f);
+            cinematique2.SetActive(false);
+        }
     }
 }
