@@ -61,17 +61,16 @@ public class EnnemyRework :  MonoBehaviour, IDamagable
             {
                 if (_combatZone!= null)
                 {
-                   foreach (var door in _combatZone.doors)
-                {
-                    door.OpenDoor();
-                } 
+                    foreach (var door in _combatZone.doors)
+                    {
+                        door.OpenDoor();
+                    } 
+                    if (_combatZone.bridgeCollider) _combatZone.bridgeCollider.SetActive(false);
+
                 }
-                
-                
                 MortGeulGlacon.SetActive(true);
                 MortGeulGlacon.transform.position = transform.position + new Vector3(0,1.5f,0); 
             }
-
             Destroy(gameObject,1f);
         }
         

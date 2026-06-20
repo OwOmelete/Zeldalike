@@ -48,6 +48,8 @@ public class BossManager : MonoBehaviour, IDamagable
     public Animator animator;
     public GameObject MainCamera;
     [SerializeField] PlayerHealth playerHealth;
+    public CombatZone _combatZone;
+
 
     [Header("Compteurs")]
     public int StalactiteCount;
@@ -110,7 +112,7 @@ private int AngleToInt(float angle)
 
     void Update()
     {
-        if(!HeatSystem.isAlive)Destroy(gameObject);
+        if(!HeatSystem.isAlive) Die();
         if (!FightStarted || player == null) return;
 
         // Décrémentation de tous les cooldowns — toujours, même pendant une attaque
@@ -227,6 +229,18 @@ private int AngleToInt(float angle)
     private void Die()
     {
         Destroy(gameObject);
+        if (!HeatSystem.isAlive)
+        {
+            if (_combatZone!= null)
+            {
+                foreach (var door in _combatZone.doors)
+                {
+                    door.OpenDoor();
+                } 
+                if (_combatZone.bridgeCollider) _combatZone.bridgeCollider.SetActive(false);
+            }
+            Destroy(gameObject,1f);
+        }
     }
 
     void HandleMovement()

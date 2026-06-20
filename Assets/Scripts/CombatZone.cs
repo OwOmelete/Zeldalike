@@ -6,6 +6,7 @@ public class CombatZone : MonoBehaviour
     public Door[] doors;
     private bool activated = false;
     public EnnemyRework ennemyRework;
+    public GameObject bridgeCollider;
     
     
     private void OnTriggerEnter(Collider other)
