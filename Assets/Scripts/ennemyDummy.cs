@@ -27,6 +27,7 @@ public class ennemyDummy : MonoBehaviour, IDamagable
 
     private void Hit()
     {
+        if(anim==null) return;
         anim.Play();
     }
     
