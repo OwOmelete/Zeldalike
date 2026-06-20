@@ -23,7 +23,6 @@ public class NoyauManager : MonoBehaviour
 
      public void increaseRemplissage()
      {
-          
           currentRemplissage++;
           CinematiqueManager.INSTANCE.playAnim(currentRemplissage-1);
      }

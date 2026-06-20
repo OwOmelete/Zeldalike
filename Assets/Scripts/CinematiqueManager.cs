@@ -12,6 +12,7 @@ public class CinematiqueManager : MonoBehaviour
     [SerializeField] private VideoPlayer player;
     [SerializeField] private InputAction input;
     private float animStart;
+    public int ActualAnim;
 
 
     private void Awake()
@@ -31,6 +32,7 @@ public class CinematiqueManager : MonoBehaviour
         if (Gamepad.current.buttonSouth.isPressed && Time.unscaledTime - animStart >= 2)
         {
             stopAnim();
+            
         }
     }
 
@@ -41,6 +43,7 @@ public class CinematiqueManager : MonoBehaviour
         player.clip = videoClips[i];
         player.targetCameraAlpha = 1;
         animStart = Time.unscaledTime;
+        ActualAnim = i;
     }
 
     public void stopAnim()
@@ -48,5 +51,6 @@ public class CinematiqueManager : MonoBehaviour
         Time.timeScale = 1;
         player.Stop();
         player.targetCameraAlpha = 0;
+        
     }
 }
