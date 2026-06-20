@@ -7,7 +7,9 @@ public class NoyauCharger : MonoBehaviour
 
     private bool Activated;
 
-    private bool canInteract;
+    [SerializeField] private Door door;
+    
+    public bool canInteract;
 
     [SerializeField]
     private GameObject icon;
@@ -32,10 +34,15 @@ public class NoyauCharger : MonoBehaviour
 
     private void Update()
     {
-        if (Gamepad.current.buttonSouth.isPressed && canInteract && !Activated)
+        if (Gamepad.current.leftTrigger.isPressed && canInteract && !Activated)
         {
             NoyauManager.INSTANCE.increaseRemplissage();
             Activated = true;
+
+            if (door != null)
+            {
+                door.OpenDoor();
+            }
         }
     }
 }

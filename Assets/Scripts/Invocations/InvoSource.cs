@@ -95,6 +95,7 @@ public class InvoSource : MonoBehaviour
         {
             releaseInvos();
             Interact();
+            if (Tuyaux != null) StartCoroutine(TurnOnPipe());
         }
         /*if (other.CompareTag("Player"))
         {
