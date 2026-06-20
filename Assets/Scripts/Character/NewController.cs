@@ -122,6 +122,8 @@ public class TopDownPlayerController : MonoBehaviour
         {
             dashDirection = transform.forward;
         }
+        
+        AudioTruc.Instance?.Play("Dash");
     }
     
     private void OnRightTrigger()
