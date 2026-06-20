@@ -254,6 +254,7 @@ public class InvoManager : MonoBehaviour
     IEnumerator waveTimer()
     {
         wave.SetActive(true);
+        AudioTruc.Instance?.Play("Vague feu");
         yield return new WaitForSeconds(waveDuration);
         wave.SetActive(false);
     }

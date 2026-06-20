@@ -45,7 +45,7 @@ public class Didacticiel : MonoBehaviour
 
     public void DisplayKillEnemyPopup(int lol)
     {
-        popUpKillEnemy.SetActive(true);
+        //popUpKillEnemy.SetActive(true);
         lancerText.text = "Alternez la température de vos familiers avec RB / LB\nBattez les ennemis en maintenant leur température dans la zone critique.";//triche
     }
 
