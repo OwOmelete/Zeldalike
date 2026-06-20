@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
 
 public class CinematiqueManager : MonoBehaviour
 {
@@ -13,8 +14,19 @@ public class CinematiqueManager : MonoBehaviour
     [SerializeField] private InputAction input;
     private float animStart;
     public int ActualAnim;
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += onSceneLoaded;
+    }
 
-
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= onSceneLoaded;
+    }
+    private void onSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        player.targetCamera = Camera.main;
+    }
     private void Awake()
     {
         if (INSTANCE != null)
@@ -27,23 +39,17 @@ public class CinematiqueManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Gamepad.current.buttonSouth.isPressed && Time.unscaledTime - animStart >= 2)
-        {
-            stopAnim();
-            
-        }
-    }
-
     public void playAnim(int i)
     {
-        Time.timeScale = 0;
-        player.Play();
+        //Time.timeScale = 0;
         player.clip = videoClips[i];
         player.targetCameraAlpha = 1;
-        animStart = Time.unscaledTime;
+        player.Play();
+        
+        
+        animStart = Time.deltaTime;
         ActualAnim = i;
+        StartCoroutine(StopCoroutine());
     }
 
     public void stopAnim()
@@ -52,5 +58,11 @@ public class CinematiqueManager : MonoBehaviour
         player.Stop();
         player.targetCameraAlpha = 0;
         
+    }
+
+    IEnumerator StopCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+        stopAnim();
     }
 }

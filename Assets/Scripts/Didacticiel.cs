@@ -12,6 +12,7 @@ public class Didacticiel : MonoBehaviour
     [SerializeField] GameObject popUpKillEnemy;
     [SerializeField] GameObject meltPopup;
     [SerializeField] GameObject meltTrigger;
+    [SerializeField] GameObject HiFiTrigger;
     [SerializeField] TextMeshProUGUI lancerText;
     
     private void Awake()
